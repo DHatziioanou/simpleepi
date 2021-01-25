@@ -1,41 +1,18 @@
-
-
 #' Title Calculate ONS populations by age group for any age grouping using the ONS populations file
 #'
 #' @param populations object containing ONS populations
 #' @param age_groups  data.frame containing age group categories to calculate populations for
 #'
 #' @return
-#' @export exports a dataframe with aggregated population numbers by age group
+#'  exports a data.frame with aggregated population numbers by age group
 #'
 #' @examples
 #'
+#'  # Create age grouping
+#'  # groups <- data.frame(under18 = c(0,17), workingage = c(18,65), over65 = c(66,"90+"), stringsAsFactors = FALSE)
+#'  # ONS_populations_3categories <- ONS_age_groups(ONS, groups)
 #'
-#'  Import population data
-#'  ONS_pop <- readxl::read_xlsx(file.path(...,  "SAPE21DT1a-mid-2018-on-2019-LA-lsoa-syoa-estimates-formatted.xlsx"), sheet = "Mid-2018 Persons",  col_names  =  T, skip = 4)
-#'
-#'  Create age grouping
-#'  age_groups_3cat <- data.frame(
-#'    Population_under18 = c(0,17),
-#'    Population_workingage = c(18,65),
-#'    Population_over65 = c(66,"90+"),
-#'    stringsAsFactors = F)
-#'
-#'  age_groups_9cat <- data.frame(
-#'    `Population_0-4yrs` = c(0,4),
-#'    `Population_5-10yrs` = c(5,10),
-#'    `Population_11-17yrs` = c(11,17),
-#'    `Population_18-29yrs` = c(18,29),
-#'    `Population_30-39yrs` = c(30,39),
-#'    `Population_40-49yrs` = c(40,49),
-#'    `Population_50-59yrs` = c(50,59),
-#'    `Population_60-69yrs` = c(60,69),
-#'    `Population_70+yrs` = c(70,"90+"),
-#'    stringsAsFactors = F, check.names = T, fix.empty.names = T)
-#'
-#'  ONS_populations_3categories <- ONS_age_groups(ONS_pop, age_groups_3cat)
-#'  ONS_populations_9categories <- ONS_age_groups(ONS_pop, age_groups_9cat)
-
+#' @export
 ONS_age_groups <- function(populations, age_groups){
 
   populations <- as.data.frame(populations)
@@ -64,19 +41,17 @@ ONS_age_groups <- function(populations, age_groups){
 
   # Shave unnecessary columns off
   try(
-    populations <- populations[, c(colnames(populations)[1:grep("All", colnames(populations), ignore.case = T)], names(age_groups))]
+    df <- populations[, c(colnames(populations)[1:grep("All", colnames(populations), ignore.case = T)], names(age_groups))]
     )
 
-
-
-  if(inherits(populations, "try-error")){
-    populations <- populations[, c(colnames(populations)[1:grep("Population", colnames(populations), ignore.case = T)], names(age_groups))]
+  if(inherits(df, "try-error")){
+    df <- df[, c(colnames(df)[1:grep("Population", colnames(df), ignore.case = T)], names(age_groups))]
   }
 
-  names(populations) <- c(colnames(populations)[1:(grep("All", colnames(populations), ignore.case = T)-1)], "Population all ages", names(age_groups))
+  names(df) <- c(colnames(df)[1:(grep("All", colnames(df), ignore.case = T)-1)], "Population all ages", names(age_groups))
 
-  # Return agre group populations
-  return(populations)
+  # Return age group df
+  return(df)
 }
 
 

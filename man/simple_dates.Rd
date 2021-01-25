@@ -24,5 +24,4 @@ df$column <- fix_dates(df$column)
 
 # Format all column from within a data.table where the columns contain the string date into date format
 for (col in (names(dt)[grepl("date", names(dt))])){dt[,(col) := simpledates(dt[,get(col)])]}
-
 }

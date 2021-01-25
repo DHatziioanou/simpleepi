@@ -20,14 +20,14 @@
 #' @keywords file name, file path
 #'
 #' @examples
-#' Return a path
+#' # Return a path
 #' file_path <- getlatestfile(file.path("...","subfolder","subfolder"))
 #'
-#'Import the latest csv file
-#'df <- fread(getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "path", maxTries = 5))
+#' #Import the latest csv file
+#' df <- fread(getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "path", maxTries = 5))
 #'
-#'Record the modification details
-#'Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "all", maxTries = 5)$ctime
+#' #Record the modification details
+#' Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "all", maxTries = 5)$ctime
 #'
 #' @export
 getlatestfile <- function(folder_path, file_string, exclusions, return_type, maxTries){

@@ -6,7 +6,7 @@
 #' @param x dates to format. Takes a single date, vectors or a column of data.
 #'
 #' @return
-#' @export
+#'
 #'
 #' @examples
 #' # Format a single string into a date
@@ -17,7 +17,7 @@
 #'
 #' # Format all column from within a data.table where the columns contain the string date into date format
 #' for (col in (names(dt)[grepl("date", names(dt))])){dt[,(col) := simpledates(dt[,get(col)])]}
-#'
+#'@export
 simple_dates <- function(x){
  if(suppressWarnings(sum(!(is.na(lubridate::parse_date_time(x, orders = c("dmy", "mdy", "ymd")))))) == 0) {
       x <- as.numeric(x)

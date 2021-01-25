@@ -24,13 +24,13 @@ Returns the last ctime file path, file name or a data.frame with the file name, 
 Retrieves the latest file name and modification details  for a specified path with the option to only look include files with a defined name string and exclude files with other defined name strings. The function can be set to attempt file retrieval a defined number of times to overcome server connectivity problems.
 }
 \examples{
-Return a path
+# Return a path
 file_path <- getlatestfile(file.path("...","subfolder","subfolder"))
 
-Import the latest csv file
+#Import the latest csv file
 df <- fread(getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "path", maxTries = 5))
 
-Record the modification details
+#Record the modification details
 Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "all", maxTries = 5)$ctime
 
 }

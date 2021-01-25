@@ -17,5 +17,10 @@ Imports:
      openxlsx (>= 4.1.5),
      haven (>= 2.3.1),
      dplyr (>= 1.0.2),
-     lubridate (>= 1.7.9)
+     lubridate (>= 1.7.9),
+     stringdist (>= 0.9.6.3),
+     foreach (>= 1.5.1),
+     doParallel (>= 1.0.16),
+     rvest (>= 0.3.6)
 RoxygenNote: 7.1.1
+

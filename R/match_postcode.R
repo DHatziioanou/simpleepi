@@ -22,10 +22,7 @@
 #'
 #' @examples
 #' Index <- fread(file.path("C:/.../NSPL_FEB_2019_UK/Data/Index.csv"))
-#'
 #' data_with_ONS <- match_postcode(data, "Postcode", Index, "all")
-#'
-#' data_with_ONS <- match_postcode(data, "Postcode", Index, c("laua", "ccg"))
 #'
 #' @export
 match_postcode <- function(data, query_column, Index, desired_columns){
@@ -43,7 +40,7 @@ match_postcode <- function(data, query_column, Index, desired_columns){
     install.packages("lubridate")
     library(lubridate)
   }
-  
+
   Index <- as.data.frame(Index)
   # Cater for previous verison of Index
   if ("Pc_s" %in% names(Index)) {
@@ -53,11 +50,11 @@ match_postcode <- function(data, query_column, Index, desired_columns){
   col_order <- names(dt)
   # Check dabatase has desired columns
   db_columns <- as.character(fread(Index$full_path[1], header = F, nrows = 1, stringsAsFactors = F, fill = T))
-  
+
   if (missing(desired_columns)) {
     desired_columns <- "all"
   }
-  
+
   if ("all" %in% desired_columns) {
     desired_columns <- unique(c(db_columns, desired_columns[desired_columns != "all"]))
   } else {
@@ -67,7 +64,7 @@ match_postcode <- function(data, query_column, Index, desired_columns){
       stop(paste("The database doesn't have the desired columns above. Try with ones it has!"))
     }
   }
-  
+
   # sort by first letters and first number
   setDT(dt)[,Postcode_match := toupper(gsub(" ", "", dt[,get(query_column)]))]
   dt[, Pc := (gsub('([a-zA-Z])([0-9])', '\\1_\\2', dt$Postcode_match))]
@@ -78,21 +75,21 @@ match_postcode <- function(data, query_column, Index, desired_columns){
   dt[, block := factor(dt$block)]
   dt[, c("Pc","Pc_N") := NULL]
   data.table::setorder(dt, cols = block, na.last = T)
-  
+
   # Change any problematic Date columns to character format
   Date_columns <- (colnames(dt)[grepl("Date", sapply(dt,class))])
   if (isTRUE(length(Date_columns) > 0)){
     dt[, (Date_columns) := lapply(.SD, as.character), .SDcols = Date_columns]
   }
-  
+
   # Retrieve goegraphies from postcodes
   for (i in seq_along(levels(dt$block))) {
     # Subset data by postcode
     temp_dt <- setDF(dt)[dt$block == levels(dt$block)[i],]
-    
+
     # Give ONS data to postcodes in database
     if (levels(dt$block)[i] %in% Index$block) {
-      
+
       # Retrieve ONS postcode geographies
       Pc_ONS <- fread(input = file.path(Index[Index$block == levels(dt$block)[i],"full_path"]),
                       header = F,
@@ -101,10 +98,10 @@ match_postcode <- function(data, query_column, Index, desired_columns){
                       nrows = as.numeric(Index[Index$block == levels(dt$block)[i],"stop"] - Index[Index$block == levels(dt$block)[i],"start"] + 1))
       # Make postcodes matchable
       Pc_ONS[,Postcode_match := toupper(gsub(" ", "", Pc_ONS$V1))]
-      
+
       # Add ONS geographies to matched data
       temp_dt <- merge(temp_dt,Pc_ONS, by = "Postcode_match", all.x = T, all.y = F)
-      
+
     } else {
       # Give NA to postcodes not in database
       setDT(temp_dt)[, colnames(fread(Index$full_path[1], header = F, nrows = 1, stringsAsFactors = F, fill = T)) := character(.N) ]
@@ -123,24 +120,24 @@ match_postcode <- function(data, query_column, Index, desired_columns){
       remove(temp_dt,Pc_ONS)
     }
   }
-  
+
   setcolorder(setDT(dt_geocoded), c(col_order, paste0("V", 1:41)))
-  
+
   # Add column names
   col_names <- as.character(fread(Index$full_path[1], header = F, nrows = 1, stringsAsFactors = F, fill = T))
   colnames(dt_geocoded)[((ncol(dt_geocoded) - (NROW(col_names)) - 1)):(ncol(dt_geocoded) - 2)] <- col_names
-  
+
   # Remove undesired column
   setDT(dt_geocoded)[, c(db_columns[!(db_columns %in% c(desired_columns, "laua","lsoa11")) &
                                       db_columns %in% names(dt_geocoded)],
                          "block", "Postcode_match") := NULL]
-  
+
   # Convert previous Date columns back to Date format
   if (isTRUE(length(Date_columns) > 0)) {
     dt_geocoded[, (Date_columns) := lapply(.SD, function(x)  as.Date(lubridate::parse_date_time(x, orders = c("dmy", "mdy", "ymd")))), .SDcols = Date_columns]
   }
-  
-  
+
+
   # Add UTLA - LTLA 2020 data if "utla", "ltla in desired_columns
   if (isTRUE(sum(c("utla", "ltla") %in% desired_columns) > 0)) {
     UTLA_LTLA <-  fread(file.path("https://opendata.arcgis.com/datasets/3e4f4af826d343349c13fb7f0aa2a307_0.csv"))
@@ -166,7 +163,7 @@ match_postcode <- function(data, query_column, Index, desired_columns){
     UTLA2011_CCG_STP2020$CCG20NM[grepl("Herefordshire ", UTLA2011_CCG_STP2020$CCG20NM, ignore.case = T)] <- "NHS Herefordshire and Worcestershire CCG"
     dt_geocoded <- merge(dt_geocoded, setDF(UTLA2011_CCG_STP2020)[, get_columns], by.x = c("lsoa11"), by.y = c("LSOA11CD"), all.x = T, all.y = F)
   }
-  
+
   # PHE Centre data if "PHEC19CD", "PHEREG19CD" in desired_columns
   if (isTRUE(sum(c("PHEC19CD", "PHEREG19CD") %in% desired_columns) > 0)) {
     if (sum(c("PHEC19CD", "PHEREG19CD") %in% desired_columns) == 2) {
@@ -179,17 +176,17 @@ match_postcode <- function(data, query_column, Index, desired_columns){
     LAD19_to_PHE19 <-  fread(file.path("https://opendata.arcgis.com/datasets/4da177ab2ab34edaba9d2696c3a6da64_0.csv"))
     dt_geocoded <- merge(dt_geocoded, setDF(LAD19_to_PHE19)[, get_columns], by.x = c("laua"), by.y = c("LAD19CD"), all.x = T, all.y = F)
   }
-  
+
   setcolorder(setDT(dt_geocoded), c(col_order, names(dt_geocoded)[!(names(dt_geocoded) %in% col_order)]))
-  
+
   end_time <- Sys.time()
   message("Run time:")
   message(end_time - start_time)
   message(paste("Postcodes searched:",sum(!is.na((dt_geocoded[,get(query_column)])))))
-  
+
   new_col <- copy(dt_geocoded[, (ncol(dt) - 1 ):ncol(dt_geocoded)])
   new_col[new_col == ""] <- NA
-  
+
   not_retrieved <- sum(rowSums(is.na(new_col)) == ncol(new_col))
   found_rows <- sum(rowSums(is.na(new_col)) != ncol(new_col))
   no_postcode <- NROW(dt[is.na(dt[,(query_column)]),])
@@ -197,11 +194,11 @@ match_postcode <- function(data, query_column, Index, desired_columns){
   message(paste("Rows with no postcode:", no_postcode))
   message(paste("Rows with postcode not in NSPL:",not_retrieved - no_postcode))
   message(paste("Total rows not matched:",not_retrieved))
-  
+
   if (isTRUE(length(Date_columns) > 0)) {
     warning("Columns changed to character format and back to Date again: ", list(Date_columns))
   }
-  
+
   setDF(dt_geocoded)
   return(dt_geocoded)
   rm(list = ls())

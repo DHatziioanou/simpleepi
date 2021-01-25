@@ -2,23 +2,21 @@
 #'
 #' @param data input data
 #'
-#' @param 
-#'
 #' @param unique_column Unique identifier column to summarise data by (string)
 #'
-#' @param time_column Date column to summarise data by 
+#' @param time_column Date column to summarise data by
 #'
 #' @param duration Numeric duration of episodes in days
-#' 
+#'
 #' @return Returns a data.table with summary
 #' sample_time_diff = time difference between samples
 #' New_episode = 1 for new episodes, 0 for repeat samples from the same episode.
 #' episodeN = episode number for unique identifier
 #' episode_time_diff = time difference from previous sample within episode
-#' 
+#'
 #' @examples
-#'  
-#' @export  
+#'
+#' @export
 episodes <- function(dt, unique_column, time_column, duration){
 
   dt <- as.data.table(dt)

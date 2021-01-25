@@ -26,10 +26,7 @@ Retrieves Office for National Statistics (ONS) data by postcode and appends it a
 }
 \examples{
 Index <- fread(file.path("C:/.../NSPL_FEB_2019_UK/Data/Index.csv"))
-
 data_with_ONS <- match_postcode(data, "Postcode", Index, "all")
-
-data_with_ONS <- match_postcode(data, "Postcode", Index, c("laua", "ccg"))
 
 }
 \author{

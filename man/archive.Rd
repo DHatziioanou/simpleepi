@@ -38,10 +38,9 @@ archive("C:..../analysis")
 archive(from = "C:..../analysis", to = "C:.../backup/outputs")
 
 # Copy all files and folders with the "output_version_x" in the file name which have not been modified in the past week to a different folder
-archive(from = "C:..../analysis", to = "C:.../backup/outputs", date = Sys.Date() -7, 
+archive(from = "C:..../analysis", to = "C:.../backup/outputs", date = Sys.Date() -7,
         string = "output_version_x", keep = T, dir = T)
 
-#'
 
 }
 \author{

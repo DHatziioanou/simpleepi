@@ -26,5 +26,5 @@ episode_time_diff = time difference from previous sample within episode
 Add episode information based on the duration of episodes
 }
 \examples{
- 
+
 }

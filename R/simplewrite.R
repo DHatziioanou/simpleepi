@@ -19,14 +19,14 @@
 #'
 #' @examples
 #'
-#' write_any(data, "C:..../file.csv")
+#' simplewrite(data, "C:..../file.csv")
 #'
-#' write_any(data, "C:..../file.xlsx", sheet = "Data")
+#' simplewrite(data, "C:..../file.xlsx", sheet = "Data")
 #'
-#' write_any(data, "C:..../file.xls", sheet = 4)
+#' simplewrite(data, "C:..../file.xls", sheet = 4)
 #'
 #' @export
-write_any <- function(data, file, type, sheet){
+simplewrite <- function(data, file, type, sheet){
   if (missing(data)) stop("No data to write")
   # File name
   if (missing(file)) {file <- paste0(deparse(substitute(data)), format(Sys.Date(), "%Y%m%d"))}

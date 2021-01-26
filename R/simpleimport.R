@@ -20,16 +20,16 @@
 #' @examples
 #'
 #' # Import a csv file
-#' import_any("C:..../file.csv")
+#' simpleimport("C:..../file.csv")
 #'
 #' # Import a specified sheer from an xlsx file
-#' import_any("C:..../file.xlsx", sheet = "Data")
+#' simpleimport("C:..../file.xlsx", sheet = "Data")
 #'
 #' # Import a specified sheet from an xls file skipping the first 4 rows
-#' import_any("C:..../file.xls", sheet = 4, skip = 4)
+#' simpleimport("C:..../file.xls", sheet = 4, skip = 4)
 #'
 #' @export
-import_any <- function(file, sheet, skip, ...){
+simpleimport <- function(file, sheet, skip, ...){
   if (missing(skip)) {skip <- 0}
   if (missing(file)) {
     message("File not found, select a file from the browser")

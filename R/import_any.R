@@ -41,7 +41,7 @@ import_any <- function(file, sheet, skip, ...){
   }
   if (grepl("csv|txt", file_ext(file), ignore.case = T)) {
     df <- fread(file, header = T, stringsAsFactors = F, showProgress = T, skip = skip, na.strings= c("NA", "NULL", NULL), encoding = "UTF-8", ...)
-  } else if (grepl("xlsx", file_ext(file), ignore.case = T)) {
+  } else if (grepl("xlsx|xlsm", file_ext(file), ignore.case = T)) {
     if (missing(sheet)) {sheet <- 1}
     df <- readxl::read_xlsx(file, sheet = sheet,  col_names  =  T, skip = skip, ...) #col_types = "text",
   } else if (grepl("xls", file_ext(file), ignore.case = T)) {

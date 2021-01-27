@@ -21,6 +21,7 @@ Imports:
      stringdist (>= 0.9.6.3),
      foreach (>= 1.5.1),
      doParallel (>= 1.0.16),
-     rvest (>= 0.3.6)
+     rvest (>= 0.3.6),
+     tools (>= 4.0.3)
 RoxygenNote: 7.1.1
 

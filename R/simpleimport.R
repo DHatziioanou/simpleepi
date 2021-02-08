@@ -39,24 +39,24 @@ simpleimport <- function(file, sheet, skip, ...){
     message("File not found, select a file from the browser")
     file <- file.choose()
   }
-  if (grepl("csv|txt", file_ext(file), ignore.case = T)) {
-    df <- fread(file, header = T, stringsAsFactors = F, showProgress = T, skip = skip, na.strings= c("NA", "NULL", NULL), encoding = "UTF-8", ...)
-  } else if (grepl("xlsx|xlsm", file_ext(file), ignore.case = T)) {
+  if (grepl("csv|txt", tools::file_ext(file), ignore.case = T)) {
+    df <- data.table::fread(file, header = T, stringsAsFactors = F, showProgress = T, skip = skip, na.strings= c("NA", "NULL", NULL), encoding = "UTF-8", ...)
+  } else if (grepl("xlsx|xlsm", tools::file_ext(file), ignore.case = T)) {
     if (missing(sheet)) {sheet <- 1}
     df <- readxl::read_xlsx(file, sheet = sheet,  col_names  =  T, skip = skip, ...) #col_types = "text",
-  } else if (grepl("xls", file_ext(file), ignore.case = T)) {
+  } else if (grepl("xls", tools::file_ext(file), ignore.case = T)) {
     if (missing(sheet)) {sheet <- 1}
     df <- readxl::read_xls(file, sheet = sheet,  col_names  =  T, col_types = "text", skip = skip, ...)
-  } else if (grepl("dta", file_ext(file), ignore.case = T)) {
+  } else if (grepl("dta", tools::file_ext(file), ignore.case = T)) {
     df <- haven::read_dta(file, encoding = NULL, skip = skip, ...)
-  } else if (grepl("rda|rdata", file_ext(file), ignore.case = T)){
+  } else if (grepl("rda|rdata", tools::file_ext(file), ignore.case = T)){
     load(file, verbose = T)
     ifelse(length(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))]) > 1,
            df <- list(get(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))])),
            df <- get(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))]))
-  } else if (grepl("rds", file_ext(file), ignore.case = T)){
+  } else if (grepl("rds", tools::file_ext(file), ignore.case = T)){
            df <- readRDS(file)
   } else {stop("unsupported file type")}
-  message(paste0("Imported ", ifelse(grepl("csv|xls|dta|rds", file_ext(file), ignore.case = T), file, paste0(file, " containing ", paste0(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))], collapse = ", ")))))
+  message(paste0("Imported ", ifelse(grepl("csv|xls|dta|rds", tools::file_ext(file), ignore.case = T), file, paste0(file, " containing ", paste0(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))], collapse = ", ")))))
     return(df)
 }

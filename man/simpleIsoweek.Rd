@@ -4,9 +4,7 @@
 \alias{simpleIsoweek}
 \title{Title Get Iso year-week from a date object}
 \usage{
-simpleIsoweek(x, complete)
-
-simpleIsoweek(x, complete)
+simpleIsoweek(x, integer)
 }
 \arguments{
 \item{x}{Date value or vector to convert to Iso year-week}
@@ -15,17 +13,11 @@ simpleIsoweek(x, complete)
 }
 \value{
 Returns Iso year-weeks as strings in the format YYYYWW
-
-Returns Iso year-weeks as strings in the format YYYYWW
 }
 \description{
 Title Get Iso year-week from a date object
-
-Title Get Iso year-week from a date object
 }
 \examples{
-df$Isoweek <- simpleIsoweek(df$sample_date)
-
 df$Isoweek <- simpleIsoweek(df$sample_date)
 
 }

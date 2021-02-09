@@ -22,6 +22,7 @@ Imports:
      foreach (>= 1.5.1),
      doParallel (>= 1.0.16),
      rvest (>= 0.3.6),
-     tools (>= 4.0.3)
+     tools (>= 4.0.3),
+     httr (>= 1.4.2)
 RoxygenNote: 7.1.1
 

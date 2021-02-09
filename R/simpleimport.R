@@ -35,7 +35,7 @@ simpleimport <- function(file, sheet, skip, ...){
     message("File not found, select a file from the browser")
     file <- file.choose()
   }
-  if(!(file.exists(file))){
+  if(!(file.exists(file)) & !(isTRUE(httr::HEAD(file)[2] == 200))){
     message("File not found, select a file from the browser")
     file <- file.choose()
   }

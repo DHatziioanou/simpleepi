@@ -31,7 +31,7 @@ simplewrite <- function(data, file, type, sheet){
   # File name
   if (missing(file)) {file <- paste0(deparse(substitute(data)), format(Sys.Date(), "%Y%m%d"))}
   filename <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(file))
-  if (missing(type)) {ifelse(file_ext(file) !="",  type <- tolower(file_ext(file)), type <- "csv")}
+  if (missing(type)) {ifelse(tools::file_ext(file) !="",  type <- tolower(tools::file_ext(file)), type <- "csv")}
   ifelse(dirname(file)==".", file <- filename, file <- file.path(dirname(file),filename))
   if (type == "csv") {
     fwrite(data, paste0(file, ".csv"), row.names = F, col.names = T, append = F)

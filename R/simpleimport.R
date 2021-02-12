@@ -35,10 +35,13 @@ simpleimport <- function(file, sheet, skip, ...){
     message("File not found, select a file from the browser")
     file <- file.choose()
   }
-  if(!(file.exists(file)) & !(isTRUE(httr::HEAD(file)[2] == 200))){
-    message("File not found, select a file from the browser")
-    file <- file.choose()
+  if(!(isTRUE(try(httr::HEAD(file)[2] == 200, silent = T)))){
+    if(!(file.exists(file)) ){
+      message("File not found, select a file from the browser")
+      file <- file.choose()
+    }
   }
+
   if (grepl("csv|txt", tools::file_ext(file), ignore.case = T)) {
     df <- data.table::fread(file, header = T, stringsAsFactors = F, showProgress = T, skip = skip, na.strings= c("NA", "NULL", NULL), encoding = "UTF-8", ...)
   } else if (grepl("xlsx|xlsm", tools::file_ext(file), ignore.case = T)) {
@@ -55,8 +58,11 @@ simpleimport <- function(file, sheet, skip, ...){
            df <- list(get(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))])),
            df <- get(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))]))
   } else if (grepl("rds", tools::file_ext(file), ignore.case = T)){
-           df <- readRDS(file)
-  } else {stop("unsupported file type")}
+    df <- readRDS(file)
+  } else {
+    stop("unsupported file type")
+    invisible(readline(prompt="Unsupported file type, Press [enter] to continue or [Esc] to stop and retry"))
+    }
   message(paste0("Imported ", ifelse(grepl("csv|xls|dta|rds", tools::file_ext(file), ignore.case = T), file, paste0(file, " containing ", paste0(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))], collapse = ", ")))))
-    return(df)
+  return(df)
 }

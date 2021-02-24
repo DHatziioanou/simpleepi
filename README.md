@@ -5,7 +5,7 @@
 devtools::install_github("DHatziioanou/simpleepi")
 
 
-Example analysis commands;
+**Example of packaged functions;**
 
 # Deal with CRAN packages
 install_load()

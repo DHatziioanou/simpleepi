@@ -1,63 +1,63 @@
 # simpleepi
 
 
-**Install package**  
+# Install package
 devtools::install_github("DHatziioanou/simpleepi")
 
 
-**Example of packaged functions;**
+# Example of packaged functions;
 
-# Deal with CRAN packages
+## Deal with CRAN packages
 install_load()
 
-# File management of old files into an archive folder
+## File management of old files into an archive folder
 archive()
 
-# Get the latest modified file
+## Get the latest modified file
 getlatestfile()
 
-# Import data
+## Import data
 simpleimport()
 
 
-# Format data
-simpledates()
-simplewords()
-simplenumber()
+## Format data
+simpledates()  
+simplewords()  
+simplenumber()  
 
-# Add isoweeks
-simpleIsoweek()
+## Add isoweeks
+simpleIsoweek()  
 
-# make age groups
-add_age_groups()
+## make age groups
+add_age_groups()    
 
-# add ONS populations if needed
-ONS_age_groups()
+## add ONS populations if needed
+ONS_age_groups()   
 merge()
 
 
-# add NSPL data if needed
-index_postcodes()
+## add NSPL data if needed
+index_postcodes()  
 match_postcode()
 
-# check against other dataset if needed
-fuzzy_match()
+## check against other dataset if needed
+fuzzy_match()  
 
-# Assign unique identifiers based on PII and/or ID number
+## Assign unique identifiers based on PII and/or ID number
 simpleID()
 
-# Assign episodes based on ID and episode duration
+## Assign episodes based on ID and episode duration
 episodes()
 
-# Retrieve replicate rows
+## Retrieve replicate rows
 replicates()
 
-# Remove replicate rows
+## Remove replicate rows
 remove_replicates()
 
 
-# Write data
+## Write data
 simplewrite()
 
-# Copy files to shared location
+## Copy files to shared location
 archive()

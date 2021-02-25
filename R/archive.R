@@ -37,35 +37,22 @@
 #'
 #' @export
 archive <- function(from, to, date, dir, string, exclude, keep) {
-library(stringr)
 
   # Archive destination folder name
-  if (missing(to)) {
-    to <- "Archive"
-  }
+  if (missing(to)) { to <- "Archive" }
 
   # Date cut off
-  if (missing(date)) {
-    date <- Sys.Date()
-  }
+  if (missing(date)) { date <- Sys.Date() }
   # Include directories
-  if (missing(dir)) {
-    dir <- F
-  }
+  if (missing(dir)) { dir <- F }
   # Keep original files
-  if (missing(keep)) {
-    keep <- F
-  }
+  if (missing(keep)) { keep <- F }
   # String pattern in files to archive
-  if (missing(string)) {
-    string <- ""
-  }
+  if (missing(string)) { string <- "" }
   # String pattern to exclude in files to archive
-  if (missing(exclude)) {
-    exclude <- NA
-  }
+  if (missing(exclude)) { exclude <- NA }
   # Destination type
-  destination <- ifelse(length(str_split(to, pattern = "/")[[1]])>1, "path", "subfolder")
+  destination <- ifelse(length(stringr::str_split(to, pattern = "/")[[1]])>1, "path", "subfolder")
   if(length(from)>1) stop("Argument -from- should be a single folder")
 
   # Archive folder present

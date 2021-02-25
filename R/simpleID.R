@@ -33,8 +33,8 @@ simpleID <- function(x, col, Number, name){
     x[, PII := Reduce(function(...) paste0(...), .SD[, mget(col)])]
     x[,Number_ID := .GRP, by=get(Number)]
     x[is.na(get(Number)), Number_ID := length((max(x$Number_ID, na.rm = T)+1): sum(is.na(x[,get(Number)]), max(x$Number_ID, na.rm = T)))]
-    g <- graph_from_data_frame(x[,c("PII", "Number_ID")])
-    c <- clusters(g)$membership
+    g <- igraph::graph_from_data_frame(x[,c("PII", "Number_ID")])
+    c <- igraph::clusters(g)$membership
     x[, (name) := c[ x$PII ]]
     x[ ,`:=`(PII = NULL, Number_ID = NULL)]
 

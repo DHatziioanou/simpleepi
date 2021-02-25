@@ -5,7 +5,7 @@
 #' @param x string or character vector
 #'
 #' @param case Case of words to return; one of upper, lower or title for the first letter uppercase and the rest lower case
-#' 
+#'
 #' @return Returns the input in UTF-8 format with special characters replaced with spaces and numbers removed.
 #'
 #'
@@ -23,18 +23,18 @@
 #'
 #' @export
 simplewords <- function(x, case){
-  x <- stri_encode(x, "", "UTF-8")
-  x <- stri_trans_general(x, "name-any")
+  x <- stringi::stri_encode(x, "", "UTF-8")
+  x <- stringi::stri_trans_general(x, "name-any")
   x <- iconv(x, to = "UTF-8")
   x <- gsub("[[:digit:]]+", "", x)
   x <- gsub("[[:punct:]]", " ", x)
   if (missing(case)) case <- "title"
   if (case == "upper"){
-    x <- toupper(x)   
+    x <- toupper(x)
   } else if(case == "lower"){
-    x <- tolower(x)   
+    x <- tolower(x)
   } else if (case == "title"){
-    x <- str_to_title(x)   
+    x <- str_to_title(x)
   } else {
     stop("font case not recognised")
   }

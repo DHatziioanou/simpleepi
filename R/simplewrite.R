@@ -34,14 +34,14 @@ simplewrite <- function(data, file, type, sheet){
   if (missing(type)) {ifelse(tools::file_ext(file) !="",  type <- tolower(tools::file_ext(file)), type <- "csv")}
   ifelse(dirname(file)==".", file <- filename, file <- file.path(dirname(file),filename))
   if (type == "csv") {
-    fwrite(data, paste0(file, ".csv"), row.names = F, col.names = T, append = F)
+    data.table::fwrite(data, paste0(file, ".csv"), row.names = F, col.names = T, append = F)
   } else if (type == "xlsx") {
     if (missing(sheet)) sheet <- paste0(format(Sys.Date(), "%Y%m%d"), " data")
     style <- openxlsx::createStyle(fontSize = 11, halign = "center", border = "TopBottomLeftRight", borderStyle = "thick", fontColour = "black", wrapText = T, textDecoration = "bold")
     wb <- openxlsx::createWorkbook()
     openxlsx::addWorksheet(wb, sheet)
     openxlsx::writeData(wb, sheet, data, startCol = 1, startRow = 1, borders = "surrounding", borderStyle = "thick", headerStyle = style)
-    setColWidths(wb, sheet, cols = 1:ncol(data), widths = "auto")
+    openxlsx::setColWidths(wb, sheet, cols = 1:ncol(data), widths = "auto")
     openxlsx::addFilter(wb, sheet, row = 1, cols = 1:ncol(data))
     # SAVE WORKBOOK
     openxlsx::saveWorkbook(wb, paste0(file, ".xlsx"), overwrite = T)

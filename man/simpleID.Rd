@@ -9,6 +9,12 @@ simpleID(x, col, Number, name)
 }
 \arguments{
 \item{x}{Data to assign unique IDs to}
+
+\item{col}{PII columns within data to use for assigning unique IDs}
+
+\item{Number}{Potentially incomplete unique identifier which can be used in combination with PII to assign unique IDs}
+
+\item{name}{Name to give unique ID column in output}
 }
 \value{
 full dataset with additional ID column returned

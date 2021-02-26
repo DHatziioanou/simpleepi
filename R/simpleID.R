@@ -2,6 +2,9 @@
 #' Assign unique IDs to data based either on PII columns or a combination of PII columns and a further unique identifier where available
 #'
 #' @param x Data to assign unique IDs to
+#' @param col PII columns within data to use for assigning unique IDs
+#' @param Number Potentially incomplete unique identifier which can be used in combination with PII to assign unique IDs
+#' @param name Name to give unique ID column in output
 #'
 #' @return full dataset with additional ID column returned
 #'
@@ -30,7 +33,7 @@ simpleID <- function(x, col, Number, name){
 
   x <- data.table::as.data.table(x)
   if(Number != FALSE){
-    x[, PII := Reduce(function(...) paste0(...), .SD[, mget(col)])]
+    x[, PII := Reduce(function(...) paste0(...), x[,mget(col)]), .SD[, mget(col)]]
     x[,Number_ID := .GRP, by=get(Number)]
     x[is.na(get(Number)), Number_ID := length((max(x$Number_ID, na.rm = T)+1): sum(is.na(x[,get(Number)]), max(x$Number_ID, na.rm = T)))]
     g <- igraph::graph_from_data_frame(x[,c("PII", "Number_ID")])

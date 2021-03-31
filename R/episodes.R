@@ -19,7 +19,7 @@
 #' @export
 episodes <- function(dt, unique_column, time_column, duration){
 
-  dt <- as.data.table(dt)
+  dt <- data.table::as.data.table(dt)
   dt <- dt[order(get(unique_column), get(time_column),decreasing=F)]
   dt[,sample_time_diff:= c(NA,as.numeric(base::diff(get(time_column), lag = 1))), by = c(unique_column)]
   dt[,New_episode := ifelse(sample_time_diff>duration|is.na(sample_time_diff), 1, 0), by = c(unique_column)]

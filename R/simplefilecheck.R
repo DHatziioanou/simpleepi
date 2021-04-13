@@ -13,22 +13,22 @@
 #'
 #' @export
 simplefilecheck <- function(x,y){
-  xi <- base::file.info(x, extra_cols=T)
-  data.table::setDT(xi, keep.rownames = TRUE)[]
   # 1st file exists
-  if(is.na(xi$rn)){
+  if(!isTRUE(file.exists(x))){
     message(paste0(x," not found"))
+    return(FALSE)
+    stop()
+  }
+  # 2nd file exists
+  if(!isTRUE(file.exists(y))){
+    message(paste0(y," not found"))
     return(FALSE)
     stop()
   }
   yi <- base::file.info(y)
   data.table::setDT(yi, keep.rownames = TRUE)[]
-  # 2nd file exists
-  if(basename(yi$rn) != basename(xi$rn)){
-    message(paste0(y," not found"))
-    return(FALSE)
-    stop()
-  }
+  xi <- base::file.info(x, extra_cols=T)
+  data.table::setDT(xi, keep.rownames = TRUE)[]
   # size
   if(yi$size != xi$size){
     message(paste0("files are different sizes"))

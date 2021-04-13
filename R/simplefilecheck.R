@@ -14,7 +14,7 @@
 #' @export
 simplefilecheck <- function(x,y){
   xi <- base::file.info(x, extra_cols=T)
-  setDT(xi, keep.rownames = TRUE)[]
+  data.table::setDT(xi, keep.rownames = TRUE)[]
   # 1st file exists
   if(is.na(xi$rn)){
     message(paste0(x," not found"))
@@ -22,7 +22,7 @@ simplefilecheck <- function(x,y){
     stop()
   }
   yi <- base::file.info(y)
-  setDT(yi, keep.rownames = TRUE)[]
+  data.table::setDT(yi, keep.rownames = TRUE)[]
   # 2nd file exists
   if(basename(yi$rn) != basename(xi$rn)){
     message(paste0(y," not found"))

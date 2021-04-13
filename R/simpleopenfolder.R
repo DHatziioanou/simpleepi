@@ -6,7 +6,8 @@
 #' @return Opens a File Explorer window at the given path
 #'
 #' @examples
-#' simpleopenfolder(file.path("C:","Program Files","R"))
+#' dir.create("test")
+#' simpleopenfolder("test")
 #'
 #' @export
 simpleopenfolder <- function(path){

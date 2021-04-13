@@ -16,6 +16,11 @@ archive()
 ## Get the latest modified file
 getlatestfile()
 
+
+## Check file sizes and creation/modification dates are identical
+simplefilecheck()
+
+
 ## Import data
 simpleimport()
 
@@ -55,9 +60,14 @@ replicates()
 ## Remove replicate rows
 remove_replicates()
 
+## Aggregate replicates to a single row
+simpleaggregate()
 
 ## Write data
 simplewrite()
 
 ## Copy files to shared location
 archive()
+
+## Open File Explorer at path to check files
+simpleopenfolder()

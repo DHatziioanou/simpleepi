@@ -2,9 +2,9 @@
 % Please edit documentation in R/simpleaggregate.R
 \name{simpleaggregate}
 \alias{simpleaggregate}
-\title{Title}
+\title{Title aggregate a dataframe or datatable by an id column}
 \usage{
-simpleaggregate(dt, idcol, disregard, prefkeep)
+simpleaggregate(dt, idcol, disregard = NA, prefkeep = FALSE, col)
 }
 \arguments{
 \item{dt}{data}
@@ -13,14 +13,19 @@ simpleaggregate(dt, idcol, disregard, prefkeep)
 
 \item{disregard}{Optional; values to remove from aggregation eg NA, NULL, 0, -1. Default is NA.}
 
-\item{prefkeep}{Optional; Numeric value representing which comma separated value to keep where aggregation results in more than one comma separated values. Default is to keep all values.}
+\item{prefkeep}{Optional; Where columns end up with more than one value should the first value be saved. Deafault is FALSE.}
+
+\item{col}{Optional; Columns to process with prefkeep}
 }
 \value{
 
 }
 \description{
-Title
+Title aggregate a dataframe or datatable by an id column
 }
 \examples{
+
+messy <- data.frame(ID = c(1,1,2,3), data = c("red", "yellow", "red", "green"))
+clean <- simpleaggregate(dt = messy, idcol = "ID", disregard=c(NULL,NA,""))
 
 }

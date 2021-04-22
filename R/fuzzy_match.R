@@ -3,7 +3,7 @@
 #' Matches custom line list persons by full name and DOB to a database, assigns scores and creates warnings based on the match quality and returns the original line list with all the columns of the database and database information where there is a match to the custom line list
 #'
 #'
-#' @param lla Input Line-list list containing the following items;
+#' @param lla Input Line-list list containing the items ob, sn, fn, dob, pc, geo
 #' @param ob Line-list object to search. Rows with no surname or first name will be excluded
 #' @param sn surname column within the Line-list object as a string
 #' @param fn first name column within the Line-list object as a string
@@ -11,7 +11,7 @@
 #' @param pc postcode column within the Line-list object as a string
 #' @param geo Geography where most individuals can be found. This string must be present in a column of dba.
 #'
-#' @param dba Input database list containing the following items;
+#' @param dba Input database list containing the items ob, sn, fn, dob, pc, geo
 #' @param ob database object to search. All columns of this database will be appended to the input line list
 #' @param sn surname column within the database object as a string
 #' @param fn first name column within the database object as a string

@@ -7,9 +7,9 @@
 fuzzy_match(lla, dba, stringency, pc_format, case_column, parallel)
 }
 \arguments{
-\item{lla}{Input Line-list list containing the following items;}
+\item{lla}{Input Line-list list containing the items ob, sn, fn, dob, pc, geo}
 
-\item{dba}{Input database list containing the following items;}
+\item{dba}{Input database list containing the items ob, sn, fn, dob, pc, geo}
 
 \item{stringency}{Optional; stringency required stringency of matching; one of high, medium or low. Default is high.}
 

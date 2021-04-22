@@ -23,14 +23,16 @@ Quick import of file types Rdata, RDS, rda, csv, txt, xlsx, xls or dta into your
 }
 \examples{
 
-# Import a csv file
-export("C:..../file.csv")
+simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
+df <- simpleimportforce("test.csv")
 
-# Import a specified sheer from an xlsx file
-export("C:..../file.xlsx", sheet = "Data")
+simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
+df <- simpleimportforce("test.xlsx")
 
-# Import a specified sheet from an xls file skipping the first 4 rows
-export("C:..../file.xls", sheet = 4, skip = 4)
+
+simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
+df <- simpleimportforce("test.rds")
+
 
 }
 \author{

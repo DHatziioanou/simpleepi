@@ -16,10 +16,10 @@
 #' @export
 simpleaggregate <- function(dt, idcol, disregard =NA, prefkeep=FALSE, col){
 
-  data.table::setDT(dt)
+  dt <- data.table(dt, stringsAsFactors = FALSE)
 
   # duplicates
-  dup <- dt[duplicated(get(idcol))|duplicated(get(idcol), fromLast = T),]
+  dup <- dt[base::duplicated(get(idcol)) | base::duplicated(get(idcol), fromLast = T), ]
   for (j in names(dup)) data.table::set(dup,which(dup[[j]] %in% disregard),j,NA)
 
   # Aggregate by idcol to comma separated strings

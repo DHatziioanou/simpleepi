@@ -16,7 +16,7 @@
 #' @export
 simpleaggregate <- function(dt, idcol, disregard =NA, prefkeep=FALSE, col){
 
-  dt <- data.table(dt, stringsAsFactors = FALSE)
+  dt <- data.table::data.table(dt, stringsAsFactors = FALSE)
 
   # duplicates
   dup <- dt[base::duplicated(get(idcol)) | base::duplicated(get(idcol), fromLast = T), ]

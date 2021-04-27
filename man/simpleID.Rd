@@ -5,7 +5,12 @@
 \title{Title Create a unique identified based on unique values in columns and a further unique identifier
 Assign unique IDs to data based either on PII columns or a combination of PII columns and a further unique identifier where available}
 \usage{
-simpleID(x, col, Number, name)
+simpleID(
+  x,
+  col = names(x)[grepl("Birth|DOB|Postcode|ZIP|Name", names(x), ignore.case = T)],
+  Number = FALSE,
+  name = "GroupID"
+)
 }
 \arguments{
 \item{x}{Data to assign unique IDs to}
@@ -29,6 +34,6 @@ x <- data.frame(DOB = c("01/01/2001", "02/01/2001", "01/01/2001", "03/01/2001"),
 Number = "NHS_Number"
 name <- "GroupID"
 col = c("DOB", "name", "surname", "ZIP")
-simpleID(x = x, col =  col, name = name)
-simpleID(x = x, col =  col, Number = Number, name = name)
+x <- simpleID(x = x, col =  col, name = name)
+x <- simpleID(x = x, col =  col, Number = Number, name = name)
 }

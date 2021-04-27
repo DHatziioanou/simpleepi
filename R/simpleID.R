@@ -19,7 +19,7 @@
 #' @export
 simpleID <- function (x, col= names(x)[grepl("Birth|DOB|Postcode|ZIP|Name", names(x), ignore.case = T)], Number = FALSE, name ="GroupID") {
   y <- data.table::copy(data.table::as.data.table(x))
-  message("No columns specified, using ", paste0(col, collapse = ", "))
+  message("Using columns ", paste0(col, collapse = ", "))
   if (sum(!col %in% names(y)) > 0) {
     stop(paste0("Column not found: ", paste0(col[!col %in% names(y)], collapse = ", ")))
   }

@@ -18,26 +18,24 @@
 #' x <- simpleID(x = x, col =  col, Number = Number, name = name)
 #' @export
 simpleID <- function (x, col= names(x)[grepl("Birth|DOB|Postcode|ZIP|Name", names(x), ignore.case = T)], Number = FALSE, name ="GroupID") {
-  x <- copy(data.table::as.data.table(x))
+  y <- data.table::copy(data.table::as.data.table(x))
   message("No columns specified, using ", paste0(col, collapse = ", "))
-  if (sum(!col %in% names(x)) > 0) {
-    stop(paste0("Column not found: ", paste0(col[!col %in%
-                                                   names(x)], collapse = ", ")))
+  if (sum(!col %in% names(y)) > 0) {
+    stop(paste0("Column not found: ", paste0(col[!col %in% names(y)], collapse = ", ")))
   }
   if (Number != FALSE) {
-    x[, `:=`(PII, Reduce(function(...) paste0(...), x[,
-                                                      mget(col)])), .SD[, mget(col)]]
-    x[, `:=`(Number_ID, .GRP), by = get(Number)]
-    x[is.na(get(Number)), `:=`(Number_ID, length((max(x$Number_ID,
-                                                      na.rm = T) + 1):sum(is.na(x[, get(Number)]), max(x$Number_ID,
+    y[, `:=`(PII, Reduce(function(...) paste0(...), y[, mget(col)])), data.table::.SD[, mget(col)]]
+    y[, `:=`(Number_ID, .GRP), by = get(Number)]
+    y[is.na(get(Number)), `:=`(Number_ID, length((max(y$Number_ID,
+                                                      na.rm = T) + 1):sum(is.na(y[, get(Number)]), max(y$Number_ID,
                                                                                                        na.rm = T))))]
-    g <- igraph::graph_from_data_frame(x[, c("PII", "Number_ID")])
+    g <- igraph::graph_from_data_frame(y[, c("PII", "Number_ID")])
     c <- igraph::clusters(g)$membership
-    x[, `:=`((name), c[x$PII])]
-    x[, `:=`(PII = NULL, Number_ID = NULL)]
+    y[, `:=`((name), c[y$PII])]
+    y[, `:=`(PII = NULL, Number_ID = NULL)]
   } else {
-    x[, `:=`((name), .GRP), by = list(get(col))]
+    y[, `:=`((name), .GRP), by = list(get(col))]
   }
-  x <- as.data.frame(x)
-  return(x)
+  y <- as.data.frame(y)
+  return(y)
 }

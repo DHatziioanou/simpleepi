@@ -64,10 +64,13 @@ remove_replicates()
 simpleaggregate()
 
 ## Write data
-simplewrite()
+simplewrite(df)
 
 ## Copy files to shared location
 archive()
 
 ## Open File Explorer at path to check files
-simpleopenfolder()
+simpleopenfolder(path)
+
+## Check if objects have duplicated column names
+colnamecheck(list(df1,df2))

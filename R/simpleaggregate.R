@@ -38,6 +38,7 @@ simpleaggregate <- function(dt, idcol, disregard =NA, prefkeep=FALSE, col){
   # Convert previous Date columns back to Date format
   Date_columns <- colnames(dt)[grepl("Date", sapply(dt,class))]
   if (isTRUE(length(Date_columns) > 0)) {
+    dup[ , (Date_columns) := lapply(.SD, function(x) {as.character(x)}), .SDcols = Date_columns]
     dup[ , (Date_columns) := lapply(.SD, function(x) {simpledates(x)}), .SDcols = Date_columns]
   }
 

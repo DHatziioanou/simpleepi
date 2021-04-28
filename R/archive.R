@@ -5,7 +5,7 @@
 #'
 #' @param to Folder name to archive files to. Default is Archive
 #'
-#' @param date Minimum modification date to exclude files from archiving. Default is Sys.Date().
+#' @param date File modification date from which files are to retained. Files prior to this date are archived. Default is Sys.Date().
 #'
 #' @param dir Optional logical argument; also archive folders or not. Default is FALSE.
 #'
@@ -36,21 +36,8 @@
 #'
 #'
 #' @export
-archive <- function(from, to, date, dir, string, exclude, keep) {
+archive <- function(from, to = "Archive", date = Sys.Date(), dir = FALSE, string = "", exclude = NA, keep = FALSE) {
 
-  # Archive destination folder name
-  if (missing(to)) { to <- "Archive" }
-
-  # Date cut off
-  if (missing(date)) { date <- Sys.Date() }
-  # Include directories
-  if (missing(dir)) { dir <- F }
-  # Keep original files
-  if (missing(keep)) { keep <- F }
-  # String pattern in files to archive
-  if (missing(string)) { string <- "" }
-  # String pattern to exclude in files to archive
-  if (missing(exclude)) { exclude <- NA }
   # Destination type
   destination <- ifelse(length(stringr::str_split(to, pattern = "/")[[1]])>1, "path", "subfolder")
   if(length(from)>1) stop("Argument -from- should be a single folder")
@@ -77,8 +64,9 @@ archive <- function(from, to, date, dir, string, exclude, keep) {
   } else {
     files <- files[files$Modified < date,]
   }
-  if(nrow(files)==0) stop(simpleError("No files to archive"))
-
+  if(nrow(files)==0) {
+    message("No files to archive")
+    } else {
   # Archive files
   ifelse(keep == T,
    # Copy files
@@ -91,4 +79,5 @@ archive <- function(from, to, date, dir, string, exclude, keep) {
    ifelse(destination == "path",
          file.rename(from = files$paths, to = file.path(to, files$files)),
          file.rename(from = files$paths, to = file.path(from, to, files$files))))
+    }
 }

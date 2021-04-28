@@ -5,14 +5,22 @@
 \title{Archives files from a folder based on modification date.
 All files within folder are processed based on modification date.}
 \usage{
-archive(from, to, date, dir, string, exclude, keep)
+archive(
+  from,
+  to = "Archive",
+  date = Sys.Date(),
+  dir = FALSE,
+  string = "",
+  exclude = NA,
+  keep = FALSE
+)
 }
 \arguments{
 \item{from}{Path to folder containing files to archive.}
 
 \item{to}{Folder name to archive files to. Default is Archive}
 
-\item{date}{Minimum modification date to exclude files from archiving. Default is Sys.Date().}
+\item{date}{File modification date from which files are to retained. Files prior to this date are archived. Default is Sys.Date().}
 
 \item{dir}{Optional logical argument; also archive folders or not. Default is FALSE.}
 

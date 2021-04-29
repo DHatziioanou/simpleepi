@@ -63,6 +63,9 @@ remove_replicates()
 ## Aggregate replicates to a single row
 simpleaggregate()
 
+## Collect looped itterations of data
+simpleappendenv(df)
+
 ## Write data
 simplewrite(df)
 

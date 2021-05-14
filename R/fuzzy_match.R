@@ -41,7 +41,7 @@
 #' dba <- list(ob = db, sn = "patient_surname", fn = "patient_forename", dob = "patient_date_of_birth", pc = "Postcode")
 #'
 #' # Create a new line list with the database information appended
-#' Positives <- fuzzy_match(lla, dba, stringency = F, pc_format = "lnl, case_column = "ID)
+#' Positives <- fuzzy_match(lla, dba, stringency = F, pc_format = "lnl", case_column = "ID")
 #'
 #' @export
 fuzzy_match <- function(lla, dba, stringency, pc_format, case_column, parallel){

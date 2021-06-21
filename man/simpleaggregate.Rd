@@ -2,7 +2,7 @@
 % Please edit documentation in R/simpleaggregate.R
 \name{simpleaggregate}
 \alias{simpleaggregate}
-\title{Title aggregate a dataframe or datatable by an id column}
+\title{Title aggregate a data.frame or data.table to have 1 row per id column}
 \usage{
 simpleaggregate(dt, idcol, disregard = NA, prefkeep = FALSE, col)
 }
@@ -13,19 +13,19 @@ simpleaggregate(dt, idcol, disregard = NA, prefkeep = FALSE, col)
 
 \item{disregard}{Optional; values to remove from aggregation eg NA, NULL, 0, -1. Default is NA.}
 
-\item{prefkeep}{Optional; Where columns end up with more than one value should the first value be saved. Deafault is FALSE.}
+\item{prefkeep}{Optional; Where columns end up with more than one value should the first value be saved. Default is FALSE.}
 
-\item{col}{Optional; Columns to process with prefkeep}
+\item{col}{Optional; Columns to process with prefkeep. "all" will process all columns}
 }
 \value{
-
+Returns data.frame aggregated to one row per idcol.
 }
 \description{
-Title aggregate a dataframe or datatable by an id column
+Title aggregate a data.frame or data.table to have 1 row per id column
 }
 \examples{
-
 messy <- data.frame(ID = c(1,1,2,3), data = c("red", "yellow", "red", "green"))
 clean <- simpleaggregate(dt = messy, idcol = "ID", disregard=c(NULL,NA,""))
+clean <- simpleaggregate(dt = messy, idcol = "ID", disregard=c(NULL,NA,""), prefkeep = 1, col = "all")
 
 }

@@ -12,7 +12,7 @@ simpleencode(x, case = "none")
 \item{case}{Optional; Default is none (no formatting). Other options are upper, lower or title.}
 }
 \value{
-returns the input encided to UTF-8
+returns the input encoded to UTF-8
 }
 \description{
 Title Change character encoding to UTF-8 with optional case management

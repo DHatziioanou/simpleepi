@@ -3,7 +3,7 @@
 #' @param x  Character object or vector to encode.
 #' @param case Optional; Default is none (no formatting). Other options are upper, lower or title.
 #'
-#' @return returns the input encided to UTF-8
+#' @return returns the input encoded to UTF-8
 #'
 #' @examples
 #' x <- "troublesome character string"
@@ -13,7 +13,7 @@
 simpleencode <- function(x, case = "none"){
   x <- stringi::stri_encode(x, "", "UTF-8")
   x <- stringi::stri_trans_general(x, "name-any")
-  x <- iconv(x, to = "UTF-8")
+  x <- iconv(x,from = Encoding(x), to = "UTF-8")
   if (case == "upper"){
     x <- toupper(x)
   } else if(case == "lower"){

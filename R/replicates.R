@@ -1,6 +1,6 @@
-#' Retrieve duplicated rows by one or more columns 
+#' Retrieve duplicated rows by one or more columns
 #'
-#' Retrieve duplicated rows by one or more columns 
+#' Retrieve duplicated rows by one or more columns
 #'
 #' @param df data
 #'
@@ -14,12 +14,13 @@
 #' @keywords duplicates, replicates
 #'
 #' @examples
-#' 
+#'
 #' df_duplicates <- replicates(df, c("Name","DOB"))
 #'
 #'
 #' @export
 replicates <- function(df,columns){
+  df <- as.data.frame(df)
   x <- df[duplicated(df[,c(columns)]) | duplicated(df[,c(columns)], fromLast = T),]
   return(x)
 }

@@ -13,6 +13,7 @@
 #' New_episode = 1 for new episodes, 0 for repeat samples from the same episode.
 #' episodeN = episode number for unique identifier
 #' episode_time_diff = time difference from previous sample within episode
+#' @importFrom rlang :=
 #'
 #' @examples
 #'

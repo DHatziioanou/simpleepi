@@ -6,6 +6,7 @@
 #' @param complete Optional; retain files without matches in list or not. Default is FALSE
 #'
 #' @return Returns a list with file names and rows of data with listed IDs in the IDCol column
+#' @importFrom rlang :=
 #'
 #' @examples
 #'

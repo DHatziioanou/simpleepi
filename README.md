@@ -54,8 +54,9 @@ simpleID()
 ## Assign episodes based on ID and episode duration
 episodes()
 
-## Retrieve replicate rows
+## Retrieve or remove replicate rows from dataframe
 replicates()
+replicates_rmv()
 
 ## Remove replicate rows
 remove_replicates()

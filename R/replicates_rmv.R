@@ -1,12 +1,10 @@
-#' Retrieve duplicated rows by one or more columns
-#'
-#' Retrieve duplicated rows by one or more columns
+#' Remove duplicated rows by one or more columns
 #'
 #' @param df data
 #'
 #' @param columns column or vector of columns to look for duplicate combinations in
 #'
-#' @return Returns duplicated rows within df based on the specified columns
+#' @return Returns df without duplicated rows  based on the specified columns
 #'
 #'
 #' @author Diane Hatziioanou
@@ -15,7 +13,7 @@
 #'
 #' @examples
 #'
-#' df_duplicates <- replicates(df, c("Name","DOB"))
+#' df_exclude_all_duplicates <- replicates_rmv(df, c("ID1","ID2"))
 #'
 #'
 #' @export

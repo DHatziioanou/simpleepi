@@ -10,11 +10,11 @@
 #'
 #' @examples
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "testa.rds")
-#' simplewrite(data.frame(a = c(1,2,3, 4), b = c("red", "amber", "green", "blue")), "testb.rds")
-#' files <- list.files(pattern = ".rds")
-#' dt3 <- IDinfilesearch(IDs = c(3,4), IDcol = "a", files = files)
-#' dt4 <- IDinfilesearch(IDs = 4, IDcol = "a", files = files, complete = TRUE)
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "testa.rds")
+#' # simplewrite(data.frame(a = c(1,2,3, 4), b = c("red", "amber", "green", "blue")), "testb.rds")
+#' # files <- list.files(pattern = ".rds")
+#' # dt3 <- IDinfilesearch(IDs = c(3,4), IDcol = "a", files = files)
+#' # dt4 <- IDinfilesearch(IDs = 4, IDcol = "a", files = files, complete = TRUE)
 #'
 #' @export
 IDinfilesearch <- function(IDs, IDcol, files, complete = FALSE){

@@ -2,7 +2,7 @@
 % Please edit documentation in R/replicates_rmv.R
 \name{replicates_rmv}
 \alias{replicates_rmv}
-\title{Retrieve duplicated rows by one or more columns}
+\title{Remove duplicated rows by one or more columns}
 \usage{
 replicates_rmv(df, columns)
 }
@@ -12,14 +12,14 @@ replicates_rmv(df, columns)
 \item{columns}{column or vector of columns to look for duplicate combinations in}
 }
 \value{
-Returns duplicated rows within df based on the specified columns
+Returns df without duplicated rows  based on the specified columns
 }
 \description{
-Retrieve duplicated rows by one or more columns
+Remove duplicated rows by one or more columns
 }
 \examples{
 
-df_duplicates <- replicates(df, c("Name","DOB"))
+df_exclude_all_duplicates <- replicates_rmv(df, c("ID1","ID2"))
 
 
 }

@@ -13,6 +13,6 @@ yearweek  <- function(x){
   if(any(!(class(x) %in% c("Date", "IDate")))) x <- simpledates(x)
   week <- data.table::isoweek(x)
   year <- data.table::year(x)
-  yearweek <- as.integer(paste0(year,stringr::str_pad(string = week, width = 2, side = "left", pad = 0)))
+  yearweek <- suppressWarnings(as.integer(paste0(year,stringr::str_pad(string = week, width = 2, side = "left", pad = 0))))
   return(yearweek)
 }

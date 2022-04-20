@@ -11,13 +11,13 @@
 #' @examples
 #'  dt =data.table(oldcol = c("A", "B", "C", NA, "D", "", "Test"),
 #'                newcol = c("", "Test", NA, NA, "C", NA, "newdata"))
-#'  dt$vc = simple_vc(oldcol = dt$oldcol, newcol = dt$newcol, vccol = dt$vccol)
+#'  dt$vc = simple_vc(oldcol = dt$oldcol, newcol = dt$newcol, vccol = dt$vccol, olddate = "Original", newdate = Sys.Date())
 #'
 #'  dt$vccol = c("Original;A", "Original;B", " Original;C",  "Original;C then NA", " Original;D", NA, "no previous")
-#'  dt$vcupdate = simple_vc(oldcol = dt$oldcol, newcol = dt$newcol, vccol = dt$vccol)
+#'  dt$vcupdate = simple_vc(oldcol = dt$oldcol, newcol = dt$newcol, vccol = dt$vccol, olddate = "Original", newdate = Sys.Date())
 #'
 #' @export
-simple_vc <- function(oldcol = dt$oldcol, newcol = dt$newcol, vccol = dt$vccol, olddate = "Original", newdate = Sys.Date()){
+simple_vc <- function(oldcol, newcol, vccol, olddate = "Original", newdate = Sys.Date()){
   start <- Sys.time()
   if(length(oldcol) != length(newcol)) stop("Comparing unequal number of items")
   is.na(oldcol) <- oldcol == ""

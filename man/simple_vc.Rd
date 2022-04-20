@@ -4,13 +4,7 @@
 \alias{simple_vc}
 \title{Title Compare two versions of data with the same length and mark new data in a version control column}
 \usage{
-simple_vc(
-  oldcol = dt$oldcol,
-  newcol = dt$newcol,
-  vccol = dt$vccol,
-  olddate = "Original",
-  newdate = Sys.Date()
-)
+simple_vc(oldcol, newcol, vccol, olddate = "Original", newdate = Sys.Date())
 }
 \arguments{
 \item{oldcol}{vector of previous data}
@@ -32,9 +26,9 @@ Title Compare two versions of data with the same length and mark new data in a v
 \examples{
  dt =data.table(oldcol = c("A", "B", "C", NA, "D", "", "Test"),
                newcol = c("", "Test", NA, NA, "C", NA, "newdata"))
- dt$vc = simple_vc(oldcol = dt$oldcol, newcol = dt$newcol, vccol = dt$vccol)
+ dt$vc = simple_vc(oldcol = dt$oldcol, newcol = dt$newcol, vccol = dt$vccol, olddate = "Original", newdate = Sys.Date())
 
  dt$vccol = c("Original;A", "Original;B", " Original;C",  "Original;C then NA", " Original;D", NA, "no previous")
- dt$vcupdate = simple_vc(oldcol = dt$oldcol, newcol = dt$newcol, vccol = dt$vccol)
+ dt$vcupdate = simple_vc(oldcol = dt$oldcol, newcol = dt$newcol, vccol = dt$vccol, olddate = "Original", newdate = Sys.Date())
 
 }

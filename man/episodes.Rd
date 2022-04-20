@@ -7,13 +7,13 @@
 episodes(dt, unique_column, time_column, duration)
 }
 \arguments{
+\item{dt}{data}
+
 \item{unique_column}{Unique identifier column to summarise data by (string)}
 
 \item{time_column}{Date column to summarise data by}
 
 \item{duration}{Numeric duration of episodes in days}
-
-\item{data}{input data}
 }
 \value{
 Returns a data.table with summary

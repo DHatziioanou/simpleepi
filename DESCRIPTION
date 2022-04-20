@@ -1,7 +1,7 @@
 Package: simpleepi
 Type: Package
 Title: Simplifying functions to improve the ease and speed of basic epidemiological analysis
-Version: 0.2.1
+Version: 0.2.2
 Author: Diane Hatziioanou
 Maintainer: Diane Hatziioanou <DHatziioanou@tutanota.com>
 Description: Collection of processes to speed up and simplify the routine import, processing and saving of data for epidemiological analysis.
@@ -18,6 +18,7 @@ Imports:
      haven (>= 2.3.1),
      dplyr (>= 1.0.2),
      lubridate (>= 1.7.9),
+     ISOweek (>= 0.6),
      stringdist (>= 0.9.6.3),
      foreach (>= 1.5.1),
      doParallel (>= 1.0.16),

@@ -42,7 +42,7 @@ returns vccol newdate with new changes; records 1st record per ID which is not N
 Title Compare two versions of data with the same length and mark new data in a version control column
 }
 \examples{
-# dt = data.table(c(1:6), c("A", "B", "C", NA, "D", ""), c("", "Test", NA, NA, "C", NA))
+# dt <- data.table::data.table(c(1:6), c("A", "B", "C", NA, "D", ""), c("", "Test", NA, NA, "C", NA))
 # dt$VC <- simple_version_control(dt,
 #   oldcol = "V2", newcol = "V3", id = "V1",
 #   olddate = "old", newdate = "new",

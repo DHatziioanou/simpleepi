@@ -26,6 +26,7 @@
 #' #    type = "list",
 #' #    out = "vector")
 #'
+#' @import data.table
 #' @export
 simple_version_control <- function(dt, id, oldcol, newcol, vccol = NULL, olddate = "original", newdate = Sys.Date(), type = "list", out = NULL){
 start <- Sys.time()
@@ -42,7 +43,7 @@ if(sum(duplicated(dt[[(id)]]))>0) stop("id is not unique")
   # Make VC column
 if(missing(vccol)|is.null(vccol)) {
   cols = c(id, oldcol, newcol)
-  a <- dt[, ..cols ]
+  a <- dt[, eval(..cols) ]
   a[ get(oldcol) == "", (oldcol):= NA][ get(newcol) == "", (newcol):= NA]
   vccol = paste0(oldcol,"_VC")
   if(type == "list"){

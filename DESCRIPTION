@@ -28,5 +28,4 @@ Imports:
      igraph (>= 1.2.6),
      stats (>= 4.0.2),
      rlang (>= 0.4)
-RoxygenNote: 7.1.1
-
+RoxygenNote: 7.1.2

@@ -13,7 +13,7 @@
 #' @return returns vccol newdate with new changes; records 1st record per ID which is not NA then adds any changes to the oldcol values. In list format this is by adding new data to new rows for each ID and for flat format data in added to vccol in format olddate;oldcol and any changes are added as newdate;newcol
 #'
 #' @examples
-#' # dt = data.table(c(1:6), c("A", "B", "C", NA, "D", ""), c("", "Test", NA, NA, "C", NA))
+#' # dt <- data.table::data.table(c(1:6), c("A", "B", "C", NA, "D", ""), c("", "Test", NA, NA, "C", NA))
 #' # dt$VC <- simple_version_control(dt,
 #' #   oldcol = "V2", newcol = "V3", id = "V1",
 #' #   olddate = "old", newdate = "new",
@@ -41,7 +41,8 @@ if(sum(duplicated(dt[[(id)]]))>0) stop("id is not unique")
 # Prep data
   # Make VC column
 if(missing(vccol)|is.null(vccol)) {
-  a <- data.table::copy(dt[, .SD, .SDcols = c(id, oldcol, newcol)])
+  cols = c(id, oldcol, newcol)
+  a <- dt[, ..cols ]
   a[ get(oldcol) == "", (oldcol):= NA][ get(newcol) == "", (newcol):= NA]
   vccol = paste0(oldcol,"_VC")
   if(type == "list"){
@@ -79,7 +80,7 @@ setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
                                                   VC)))), by = get(id)]
 }
 
-  setnames(a, "VC", vccol)
+  data.table::setnames(a, "VC", vccol)
   end <- Sys.time(); runtime = end -start
   cat(paste(vccol, "version control took", round(runtime, 2), attr(runtime, "units")))
   # Output

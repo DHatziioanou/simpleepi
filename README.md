@@ -1,6 +1,8 @@
 # simpleepi
 
 
+For information on how to use the below functions type ?function_name
+
 # Install package
 devtools::install_github("DHatziioanou/simpleepi")
 
@@ -80,4 +82,4 @@ simpleopenfolder(path)
 colnamecheck(list(df1,df2))
 
 ## Compare update of data across columns
-simple_vc()
+simple_version_control()

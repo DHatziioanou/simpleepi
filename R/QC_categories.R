@@ -7,9 +7,9 @@
 #' @export
 #'
 #' @examples
-#' 
-#' check1 <- QC_categories(df$coolumn1, cat = c("low", "medium", "high"))
-#' 
+#'
+#' # check1 <- QC_categories(df$coolumn1, cat = c("low", "medium", "high"))
+#'
 QC_categories <- function(data, cat){
   cat <- as.vector(cat)
   data <- as.vector(data)

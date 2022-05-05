@@ -19,6 +19,6 @@ Title
 }
 \examples{
 
-check1 <- QC_categories(df$coolumn1, cat = c("low", "medium", "high"))
+# check1 <- QC_categories(df$coolumn1, cat = c("low", "medium", "high"))
 
 }

@@ -1,6 +1,8 @@
 # simpleepi
 
 
+For information on how to use the below functions type ?function_name
+
 # Install package
 devtools::install_github("DHatziioanou/simpleepi")
 
@@ -78,3 +80,6 @@ simpleopenfolder(path)
 
 ## Check if objects have duplicated column names
 colnamecheck(list(df1,df2))
+
+## Compare update of data across columns
+simple_version_control()

@@ -2,7 +2,7 @@
 % Please edit documentation in R/yearweek.R
 \name{yearweek}
 \alias{yearweek}
-\title{Title Format a date to year-isoweek}
+\title{Title Format a date to isoyear-isoweek}
 \usage{
 yearweek(x)
 }
@@ -10,10 +10,10 @@ yearweek(x)
 \item{x}{Date}
 }
 \value{
-Returns x in format YYYYWW
+Returns x in format YYYYWW where WW is the isoweek and YYYY is the isoyear.
 }
 \description{
-Title Format a date to year-isoweek
+Title Format a date to isoyear-isoweek
 }
 \examples{
 yw <- simpleyearweek(date)

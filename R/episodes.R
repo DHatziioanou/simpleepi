@@ -1,12 +1,11 @@
 #' Add episode information based on the duration of episodes
 #'
-#' @param data input data
-#'
 #' @param unique_column Unique identifier column to summarise data by (string)
 #'
 #' @param time_column Date column to summarise data by
 #'
 #' @param duration Numeric duration of episodes in days
+#' @param dt data
 #'
 #' @return Returns a data.table with summary
 #' sample_time_diff = time difference between samples

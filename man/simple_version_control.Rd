@@ -33,7 +33,7 @@ simple_version_control(
 
 \item{type}{one of "list" or "flat"}
 
-\item{out}{one of "table" or "vector" ro NULL. NULL returns table and writes to as rds}
+\item{out}{one of "table" or "vector" or NULL. NULL returns table and writes to as rds}
 }
 \value{
 returns vccol newdate with new changes; records 1st record per ID which is not NA then adds any changes to the oldcol values. In list format this is by adding new data to new rows for each ID and for flat format data in added to vccol in format olddate;oldcol and any changes are added as newdate;newcol

@@ -8,7 +8,7 @@
 #' @param olddate date of previous data for version control
 #' @param newdate  date of new data for version control
 #' @param type one of "list" or "flat"
-#' @param out one of "table" or "vector" ro NULL. NULL returns table and writes to as rds
+#' @param out one of "table" or "vector" or NULL. NULL returns table and writes to as rds
 #'
 #' @return returns vccol newdate with new changes; records 1st record per ID which is not NA then adds any changes to the oldcol values. In list format this is by adding new data to new rows for each ID and for flat format data in added to vccol in format olddate;oldcol and any changes are added as newdate;newcol
 #'
@@ -94,4 +94,70 @@ setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
     message(paste0("Saved "), paste0(vccol, ".rds"))
     return(a)
   }
+}
+
+
+#' Title Create and maintain a record of the number of rows in an input with each combination of values from columns of interest
+#'
+#' @param logpath file path where log is saved.
+#' @param logname string containing descriptive name of log. Processing date will be added to this after creation.
+#' @param input Cumulative dataset to be processed.
+#' @param columns columns within input with value combinations to quantify.
+#'
+#' @return
+#'
+#' @examples
+#' @export
+file_stat_log <- function(logpath = NULL, logname = NULL, input, inputname, columns, Date = Sys.Date()){
+
+  if(!all(columns %in% names(input))) stop(paste("columns", paste0(columns[!columns %in% names(input)], collapse = ", "), "not in", deparse(substitute(input))))
+
+  # Look for last log
+  lastlog <- try(simpleepi::getlatestfile(folder_path = logpath, logname, return_type = "path", maxTries = 10))
+  # Make db in 1st run or import last if exists
+  if(class(lastlog) == "try-error"){
+    cat(paste0("Previous log not found, initiating new log ", format( Sys.Date(), "%Y%m%d"), logname))
+    logs = data.table(input = character(),
+                      Date = character())
+    logs[,columns] <- character()
+    logs[,"Count"] <- integer()
+  } else {
+    logs = data.table::fread(lastlog, header = T, stringsAsFactors = F, showProgress = T, na.strings = c("NA", "NULL", NULL), encoding = "UTF-8")
+    logs[,Date := simpledates(Date)]
+  }
+
+  # New stats
+  s <- input[,.(input = inputname, Date = simpledates(Date), Count = .N),by = columns]
+
+  # Combine and write stats
+  newlog <- data.table::rbindlist(list(logs, s), use.names = T, fill = T)
+  if(!is.null(logname)){
+    data.table::fwrite(newlog, file =  file.path(logpath, paste0(format( Sys.Date(), "%Y%m%d"),logname)),
+                       row.names = F, col.names = T, append = F)
+  }
+  return(newlog)
+}
+#' Title
+#'
+#' @param logs log created using file_stat_log
+#' @param columns  columns within log with quantified value combinations
+#' @param maxup Maximum permissible increase from previous log. Warning recorded if exceeded.
+#' @param maxdown Maximum permissible decrease from previous log. Warning recorded if exceeded.
+#'
+#' @return
+#'
+#' @examples
+#' @export
+file_stat_diff <- function(logs = file_stat_log, columns, maxup = 1.25, maxdown = 0, logpath = NULL, logname = NULL, Date = Sys.Date()){
+  logs[order(Date),]
+  logs[, diff := (Count - shift(x = Count, n =1L, fill=0, type = "lag")), by = columns]
+  # percent change from one period to the next
+  logs[, ROC := (Count - shift(x = Count, n =1L, fill=0, type = "lag")) / (shift(x = Count, n =1L, fill=0, type = "lag")) * 100 , by = columns][is.infinite(ROC),ROC:=NA]
+  logs[, Warning := ifelse(Count!=diff & (Count <  ((Count-diff) * maxdown) | Count > ((Count-diff) * maxup)), TRUE, FALSE)]
+
+  if(!is.null(logname)){
+    data.table::fwrite(logs, file =  file.path(logpath, paste0(format(simpledates(Date), "%Y%m%d"),logname)),
+                       row.names = F, col.names = T, append = F)
+  }
+  return(logs)
 }

@@ -4,11 +4,11 @@
 #' @param id Unique ID column
 #' @param oldcol Column of historic data
 #' @param newcol Column of updated data
-#' @param vccol Optional name of existing version control column or name to assign to new one. If missing default uses common part of oldcol and newcol strings followed by _VC or uses oldcol if no common string.
-#' @param olddate date of previous data
-#' @param newdate  date of new data
 #' @param type one of "list" or "flat"
 #' @param out one of "table" or "vector" or NULL. NULL returns table and writes to as rds
+#' @param vccol Optional; name of existing version control column or name to assign to new one. If missing default uses common part of oldcol and newcol strings followed by _VC or uses oldcol if no common string.
+#' @param olddate Optional; date of previous data. Default is "original".
+#' @param newdate  Optional; date of new data. Default is system date.
 #'
 #' @return returns vccol newdate with new changes; records 1st record per ID which is not NA then adds any changes to the oldcol values. In list format this is by adding new data to new rows for each ID and for flat format data in added to vccol in format olddate;oldcol and any changes are added as newdate;newcol
 #'
@@ -26,9 +26,17 @@
 #' #    type = "list",
 #' #    out = "vector")
 #'
+#' # Process by chunk
+#' # ds <- split(dt, (as.numeric(rownames(dt))-1) %/% 10000000)
+#' # for (s in 1:length(ds)){
+#' # ds[[s]] <- cbind(ds[[s]], simple_version_control(dt = ds[[s]], id = "key", oldcol = "valueprev", newcol = "value", olddate = "old", newdate = "new", type = "flat", out = "vector", vccol = "variable_VC"))
+#' # }
+#' # ds <- rbindlist(ds, use.names = T, fill = T)
+#'
 #' @import data.table
+#'
 #' @export
-simple_version_control <- function(dt, id, oldcol, newcol, vccol = NULL, olddate = "original", newdate = Sys.Date(), type = "list", out = NULL){
+simple_version_control <- function(dt, id, oldcol, newcol, type = "list", out = NULL, vccol = NULL, olddate = "original", newdate = Sys.Date()){
 start <- Sys.time()
 
 # Input checks
@@ -38,6 +46,8 @@ if(!newcol %in% names(dt)) stop(paste0("newcol not found"))
 if(!any(type %in% c("list","flat"))) stop("invalid type")
 if(!(out %in% c("table", "vector", "file"))) warning("invalid out, will write to disk")
 if(sum(duplicated(dt[[(id)]]))>0) stop("id is not unique")
+size <- as.numeric(gsub("[[:alpha:]]", "", format(object.size(dt), units = "Mb")))
+if(as.numeric(gsub("[[:alpha:]]", "", size)) >= 300) warning(paste0("Large input of ", size, " MB, split to chunks if process fails"))
 
 # Prep data
   # Make VC column
@@ -51,18 +61,17 @@ if(missing(vccol)|is.null(vccol) | !(vccol %in% names(dt))) {
   a[ get(oldcol) == "", (oldcol):= NA][ get(newcol) == "", (newcol):= NA]
   if(type == "list"){
     a = a[, .(VC = list(data.table::data.table(date = olddate, versions = get(oldcol), notes = vector(mode = "character", length = 1)))), by = list(get(id),get(oldcol),get(newcol))][ ]
-   setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
+    data.table::setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
    message(paste("made version control list column", vccol))
   } else if (type == "flat") {
    a[, VC := paste(olddate, get(oldcol), sep = ";")]
    a[is.na(get(oldcol)), VC := ""]
    message(paste("made version control column", vccol))
-} else {
+}} else {
   # Use existing VC column
-  a <- data.table::copy(dt[, .SD, .SDcols = c(id, oldcol, newcol, vccol)])
+  a <- dt[, .SD, .SDcols = c(id, oldcol, newcol, vccol)]
   a[ get(oldcol) == "", (oldcol):= NA][ get(newcol) == "", (newcol):= NA]
-  setnames(a, c(vccol), c("VC"))
-}
+  data.table::setnames(a, c(vccol), c("VC"))
 }
 
 # Version control

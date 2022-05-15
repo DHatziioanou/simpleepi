@@ -29,7 +29,7 @@
 #' # Process by chunk
 #' # ds <- split(dt, (as.numeric(rownames(dt))-1) %/% 10000000)
 #' # for (s in 1:length(ds)){
-#' # ds[[s]] <- cbind(ds[[s]], simple_version_control(dt = ds[[s]], id = "key", oldcol = "valueprev", newcol = "value", olddate = "old", newdate = "new", type = "flat", out = "vector", vccol = "variable_VC"))
+#' # ds[[s]][, variable_VC := simple_version_control(dt = ds[[s]], id = "key", oldcol = "valueprev", newcol = "value", olddate = "20220503", newdate = refdate, type = "flat", out = "vector", vccol = "variable_VC")]
 #' # }
 #' # ds <- rbindlist(ds, use.names = T, fill = T)
 #'

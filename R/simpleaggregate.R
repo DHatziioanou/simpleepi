@@ -7,7 +7,7 @@
 #' @param col Optional; Columns to process with prefkeep. "all" will process all columns
 #'
 #' @return Returns data.frame aggregated to one row per idcol.
-#' @importFrom rlang :=
+#' @import data.table
 #'
 #' @examples
 #' messy <- data.frame(ID = c(1,1,2,3), data = c("red", "yellow", "red", "green"))

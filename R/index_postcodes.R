@@ -11,7 +11,7 @@
 #' @param exclude string pattern within files to exclude when using a folder as postcode_path (optional).
 #'
 #' @return Returns a postcode database Index using the first letters from the file names and the first digits of the numbers within the postcodes as a data.frame object. Saves the Index file to the location of the postcode database.
-#' @importFrom rlang :=
+#' @import data.table
 #'
 #' @author Diane Hatziioanou
 #'

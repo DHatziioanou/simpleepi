@@ -6,7 +6,7 @@
 #' @param x dates to format. Takes a single date, vectors or a column of data.
 #'
 #' @return
-#' @importFrom rlang :=
+#' @import data.table
 #'
 #' @examples
 #' # Format a single string into a date

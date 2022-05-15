@@ -27,7 +27,7 @@
 #'
 #'
 #' @return Returns the original input object as a data.frame with added columns of the input databse where there is a match base on full name and DOB
-#' @importFrom rlang :=
+#' @import data.table
 #'
 #' @author Diane Hatziioanou
 #'

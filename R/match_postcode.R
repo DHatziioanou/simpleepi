@@ -14,7 +14,7 @@
 #' For PHEC or PHER assign c("laua", "PHEC19CD", "PHEREG19CD") to desired_columns or c("all", "PHEC19CD", "PHEREG19CD").
 
 #' @return Returns the original dt object as a data.frame with added columns of ONS data
-#' @importFrom rlang :=
+#' @import data.table
 #'
 #' @author Diane Hatziioanou
 #'

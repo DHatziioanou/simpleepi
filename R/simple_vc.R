@@ -4,9 +4,9 @@
 #' @param id Unique ID column
 #' @param oldcol Column of historic data
 #' @param newcol Column of updated data
-#' @param vccol existing or new column capturing version control
-#' @param olddate date of previous data for version control
-#' @param newdate  date of new data for version control
+#' @param vccol Optional name of existing version control column or name to assign to new one. If missing default uses common part of oldcol and newcol strings followed by _VC or uses oldcol if no common string.
+#' @param olddate date of previous data
+#' @param newdate  date of new data
 #' @param type one of "list" or "flat"
 #' @param out one of "table" or "vector" or NULL. NULL returns table and writes to as rds
 #'
@@ -41,11 +41,14 @@ if(sum(duplicated(dt[[(id)]]))>0) stop("id is not unique")
 
 # Prep data
   # Make VC column
-if(missing(vccol)|is.null(vccol)) {
+if(missing(vccol)|is.null(vccol) | !(vccol %in% names(dt))) {
+  if(!exists("vccol")) {
+    pat <- paste(qualV::LCS(strsplit(as.character(oldcol), '')[[1]], strsplit(as.character(newcol), '')[[1]])$LCS,collapse = "")
+    vccol <- paste0(ifelse(pat=="", oldcol, pat),"_VC")
+  }
   cols = c(id, oldcol, newcol)
   a <- dt[, ..cols ]
   a[ get(oldcol) == "", (oldcol):= NA][ get(newcol) == "", (newcol):= NA]
-  vccol = paste0(oldcol,"_VC")
   if(type == "list"){
     a = a[, .(VC = list(data.table::data.table(date = olddate, versions = get(oldcol), notes = vector(mode = "character", length = 1)))), by = list(get(id),get(oldcol),get(newcol))][ ]
    setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
@@ -81,6 +84,9 @@ setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
                                                   VC)))), by = get(id)]
 }
 
+
+  data.table::setattr(a$VC, "Processed", append(x = attributes(a$VC)$Processed, values = Sys.time(), after = F))
+  data.table::setattr(a$VC, "versions", append(x = attributes(a$VC)$versions, values = refdate, after = F))
   data.table::setnames(a, "VC", vccol)
   end <- Sys.time(); runtime = end -start
   cat(paste(vccol, "version control took", round(runtime, 2), attr(runtime, "units")))

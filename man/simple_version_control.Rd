@@ -25,11 +25,11 @@ simple_version_control(
 
 \item{newcol}{Column of updated data}
 
-\item{vccol}{existing or new column capturing version control}
+\item{vccol}{Optional name of existing version control column or name to assign to new one. If missing default uses common part of oldcol and newcol strings followed by _VC or uses oldcol if no common string.}
 
-\item{olddate}{date of previous data for version control}
+\item{olddate}{date of previous data}
 
-\item{newdate}{date of new data for version control}
+\item{newdate}{date of new data}
 
 \item{type}{one of "list" or "flat"}
 

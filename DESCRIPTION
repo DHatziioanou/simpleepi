@@ -27,5 +27,6 @@ Imports:
      httr (>= 1.4.2),
      igraph (>= 1.2.6),
      stats (>= 4.0.2),
-     rlang (>= 0.4)
+     rlang (>= 0.4),
+     qualV (>= 0.3)
 RoxygenNote: 7.1.2

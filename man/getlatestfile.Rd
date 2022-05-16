@@ -4,7 +4,15 @@
 \alias{getlatestfile}
 \title{Retrieve most recent file from a file path}
 \usage{
-getlatestfile(folder_path, file_string, exclusions, return_type, maxTries)
+getlatestfile(
+  folder_path,
+  file_string,
+  exclusions,
+  return_type,
+  maxTries,
+  include.dirs = FALSE,
+  recursive = FALSE
+)
 }
 \arguments{
 \item{folder_path}{Folder path containing the file to retrieve. Folders within this path will not be searched.}
@@ -16,6 +24,10 @@ getlatestfile(folder_path, file_string, exclusions, return_type, maxTries)
 \item{return_type}{Use "all" to retrieve a data.frame with the file name, file path and modiciation date, "name" to retrieve the file name or "path" to retrieve the full file path. Default is "path". (optional)}
 
 \item{maxTries}{Maximum number of times to attempt file information retrieval. Default is 1. (optional)}
+
+\item{include.dirs}{list.files argument; Include directories}
+
+\item{recursive}{list.files argument; Look in subdirectories}
 }
 \value{
 Returns the last ctime file path, file name or a data.frame with the file name, path and modification details as defined by return_type where size is the file size in bytes, mtime is the last modification time, ctime is last status change time, atime is last access time.
@@ -28,10 +40,14 @@ Retrieves the latest file name and modification details  for a specified path wi
 file_path <- getlatestfile(file.path("...","subfolder","subfolder"))
 
 #Import the latest csv file
-df <- fread(getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "path", maxTries = 5))
+df <- fread(getlatestfile(folder_path = file.path("...","subfolder","subfolder"),
+ #  file_string = "csv",exclusions = "unwanted",
+ # return_type = "path", maxTries = 5))
 
 #Record the modification details
-Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "all", maxTries = 5)$ctime
+Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"),
+ #  file_string = "csv",exclusions = "unwanted",
+ #  return_type = "all", maxTries = 5)$ctime
 
 }
 \author{

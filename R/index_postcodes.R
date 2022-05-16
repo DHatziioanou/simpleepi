@@ -11,27 +11,30 @@
 #' @param exclude string pattern within files to exclude when using a folder as postcode_path (optional).
 #'
 #' @return Returns a postcode database Index using the first letters from the file names and the first digits of the numbers within the postcodes as a data.frame object. Saves the Index file to the location of the postcode database.
-#' @importFrom rlang :=
+#' @import data.table
 #'
 #' @author Diane Hatziioanou
 #'
 #' @keywords postcode, Index
 #'
 #' @examples
-#' Index <- index_postcodes(postcode_path)
+#' # Index <- index_postcodes(postcode_path)
 #'
-#' Index_ONS <- index_postcodes("C:/.../NSPL_FEB_2019_UK/Data/multi_csv/)
+#' # Index_ONS <- index_postcodes("C:/.../NSPL_FEB_2019_UK/Data/multi_csv/)
 #'
-#' Index_ONS <- index_postcodes(file.path(path, "NSPL_FEB_2019_UK, "Data ,"multi_csv"), exclude = "Readme.csv")
+#' # Index_ONS <- index_postcodes(
+#'     # file.path(path, "NSPL_FEB_2019_UK, "Data ,"multi_csv"),
+#'     # exclude = "Readme.csv")
 #'
-#' Index_file <- index_postcodes(file.path(path, "2020 database, "Reference.csv"), colname = "pcd", name = "Reference_index")
+#' # Index_file <- index_postcodes(file.path(path, "2020 database, "Reference.csv"),
+#'     # colname = "pcd", name = "Reference_index")
 #'
 #' # Create an index if necessary or read in if already there
-#' if (!file.exists(file.path(NSPL_csvs,"Index.csv"))) {
-#' Index <- index_postcodes(NSPL_csvs)
-#' } else {
-#'   Index <- fread(file.path(NSPL_csvs,"Index.csv"))
-#'   }
+#' # if (!file.exists(file.path(NSPL_csvs,"Index.csv"))) {
+#' # Index <- index_postcodes(NSPL_csvs)
+#' # } else {
+#' #   Index <- fread(file.path(NSPL_csvs,"Index.csv"))
+#' #  }
 #'
 #' @export
 index_postcodes <- function(postcode_path, colname, name, exclude){

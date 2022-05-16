@@ -27,10 +27,11 @@ Title Add age group column to data.frame
 }
 \examples{
 
+df <- data.frame(ID = c(1:4), Age = c(8,-1,38,26))
 unknowns <- c(-1, NA)
 age_groups <- c('0-4', "5-10", "11-16", "17-24", "25-30", "31-39", "40-59", "60-79", "80+")
 age_column <- "Age"
-factor <- F
+factor <- FALSE
 intermediates <- "down"
 add_age_groups(df, age_column, age_groups, intermediates, unknowns, factor)
 

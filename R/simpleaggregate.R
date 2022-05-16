@@ -7,12 +7,20 @@
 #' @param col Optional; Columns to process with prefkeep. "all" will process all columns
 #'
 #' @return Returns data.frame aggregated to one row per idcol.
-#' @importFrom rlang :=
+#' @import data.table
 #'
 #' @examples
-#' messy <- data.frame(ID = c(1,1,2,3), data = c("red", "yellow", "red", "green"))
-#' clean <- simpleaggregate(dt = messy, idcol = "ID", disregard=c(NULL,NA,""))
-#' clean <- simpleaggregate(dt = messy, idcol = "ID", disregard=c(NULL,NA,""), prefkeep = 1, col = "all")
+#' messy <- data.frame(ID = c(1,1,2,3),
+#'   data = c("red", "yellow", "red", "green"))
+#' clean <- simpleaggregate(
+#'    dt = messy,
+#'    idcol = "ID",
+#'    disregard=c(NULL,NA,""))
+#' clean <- simpleaggregate(dt = messy,
+#'    idcol = "ID",
+#'    disregard=c(NULL,NA,""),
+#'    prefkeep = 1,
+#'    col = "all")
 #'
 #' @export
 simpleaggregate <- function(dt, idcol, disregard =NA, prefkeep=FALSE, col){

@@ -11,10 +11,10 @@
 #'  region_names$regions_clean =  simpleregions(region_names$regions)
 #'  data <- merge(data, region_names, by = "regions", all = T)
 #'
+#' @import data.table
 #' @export
 simpleregions <- function(x) {
   d <- data.table::data.table(tofix = unique(x))
-  library(data.table)
   d[,new := ""]
   d[grepl("IRELAND|NI|ISLE OF MAN|ISLANDS|SC|WALES|ISLE", tofix, ignore.case = T), new := "Other DA"]
   d[grepl("Not found|Unknown", tofix, ignore.case = T), new := "Unknown"]

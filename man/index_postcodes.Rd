@@ -22,20 +22,23 @@ Returns a postcode database Index using the first letters from the file names an
 Creates an index of a postcode database file using the first letters and first number from within the postcode. This has been designed for use with the NSPL database of UK postcodes and will not work for postcodes which do not start with letters followed by numbers.
 }
 \examples{
-Index <- index_postcodes(postcode_path)
+# Index <- index_postcodes(postcode_path)
 
-Index_ONS <- index_postcodes("C:/.../NSPL_FEB_2019_UK/Data/multi_csv/)
+# Index_ONS <- index_postcodes("C:/.../NSPL_FEB_2019_UK/Data/multi_csv/)
 
-Index_ONS <- index_postcodes(file.path(path, "NSPL_FEB_2019_UK, "Data ,"multi_csv"), exclude = "Readme.csv")
+# Index_ONS <- index_postcodes(
+    # file.path(path, "NSPL_FEB_2019_UK, "Data ,"multi_csv"),
+    # exclude = "Readme.csv")
 
-Index_file <- index_postcodes(file.path(path, "2020 database, "Reference.csv"), colname = "pcd", name = "Reference_index")
+# Index_file <- index_postcodes(file.path(path, "2020 database, "Reference.csv"),
+    # colname = "pcd", name = "Reference_index")
 
 # Create an index if necessary or read in if already there
-if (!file.exists(file.path(NSPL_csvs,"Index.csv"))) {
-Index <- index_postcodes(NSPL_csvs)
-} else {
-  Index <- fread(file.path(NSPL_csvs,"Index.csv"))
-  }
+# if (!file.exists(file.path(NSPL_csvs,"Index.csv"))) {
+# Index <- index_postcodes(NSPL_csvs)
+# } else {
+#   Index <- fread(file.path(NSPL_csvs,"Index.csv"))
+#  }
 
 }
 \author{

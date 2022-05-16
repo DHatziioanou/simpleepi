@@ -7,7 +7,7 @@
 #' @param name Name to give unique ID column in output
 #'
 #' @return full dataset with additional ID column returned
-#' @importFrom rlang :=
+#' @import data.table
 #'
 #' @examples
 #'

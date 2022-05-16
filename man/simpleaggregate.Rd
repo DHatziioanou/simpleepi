@@ -24,8 +24,16 @@ Returns data.frame aggregated to one row per idcol.
 Title aggregate a data.frame or data.table to have 1 row per id column
 }
 \examples{
-messy <- data.frame(ID = c(1,1,2,3), data = c("red", "yellow", "red", "green"))
-clean <- simpleaggregate(dt = messy, idcol = "ID", disregard=c(NULL,NA,""))
-clean <- simpleaggregate(dt = messy, idcol = "ID", disregard=c(NULL,NA,""), prefkeep = 1, col = "all")
+messy <- data.frame(ID = c(1,1,2,3),
+  data = c("red", "yellow", "red", "green"))
+clean <- simpleaggregate(
+   dt = messy,
+   idcol = "ID",
+   disregard=c(NULL,NA,""))
+clean <- simpleaggregate(dt = messy,
+   idcol = "ID",
+   disregard=c(NULL,NA,""),
+   prefkeep = 1,
+   col = "all")
 
 }

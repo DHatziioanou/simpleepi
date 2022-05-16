@@ -13,7 +13,7 @@
 simpleencode <- function(x, case = "none"){
   x <- stringi::stri_encode(x, "", "UTF-8")
   x <- stringi::stri_trans_general(x, "name-any")
-  max_encoding <- as.data.frame(table(Encoding(Master_line_list_analysis_reflex$patient_forename)))
+  max_encoding <- as.data.frame(table(Encoding(x$patient_forename)))
   max_encoding <- max_encoding[max_encoding$Var1 !="unknown",]
   max_encoding <- max_encoding$Var1[max_encoding$Freq == max(max_encoding$Freq)]
   x <- iconv(x, from = as.character(max_encoding), to = "UTF-8")
@@ -22,7 +22,7 @@ simpleencode <- function(x, case = "none"){
   } else if(case == "lower"){
     x <- tolower(x)
   } else if (case == "title"){
-    x <- str_to_title(x)
+    x <- stringr::str_to_title(x)
   } else if (case != "none"){
     stop("font case not recognised")
   }

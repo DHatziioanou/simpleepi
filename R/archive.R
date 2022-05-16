@@ -2,21 +2,14 @@
 #' All files within folder are processed based on modification date.
 #'
 #' @param from Path to folder containing files to archive.
-#'
 #' @param to Folder name to archive files to. Default is Archive
-#'
 #' @param date File modification date from which files are to retained. Files prior to this date are archived. Default is Sys.Date().
-#'
 #' @param dir Optional logical argument; also archive folders or not. Default is FALSE.
-#'
 #' @param string Optional string pattern in files to archive.
-#'
 #' @param exclude Optional string pattern of files to exclude from archiving
-#'
 #' @param keep Optional retain archived files in original location and copy to archive folder. Default is FALSE.
 #'
 #' @return Moves older files based on date to an archive subfolder
-#'
 #'
 #' @author Diane Hatziioanou
 #'
@@ -25,14 +18,15 @@
 #' @examples
 #'
 #' # Move all files excluding folders to an Archive subfolder
-#' archive("C:..../analysis")
+#' # archive("C:..../analysis")
 #'
 #' # Move all files excluding folders to a different folder
-#' archive(from = "C:..../analysis", to = "C:.../backup/outputs")
+#' # archive(from = "C:..../analysis", to = "C:.../backup/outputs")
 #'
-#' # Copy all files and folders with the "output_version_x" in the file name which have not been modified in the past week to a different folder
-#' archive(from = "C:..../analysis", to = "C:.../backup/outputs", date = Sys.Date() -7,
-#'         string = "output_version_x", keep = T, dir = T)
+#' ## Copy all files and folders with the "output_version_x" in the file name
+#' ## which have not been modified in the past week to a different folder
+#' # archive(from = "C:..../analysis", to = "C:.../backup/outputs", date = Sys.Date() -7,
+#' #         string = "output_version_x", keep = T, dir = T)
 #'
 #'
 #' @export

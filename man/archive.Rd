@@ -40,14 +40,15 @@ All files within folder are processed based on modification date.
 \examples{
 
 # Move all files excluding folders to an Archive subfolder
-archive("C:..../analysis")
+# archive("C:..../analysis")
 
 # Move all files excluding folders to a different folder
-archive(from = "C:..../analysis", to = "C:.../backup/outputs")
+# archive(from = "C:..../analysis", to = "C:.../backup/outputs")
 
-# Copy all files and folders with the "output_version_x" in the file name which have not been modified in the past week to a different folder
-archive(from = "C:..../analysis", to = "C:.../backup/outputs", date = Sys.Date() -7,
-        string = "output_version_x", keep = T, dir = T)
+## Copy all files and folders with the "output_version_x" in the file name
+## which have not been modified in the past week to a different folder
+# archive(from = "C:..../analysis", to = "C:.../backup/outputs", date = Sys.Date() -7,
+#         string = "output_version_x", keep = T, dir = T)
 
 
 }

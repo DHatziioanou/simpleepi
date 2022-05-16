@@ -10,9 +10,17 @@
 #' @import data.table
 #'
 #' @examples
-#' messy <- data.frame(ID = c(1,1,2,3), data = c("red", "yellow", "red", "green"))
-#' clean <- simpleaggregate(dt = messy, idcol = "ID", disregard=c(NULL,NA,""))
-#' clean <- simpleaggregate(dt = messy, idcol = "ID", disregard=c(NULL,NA,""), prefkeep = 1, col = "all")
+#' messy <- data.frame(ID = c(1,1,2,3),
+#'   data = c("red", "yellow", "red", "green"))
+#' clean <- simpleaggregate(
+#'    dt = messy,
+#'    idcol = "ID",
+#'    disregard=c(NULL,NA,""))
+#' clean <- simpleaggregate(dt = messy,
+#'    idcol = "ID",
+#'    disregard=c(NULL,NA,""),
+#'    prefkeep = 1,
+#'    col = "all")
 #'
 #' @export
 simpleaggregate <- function(dt, idcol, disregard =NA, prefkeep=FALSE, col){

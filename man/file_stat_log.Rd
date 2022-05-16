@@ -20,11 +20,18 @@ file_stat_log(
 
 \item{input}{Cumulative dataset to be processed.}
 
+\item{inputname}{Identifier of new data such as file name or update date}
+
 \item{columns}{columns within input with value combinations to quantify.}
+
+\item{Date}{Optional; date of updated data. Default is system date.}
 }
 \value{
 
 }
 \description{
 Title Create and maintain a record of the number of rows in an input with each combination of values from columns of interest
+}
+\examples{
+
 }

@@ -9,11 +9,11 @@ simple_version_control(
   id,
   oldcol,
   newcol,
+  type = "list",
+  out = NULL,
   vccol = NULL,
   olddate = "original",
-  newdate = Sys.Date(),
-  type = "list",
-  out = NULL
+  newdate = Sys.Date()
 )
 }
 \arguments{
@@ -25,15 +25,15 @@ simple_version_control(
 
 \item{newcol}{Column of updated data}
 
-\item{vccol}{Optional name of existing version control column or name to assign to new one. If missing default uses common part of oldcol and newcol strings followed by _VC or uses oldcol if no common string.}
-
-\item{olddate}{date of previous data}
-
-\item{newdate}{date of new data}
-
 \item{type}{one of "list" or "flat"}
 
 \item{out}{one of "table" or "vector" or NULL. NULL returns table and writes to as rds}
+
+\item{vccol}{Optional; name of existing version control column or name to assign to new one. If missing default uses common part of oldcol and newcol strings followed by _VC or uses oldcol if no common string.}
+
+\item{olddate}{Optional; date of previous data. Default is "original".}
+
+\item{newdate}{Optional; date of new data. Default is system date.}
 }
 \value{
 returns vccol newdate with new changes; records 1st record per ID which is not NA then adds any changes to the oldcol values. In list format this is by adding new data to new rows for each ID and for flat format data in added to vccol in format olddate;oldcol and any changes are added as newdate;newcol
@@ -54,5 +54,12 @@ Title Compare two versions of data with the same length and mark new data in a v
 #    olddate = "old", newdate = "new",
 #    type = "list",
 #    out = "vector")
+
+# Process by chunk
+# ds <- split(dt, (as.numeric(rownames(dt))-1) \%/\% 10000000)
+# for (s in 1:length(ds)){
+# ds[[s]][, variable_VC := simple_version_control(dt = ds[[s]], id = "key", oldcol = "valueprev", newcol = "value", olddate = "20220503", newdate = refdate, type = "flat", out = "vector", vccol = "variable_VC")]
+# }
+# ds <- rbindlist(ds, use.names = T, fill = T)
 
 }

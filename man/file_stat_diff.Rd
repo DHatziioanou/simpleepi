@@ -7,10 +7,10 @@
 file_stat_diff(
   logs = file_stat_log,
   columns,
-  maxup = 1.25,
-  maxdown = 0,
   logpath = NULL,
   logname = NULL,
+  maxup = 1.25,
+  maxdown = 0,
   Date = Sys.Date()
 )
 }
@@ -19,13 +19,22 @@ file_stat_diff(
 
 \item{columns}{columns within log with quantified value combinations}
 
-\item{maxup}{Maximum permissible increase from previous log. Warning recorded if exceeded.}
+\item{logpath}{Path to log}
 
-\item{maxdown}{Maximum permissible decrease from previous log. Warning recorded if exceeded.}
+\item{logname}{Name of log}
+
+\item{maxup}{Optional; Maximum permissible increase from previous log. Warning recorded if exceeded. Default is 1.25}
+
+\item{maxdown}{Optional; Maximum permissible decrease from previous log. Warning recorded if exceeded. Default is 0.}
+
+\item{Date}{Optional; date to give processed log. Default is system date.}
 }
 \value{
 
 }
 \description{
 Title
+}
+\examples{
+
 }

@@ -15,7 +15,7 @@
 #' unknowns <- c(-1, NA)
 #' age_groups <- c('0-4', "5-10", "11-16", "17-24", "25-30", "31-39", "40-59", "60-79", "80+")
 #' age_column <- "Age"
-#' factor <- F
+#' factor <- FALSE
 #' intermediates <- "down"
 #' add_age_groups(df, age_column, age_groups, intermediates, unknowns, factor)
 #'
@@ -23,7 +23,7 @@
 add_age_groups <- function(df, age_column, age_groups, intermediates, unknowns, factor){
   if(missing(intermediates)) intermediates <- "down"
   if(missing(unknowns)) unknowns <- c("-1", NA)
-  if(missing(factor)) factor <- F
+  if(missing(factor)) factor <- FALSE
   if(missing(age_groups)) age_groups <- c('0-4', "5-10", "11-16", "17-24", "25-30", "31-39", "40-59", "60-79", "80+")
   if(missing(df)) stop("No data selected")
   if(missing(age_column)) stop("age_column")

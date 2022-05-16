@@ -118,10 +118,14 @@ setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
 #' @param logname string containing descriptive name of log. Processing date will be added to this after creation.
 #' @param input Cumulative dataset to be processed.
 #' @param columns columns within input with value combinations to quantify.
+#' @param inputname Identifier of new data such as file name or update date
+#' @param Date Optional; date of updated data. Default is system date.
 #'
 #' @return
 #'
 #' @examples
+#'
+#' @import data.table
 #' @export
 file_stat_log <- function(logpath = NULL, logname = NULL, input, inputname, columns, Date = Sys.Date()){
 
@@ -156,14 +160,19 @@ file_stat_log <- function(logpath = NULL, logname = NULL, input, inputname, colu
 #'
 #' @param logs log created using file_stat_log
 #' @param columns  columns within log with quantified value combinations
-#' @param maxup Maximum permissible increase from previous log. Warning recorded if exceeded.
-#' @param maxdown Maximum permissible decrease from previous log. Warning recorded if exceeded.
+#' @param logpath Path to log
+#' @param logname Name of log
+#' @param maxup Optional; Maximum permissible increase from previous log. Warning recorded if exceeded. Default is 1.25
+#' @param maxdown Optional; Maximum permissible decrease from previous log. Warning recorded if exceeded. Default is 0.
+#' @param Date  Optional; date to give processed log. Default is system date.
 #'
 #' @return
 #'
 #' @examples
+#'
+#' @import data.table
 #' @export
-file_stat_diff <- function(logs = file_stat_log, columns, maxup = 1.25, maxdown = 0, logpath = NULL, logname = NULL, Date = Sys.Date()){
+file_stat_diff <- function(logs = file_stat_log, columns, logpath = NULL, logname = NULL, maxup = 1.25, maxdown = 0, Date = Sys.Date()){
   logs[order(Date),]
   logs[, diff := (Count - shift(x = Count, n =1L, fill=0, type = "lag")), by = columns]
   # percent change from one period to the next

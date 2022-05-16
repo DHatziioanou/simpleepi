@@ -11,6 +11,8 @@
 #' @param return_type Use "all" to retrieve a data.frame with the file name, file path and modiciation date, "name" to retrieve the file name or "path" to retrieve the full file path. Default is "path". (optional)
 #'
 #' @param maxTries Maximum number of times to attempt file information retrieval. Default is 1. (optional)
+#' @param include.dirs list.files argument; Include directories
+#' @param recursive list.files argument; Look in subdirectories
 #'
 #' @return Returns the last ctime file path, file name or a data.frame with the file name, path and modification details as defined by return_type where size is the file size in bytes, mtime is the last modification time, ctime is last status change time, atime is last access time.
 #'
@@ -24,13 +26,17 @@
 #' file_path <- getlatestfile(file.path("...","subfolder","subfolder"))
 #'
 #' #Import the latest csv file
-#' df <- fread(getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "path", maxTries = 5))
+#' df <- fread(getlatestfile(folder_path = file.path("...","subfolder","subfolder"),
+#'  #  file_string = "csv",exclusions = "unwanted",
+#'  # return_type = "path", maxTries = 5))
 #'
 #' #Record the modification details
-#' Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"), file_string = "csv",exclusions = "unwanted", return_type = "all", maxTries = 5)$ctime
+#' Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"),
+#'  #  file_string = "csv",exclusions = "unwanted",
+#'  #  return_type = "all", maxTries = 5)$ctime
 #'
 #' @export
-getlatestfile <- function(folder_path, file_string, exclusions, return_type, maxTries){
+getlatestfile <- function(folder_path, file_string, exclusions, return_type, maxTries, include.dirs = FALSE ,recursive = FALSE){
 
   # Retrieve files
   if ( missing(maxTries)) {
@@ -43,12 +49,12 @@ getlatestfile <- function(folder_path, file_string, exclusions, return_type, max
     # Look for files
     if (missing(file_string)) {
       file <- list.files(path = file.path(folder_path),
-                         include.dirs = FALSE,
-                         recursive = FALSE)
+                         include.dirs = include.dirs,
+                         recursive = recursive)
     } else {
       file <- list.files(path = file.path(folder_path),
-                         include.dirs = FALSE,
-                         recursive = FALSE,
+                         include.dirs = include.dirs,
+                         recursive = recursive,
                          pattern = file_string)
     }
     # Keep looking up to maxTries

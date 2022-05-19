@@ -22,15 +22,16 @@
 simpledates <- function(x, char = NA, silent = TRUE){
    suppressWarnings(y <- try(as.Date(lubridate::parse_date_time(x, orders = c("dmy", "mdy", "ymd")))))
    # Manage excel formats
-   suppressWarnings(y[which(!is.na(x))[which(is.na(y))]] <- as.Date(as.numeric(x[which(!is.na(x))[which(is.na(y))]]), origin = "1899-12-30"))
+   f <- which(!is.na(x))[which(!is.na(x)) %in% which(is.na(y))]
+   if(length(f) !=0) suppressWarnings(y[f] <- as.Date(as.numeric(x[f]), origin = "1899-12-30"))
    # Label character and other failed formats
-   suppressWarnings(if(!is.na(char)) y[which(!is.na(x))[which(is.na(y))]] <- try(as.Date(lubridate::parse_date_time(char, orders = c("dmy", "mdy", "ymd")))))
+   f <- which(!is.na(x))[which(!is.na(x)) %in% which(is.na(y))]
+   if(length(f) !=0) suppressWarnings(if(!is.na(char)) y[f] <- try(as.Date(lubridate::parse_date_time(char, orders = c("dmy", "mdy", "ymd")))))
    # Failed to parse;
-   if(!silent) warning(paste(length(x[which(!is.na(x))[which(is.na(y))]]),"failed to parse;", paste(
-      ifelse(length(x[which(!is.na(x))[which(is.na(y))]])>10,
-             x[which(!is.na(x))[which(is.na(y))]][1:10],
-             x[which(!is.na(x))[which(is.na(y))]]),
-      collapse = ", ")))
+   if(!silent) {
+      f <- which(!is.na(x))[which(!is.na(x)) %in% which(is.na(y))]
+      warning(paste(length(f),"failed to parse;", ifelse(length(f)>10, paste(x[f][1:10], collapse = ", ", sep = ",") ,paste(x[f], collapse = ", ", sep = ","))))
+   }
    return(y)
 }
 

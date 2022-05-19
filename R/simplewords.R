@@ -34,7 +34,7 @@ simplewords <- function(x, case){
   } else if(case == "lower"){
     x <- tolower(x)
   } else if (case == "title"){
-    x <- str_to_title(x)
+    x <- stringr::str_to_title(x)
   } else {
     stop("font case not recognised")
   }

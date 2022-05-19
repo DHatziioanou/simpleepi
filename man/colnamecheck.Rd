@@ -16,7 +16,7 @@ Returns list with same = duplicates in same object, other = duplicates between o
 Title List duplicate column names in 1 or more objects. Disregards case.
 }
 \examples{
-colnamecheck(df)
-colnamecheck(list(df1, df2, df3))
+# colnamecheck(df)
+# colnamecheck(list(df1, df2, df3))
 
 }

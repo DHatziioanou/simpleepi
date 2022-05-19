@@ -5,8 +5,8 @@
 #' @return Returns list with same = duplicates in same object, other = duplicates between objects
 #'
 #' @examples
-#' colnamecheck(df)
-#' colnamecheck(list(df1, df2, df3))
+#' # colnamecheck(df)
+#' # colnamecheck(list(df1, df2, df3))
 #'
 #' @export
 colnamecheck <- function(x) {

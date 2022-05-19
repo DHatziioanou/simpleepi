@@ -4,10 +4,12 @@
 \alias{simpledates}
 \title{Format dates}
 \usage{
-simpledates(x)
+simpledates(x, char = NA, silent = TRUE)
 }
 \arguments{
 \item{x}{dates to format. Takes a single date, vectors or a column of data.}
+
+\item{char}{valut to return for character strings. Use 00000002 to return lable value of "1900-01-01"}
 }
 \value{
 

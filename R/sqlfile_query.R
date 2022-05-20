@@ -12,7 +12,7 @@
 #'
 #'
 #' @export
-sqlfile_query <- function(server = load_data$CVD19_Server, database ="W126_Covid_OST_Surveillance", sqlfile  = file.path("R", "SQL", "CVD19_episode_var_QAall.sql"), name = "df"){
+sqlfile_query <- function(server, database, sqlfile, name = "df"){
   start <- Sys.time()
   if (!requireNamespace("odbc", quietly = TRUE)) {
     stop("package odbc required")
@@ -25,7 +25,7 @@ sqlfile_query <- function(server = load_data$CVD19_Server, database ="W126_Covid
   con <- try(odbc::dbConnect(odbc::odbc(),
                              Driver="SQL Server",
                              Server = server,
-                             Database =database,
+                             Database = database,
                              Trusted_Connection="True"))
   if(class(con) =="try-error") {
     stop("Login failed. Check you have permission to access this database.")

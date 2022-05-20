@@ -4,12 +4,7 @@
 \alias{sqlfile_query}
 \title{Title Use sql query file to query database via odbc}
 \usage{
-sqlfile_query(
-  server = load_data$CVD19_Server,
-  database = "W126_Covid_OST_Surveillance",
-  sqlfile = file.path("R", "SQL", "CVD19_episode_var_QAall.sql"),
-  name = "df"
-)
+sqlfile_query(server, database, sqlfile, name = "df")
 }
 \arguments{
 \item{server}{Server holidng data}

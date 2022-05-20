@@ -1,15 +1,16 @@
 #' Title Manage duplicates in line list
 #'
-#' @param x
-#' @param namecols
-#' @param dobcol
-#' @param pccol
-#' @param idcols
-#' @param pc_format
+#' @param x Data
+#' @param namecols name columns
+#' @param dobcol dob column
+#' @param pccol postcode column
+#' @param idcols id columns
+#' @param pc_format postcode format
 #'
 #' @return
 #'
 #' @examples
+#' # simplededup()
 #'
 #' @export
 simplededup <- function(x, namecols = c("first_name","surname"), dobcol = "date_of_birth", pccol = "postcode", idcols = c("nhs_number"), pc_format = "lnl"){

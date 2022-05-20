@@ -7,8 +7,6 @@
 #'
 #' @return retrieves data to .GlobalEnv
 #'
-#' @importFrom(glue, "glue")
-#' @importFrom(odbc, "odbcListDrivers", "dbConnect", "dbGetQuery", "dbDisconnect")
 #' @examples
 #' # sqlfile_query(server = "ser.path", database ="W001", sqlfile  = "query.sql", name = "df")
 #'

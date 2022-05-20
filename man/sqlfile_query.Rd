@@ -21,12 +21,13 @@ sqlfile_query(
 \item{name}{object to give retrieved data}
 }
 \value{
-
+retrieves data to .GlobalEnv
 }
 \description{
 Title Use sql query file to query database via odbc
 }
 \examples{
-sqlfile_query(server = "ser.path", database ="W001", sqlfile  = "query.sql", name = "df")
+# sqlfile_query(server = "ser.path", database ="W001", sqlfile  = "query.sql", name = "df")
+
 
 }

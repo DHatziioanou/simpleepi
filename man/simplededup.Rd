@@ -14,7 +14,17 @@ simplededup(
 )
 }
 \arguments{
-\item{pc_format}{}
+\item{x}{Data}
+
+\item{namecols}{name columns}
+
+\item{dobcol}{dob column}
+
+\item{pccol}{postcode column}
+
+\item{idcols}{id columns}
+
+\item{pc_format}{postcode format}
 }
 \value{
 
@@ -23,5 +33,6 @@ simplededup(
 Title Manage duplicates in line list
 }
 \examples{
+# simplededup()
 
 }

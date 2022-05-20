@@ -21,12 +21,11 @@ sqlfile_query <- function(server, database, sqlfile, name = "df"){
     stop("package glue required")
   }
   if(!("SQL Server" %in% odbc::odbcListDrivers()$name)) stop("SQL Server driver missing. Install SQLSRV32.DLL then try again")
-  q <- glue::glue(paste(readLines(sqlfile), collapse = "\r\n"))
+  suppressWarnings(q <- glue::glue(paste(readLines(sqlfile), collapse = "\r\n")))
   con <- try(odbc::dbConnect(odbc::odbc(),
-                             Driver="SQL Server",
-                             Server = server,
-                             Database = database,
-                             Trusted_Connection="True"))
+                             driver="SQL Server",
+                             server = server,
+                             database = database))
   if(class(con) =="try-error") {
     stop("Login failed. Check you have permission to access this database.")
   } else if(con@info$dbname == Database) message("Connected")

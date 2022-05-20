@@ -5,14 +5,23 @@
 #' @param sqlfile sql query file
 #' @param name object to give retrieved data
 #'
-#' @return
+#' @return retrieves data to .GlobalEnv
 #'
+#' @importFrom(glue, "glue")
+#' @importFrom(odbc, "odbcListDrivers", "dbConnect", "dbGetQuery", "dbDisconnect")
 #' @examples
-#' sqlfile_query(server = "ser.path", database ="W001", sqlfile  = "query.sql", name = "df")
+#' # sqlfile_query(server = "ser.path", database ="W001", sqlfile  = "query.sql", name = "df")
+#'
 #'
 #' @export
 sqlfile_query <- function(server = load_data$CVD19_Server, database ="W126_Covid_OST_Surveillance", sqlfile  = file.path("R", "SQL", "CVD19_episode_var_QAall.sql"), name = "df"){
   start <- Sys.time()
+  if (!requireNamespace("odbc", quietly = TRUE)) {
+    stop("package odbc required")
+  }
+  if (!requireNamespace("glue", quietly = TRUE)) {
+    stop("package glue required")
+  }
   if(!("SQL Server" %in% odbc::odbcListDrivers()$name)) stop("SQL Server driver missing. Install SQLSRV32.DLL then try again")
   q <- glue::glue(paste(readLines(sqlfile), collapse = "\r\n"))
   con <- try(odbc::dbConnect(odbc::odbc(),

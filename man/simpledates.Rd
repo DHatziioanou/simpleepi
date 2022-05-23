@@ -9,21 +9,23 @@ simpledates(x, char = NA, silent = TRUE)
 \arguments{
 \item{x}{dates to format. Takes a single date, vectors or a column of data.}
 
-\item{char}{valut to return for character strings. Use 00000002 to return lable value of "1900-01-01"}
+\item{char}{value to return for character strings. Use historic date values to manage categories where date not known but label required for downstream processing.}
 }
 \value{
-
+Returns input formatted as Date
 }
 \description{
 Format dates either from a string format or an excel exported numeric format
 }
 \examples{
 # Format a single string into a date
-date <- fix_dates("2020739")
+# date <- simpledates("2020739")
 
-# Format a data.frame column into a consitent date format
-df$column <- fix_dates(df$column)
+# Format a data.frame column into a consistent date format
+# df$column <- simpledates(df$column)
 
 # Format all column from within a data.table where the columns contain the string date into date format
-for (col in (names(dt)[grepl("date", names(dt))])){dt[,(col) := simpledates(dt[,get(col)])]}
+# for (col in (names(dt)[grepl("date", names(dt))])){
+#   dt[,(col) := simpledates(dt[,get(col)])]
+#  }
 }

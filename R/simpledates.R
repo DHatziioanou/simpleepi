@@ -6,18 +6,20 @@
 #' @param x dates to format. Takes a single date, vectors or a column of data.
 #' @param char value to return for character strings. Use historic date values to manage categories where date not known but label required for downstream processing.
 #'
-#' @return
+#' @return Returns input formatted as Date
 #' @import data.table
 #'
 #' @examples
 #' # Format a single string into a date
-#' date <- fix_dates("2020739")
+#' # date <- simpledates("2020739")
 #'
-#' # Format a data.frame column into a consitent date format
-#' df$column <- fix_dates(df$column)
+#' # Format a data.frame column into a consistent date format
+#' # df$column <- simpledates(df$column)
 #'
 #' # Format all column from within a data.table where the columns contain the string date into date format
-#' for (col in (names(dt)[grepl("date", names(dt))])){dt[,(col) := simpledates(dt[,get(col)])]}
+#' # for (col in (names(dt)[grepl("date", names(dt))])){
+#' #   dt[,(col) := simpledates(dt[,get(col)])]
+#' #  }
 #'@export
 simpledates <- function(x, char = NA, silent = TRUE){
    if(any(class(x) %in% c("POSIXct", "POSIXt"))) {

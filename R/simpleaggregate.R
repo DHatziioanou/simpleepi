@@ -25,7 +25,7 @@
 #'    col = "all")
 #'
 #' @export
-simpleaggregate <- function(dt, idcol, reformat = TRUE, disregard = c(NA, ""), prefkeep = FALSE, col){
+simpleaggregate <- function(dt, idcol, reformat = TRUE, disregard = c(NA, ""), prefkeep = FALSE, col=NULL){
   dt <- data.table::data.table(dt, stringsAsFactors = FALSE)
   # duplicates
   dup <- dt[base::duplicated(get(idcol)) | base::duplicated(get(idcol), fromLast = T), ]
@@ -44,24 +44,26 @@ simpleaggregate <- function(dt, idcol, reformat = TRUE, disregard = c(NA, ""), p
   }
   # Convert previous Date columns back to Date format
   if(reformat){
-  cl <- sapply(dt,class)
-  dc <- colnames(dt)[grepl("Date", cl)]
-  if (length(dc) > 0) { dup[ , (dc) := lapply(.SD, function(x) {simpledates(as.character(x))}), .SDcols = dc] }
-  pc <- colnames(dt)[grepl("POSIXct", cl)]
-  if (length(pc) > 0) { dup[ , (pc) := lapply(.SD, function(x) {as.POSIXct(as.character(x))}), .SDcols = pc] }
-  oct <- colnames(dt)[grepl("octmode", cl)]
-  if (length(oct) > 0) { dup[ , (oct) := lapply(.SD, function(x) {as.octmode(as.numeric(x))}), .SDcols = oct] }
-  i64 <- colnames(dt)[grepl("integer64", cl)]
-  if (length(i64) > 0) { dup[ , (i64) := lapply(.SD, function(x) {bit64::as.integer64(as.numeric(x))}), .SDcols = i64] }
-  inorm <- colnames(dt)[cl=="integer"]
-  if (length(inorm) > 0) { dup[ , (inorm) := lapply(.SD, function(x) {as.integer(as.numeric(x))}), .SDcols = inorm] }
-  # Check all classes converted
-  new_cl <- sapply(dup,class)
-  dicol <- cl[cl != new_cl]
-  if(length(dicol)>0) warning(paste("Column classes not covered;", paste(unique(dicol), collapse = ", ")))
+    cl <- sapply(dt,class)
+    dc <- colnames(dt)[grepl("Date", cl)]
+    if (length(dc) > 0) { dup[ , (dc) := lapply(.SD, function(x) {simpledates(as.character(x))}), .SDcols = dc] }
+    pc <- colnames(dt)[grepl("POSIXct", cl)]
+    if (length(pc) > 0) { dup[ , (pc) := lapply(.SD, function(x) {as.POSIXct(as.character(x))}), .SDcols = pc] }
+    oct <- colnames(dt)[grepl("octmode", cl)]
+    if (length(oct) > 0) { dup[ , (oct) := lapply(.SD, function(x) {as.octmode(as.numeric(x))}), .SDcols = oct] }
+    i64 <- colnames(dt)[grepl("integer64", cl)]
+    if (length(i64) > 0) { dup[ , (i64) := lapply(.SD, function(x) {bit64::as.integer64(as.numeric(x))}), .SDcols = i64] }
+    inorm <- colnames(dt)[cl=="integer"]
+    if (length(inorm) > 0) { dup[ , (inorm) := lapply(.SD, function(x) {as.integer(as.numeric(x))}), .SDcols = inorm] }
+    lg <- colnames(dt)[cl=="logical"]
+    if (length(lg) > 0) { dup[ , (lg) := lapply(.SD, function(x) {as.logical(x)}), .SDcols = lg] }
+    # Check all classes converted
+    new_cl <- sapply(dup,class)
+    dicol <- cl[cl != new_cl]
+    if(length(dicol)>0) warning(paste("Column classes not covered;", paste(unique(dicol), collapse = ", ")))
   } else {
     dt[ , (names(dt)) := lapply(.SD, function(x) {as.character(x)}), .SDcols = names(dt)]
-}
+  }
   dt <- dt[!(get(idcol) %in% dup[,get(idcol)]),]
   dt <- data.table::rbindlist(list(dt, dup), use.names = T, fill = T)
   data.table::setDF(dt)

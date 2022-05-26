@@ -1,10 +1,16 @@
 #' Format dates
 #'
-#'
-#' Format dates either from a string format or an excel exported numeric format
+#' Function will leave POSIX dates and attempt to convert dates
+#' which are in string format, excel exported numeric format or
+#' numeric format into the "best guess" date. Where vector provided
+#' with dates in more than one format will attempt to convert them all.
 #'
 #' @param x dates to format. Takes a single date, vectors or a column of data.
-#' @param char value to return for character strings. Use historic date values to manage categories where date not known but label required for downstream processing.
+#' @param char Optional value to return for character strings;
+#' Default is NA. Use historic date values to manage categories
+#'  where date not known but label required for downstream processing.
+#' @param silent Optional suppress warning of occurrences which failed to parse.
+#' Default is TRUE.
 #'
 #' @return Returns input formatted as Date
 #' @import data.table
@@ -16,7 +22,8 @@
 #' # Format a data.frame column into a consistent date format
 #' # df$column <- simpledates(df$column)
 #'
-#' # Format all column from within a data.table where the columns contain the string date into date format
+#' # Format all column from within a data.table
+#' where the columns contain the string date into date format
 #' # for (col in (names(dt)[grepl("date", names(dt))])){
 #' #   dt[,(col) := simpledates(dt[,get(col)])]
 #' #  }

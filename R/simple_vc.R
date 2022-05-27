@@ -29,7 +29,7 @@
 #' # Process by chunk
 #' # ds <- split(dt, (as.numeric(rownames(dt))-1) %/% 10000000)
 #' # for (s in 1:length(ds)){
-#' # ds[[s]][, variable_VC := simple_version_control(dt = ds[[s]], id = "key", oldcol = "valueprev", newcol = "value", olddate = "20220503", newdate = refdate, type = "flat", out = "vector", vccol = "variable_VC")]
+#' # ds[[s]][, variable_VC := simple_version_control(dt = ds[[s]], id = "key", oldcol = "valueprev", newcol = "value", olddate = "20220503", newdate = "20220510", type = "flat", out = "vector", vccol = "variable_VC")]
 #' # }
 #' # ds <- rbindlist(ds, use.names = T, fill = T)
 #'
@@ -95,7 +95,7 @@ setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
 
 
   data.table::setattr(a$VC, "Processed", append(x = attributes(a$VC)$Processed, values = Sys.time(), after = F))
-  data.table::setattr(a$VC, "versions", append(x = attributes(a$VC)$versions, values = refdate, after = F))
+  data.table::setattr(a$VC, "versions", append(x = attributes(a$VC)$versions, values = newdate, after = F))
   data.table::setnames(a, "VC", vccol)
   end <- Sys.time(); runtime = end -start
   cat(paste(vccol, "version control took", round(runtime, 2), attr(runtime, "units")))

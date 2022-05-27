@@ -12,16 +12,37 @@ devtools::install_github("DHatziioanou/simpleepi")
 ## Deal with CRAN packages
 install_load()
 
-## File management of old files into an archive folder
-archive()
+## Find most recently modified file
+Automated processing often involves use of routinely updated files from various sources which may or may not be saved with consistent file names. In these instances as long as there is a part of the file names which is consistent this function retrieves the latest file where the consistent string pattern is expected and can return either the file name or the file path for automated import into R.  
 
-## Get the latest modified file
-getlatestfile()
+For example this will find the most recent test data file from path C:\\temp and its sub-folders and return a data.frame with the file name, full path, and other characteristics such as creation and modification times;  
+
+    testdata_file <- getlatestfile(folder_path = "C:\\temp", file_string = "test_data.csv", return_type = "all", recursive = TRUE)
+
+If only the path or file name is needed this can be done by setting return_type to path or name respectively  
+
+    testdata_path <- getlatestfile(folder_path = "C:\\temp", file_string = "test_data.csv", return_type = "path", recursive = TRUE)
+
+  
+A useful feature of this function is the ability to increase the number of times the file search is performed with the `maxTries` argument. This can overcome patchy server connectivity.  
 
 
-## Check file sizes and creation/modification dates are identical
-simplefilecheck()
+## Check if file size, creation/modification dates identical
+Keeping on top of whether you have the latest version of multiple named files can be time consuming. If you need to check whether a file has been updated before you use it or that it has successfully copied to a location in its entirety `simplefilecheck` can help by checking that a file is present in two locations and that it has the same file size and creation plus modifications files.  
 
+If the two files have the same size, creation and modification times the function returns TRUE, otherwise it returns FALSE.  
+
+This helps build automated file transfer and use QC steps into pipelines. Example;
+
+    check <- simplefilecheck(origin, dest)
+    if(!isTRUE(check)){
+      robocopy(origin, dest, force_overwrite = T)
+      check <- simplefilecheck(origin, dest)
+      if(check) message(paste0("Retrieved ", filename))
+    } else { 
+    message(paste0("Already have ", filename, " with matching file size, creation and modification dates."))}
+    }
+  
 
 ## Import data
 simpleimport()
@@ -63,7 +84,8 @@ replicates_rmv()
 ## Remove replicate rows
 remove_replicates()
 
-## Aggregate replicates to a single row
+## Create a line list where each row holds data for one unique ID  
+
 simpleaggregate()
 
 ## Collect looped itterations of data
@@ -83,3 +105,7 @@ colnamecheck(list(df1,df2))
 
 ## Compare update of data across columns
 simple_version_control()
+
+
+## File management of old files into an archive folder
+archive()

@@ -4,16 +4,26 @@
 \alias{simpleaggregate}
 \title{Title aggregate a data.frame or data.table to have 1 row per id column}
 \usage{
-simpleaggregate(dt, idcol, disregard = NA, prefkeep = FALSE, col)
+simpleaggregate(
+  dt,
+  idcol,
+  reformat = TRUE,
+  disregard = c(NA, ""),
+  prefkeep = FALSE,
+  col
+)
 }
 \arguments{
 \item{dt}{data}
 
 \item{idcol}{column with unique identifiers to aggregate by}
 
-\item{disregard}{Optional; values to remove from aggregation eg NA, NULL, 0, -1. Default is NA.}
+\item{reformat}{Optional; TRUE (default) reformats to original column classes. FALSE returns all as character. Use FALSE to avoid losing different dates per ID.}
 
-\item{prefkeep}{Optional; Where columns end up with more than one value should the first value be saved. Default is FALSE.}
+\item{disregard}{Optional; cell values to remove prior to aggregation
+eg NA, NULL, 0, -1. Default; NA, "".}
+
+\item{prefkeep}{Optional; Keep 1st record value where duplicate record values differ. Default; FALSE.}
 
 \item{col}{Optional; Columns to process with prefkeep. "all" will process all columns}
 }

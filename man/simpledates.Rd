@@ -4,24 +4,37 @@
 \alias{simpledates}
 \title{Format dates}
 \usage{
-simpledates(x)
+simpledates(x, char = NA, silent = TRUE)
 }
 \arguments{
 \item{x}{dates to format. Takes a single date, vectors or a column of data.}
+
+\item{char}{Optional value to return for character strings;
+Default is NA. Use historic date values to manage categories
+ where date not known but label required for downstream processing.}
+
+\item{silent}{Optional suppress warning of occurrences which failed to parse.
+Default is TRUE.}
 }
 \value{
-
+Returns input formatted as Date
 }
 \description{
-Format dates either from a string format or an excel exported numeric format
+Function will leave POSIX dates and attempt to convert dates
+which are in string format, excel exported numeric format or
+numeric format into the "best guess" date. Where vector provided
+with dates in more than one format will attempt to convert them all.
 }
 \examples{
 # Format a single string into a date
-date <- fix_dates("2020739")
+# date <- simpledates("2020739")
 
-# Format a data.frame column into a consitent date format
-df$column <- fix_dates(df$column)
+# Format a data.frame column into a consistent date format
+# df$column <- simpledates(df$column)
 
-# Format all column from within a data.table where the columns contain the string date into date format
-for (col in (names(dt)[grepl("date", names(dt))])){dt[,(col) := simpledates(dt[,get(col)])]}
+# Format all column from within a data.table
+where the columns contain the string date into date format
+# for (col in (names(dt)[grepl("date", names(dt))])){
+#   dt[,(col) := simpledates(dt[,get(col)])]
+#  }
 }

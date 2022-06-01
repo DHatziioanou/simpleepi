@@ -12,6 +12,11 @@ devtools::install_github("DHatziioanou/simpleepi")
 ## Deal with CRAN packages
 install_load()
 
+## Execute sql file query by odbc to SQL database  
+Run custom sql queries from .sql files with custom connections to SQL server databases. This saves the query data directly to the global environment in an object named using the `name` argument.
+
+    sqlfile_query(server = "ser.path", database ="W001", sqlfile  = "query.sql", name = "df")
+
 ## Find most recently modified file
 Automated processing often involves use of routinely updated files from various sources which may or may not be saved with consistent file names. In these instances as long as there is a part of the file names which is consistent this function retrieves the latest file where the consistent string pattern is expected and can return either the file name or the file path for automated import into R.  
 
@@ -56,8 +61,11 @@ simplenumber()
 ## Add isoweeks
 simpleIsoweek()  
 
-## make age groups
-add_age_groups()    
+## Add age groups
+Group age data into any custom discrete age groups and mark where age not known using the `unknowns` argument. Can chose to return either a character vector or a factor using the `factor` argument.  
+
+    df$group <- age_groups(df$Age, groups = c('0-17', "18-69", "60-80+"), unknowns = c(-1, NA, "Unknown", "not reported"), factor=TRUE)
+    
 
 ## add ONS populations if needed
 ONS_age_groups()   

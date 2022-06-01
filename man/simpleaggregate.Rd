@@ -10,7 +10,7 @@ simpleaggregate(
   reformat = TRUE,
   disregard = c(NA, ""),
   prefkeep = FALSE,
-  col
+  col = NULL
 )
 }
 \arguments{

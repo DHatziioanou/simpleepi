@@ -16,7 +16,8 @@
 #' @export
 age_groups <- function(age, groups= c('0-4', "5-10", "11-16", "17-24", "25-30", "31-39", "40-59", "60-79", "80+"), unknowns = c("-1", NA), factor = FALSE){
   if(missing(age)) stop("No age data")
-  a <- data.table::data.table(do.call(rbind, base::strsplit(groups, "-", fixed=TRUE)))
+  a <-data.table::tstrsplit(groups, "-", fill=NA, type.convert=F, names=c("V1","V2"), fixed=TRUE)
+  a <- data.table::data.table(V1 = a$V1, V2 = a$V2)
   a[,V1 := as.numeric(gsub("+", "", V1, fixed = T))][,V2:=as.numeric(gsub("+", "", V2, fixed = T))][grep("+",groups, fixed = T),V2 := Inf]
   a <- cbind(a, groups)
   out <- sapply(age, FUN = function(x) a[V1 <= x & V2>=x,]$groups, simplify = TRUE)

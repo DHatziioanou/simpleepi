@@ -117,8 +117,26 @@ simplewrite(df)
 ## Copy files to shared location
 archive()
 
-## Open File Explorer at path to check files
-simpleopenfolder(path)
+## Open File Explorer or files from path
+Directly open files or folders used in R processes using file or folder path.  
+
+Example; for a list of paths
+
+    paths <- list(in_folder1 = "C:/apath/path1",
+                  in_folder2 = "C:/apath/path2",
+                  in_file1 = "C:/apath/path3/file1.csv",
+                  out_folder ="C:/apath/path6",
+                  out_file1 = "C:/apath/path6/out.csv",
+                  out_plot1 = "C:/apath/path6/figure1.png")
+
+Open a single path  
+
+    simpleopen(path = paths$out_plot1)
+   
+Open all files and folders listed in `paths` object
+
+    lapply(paths, function(x) simpleopen(x))
+
 
 ## Check if objects have duplicated column names
 colnamecheck(list(df1,df2))

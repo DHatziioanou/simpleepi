@@ -5,7 +5,7 @@
 #' @param oldcol Column of historic data
 #' @param newcol Column of updated data
 #' @param type one of "list" or "flat"
-#' @param out one of "table" or "vector" or NULL. NULL returns table and writes to as rds
+#' @param out one of "table" or "vector" or NULL. NULL returns table and writes to rds file
 #' @param vccol Optional; name of existing version control column or name to assign to new one. If missing default uses common part of oldcol and newcol strings followed by _VC or uses oldcol if no common string.
 #' @param olddate Optional; date of previous data. Default is "original".
 #' @param newdate  Optional; date of new data. Default is system date.

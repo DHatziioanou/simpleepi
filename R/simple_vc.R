@@ -111,6 +111,51 @@ setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
   }
 }
 
+#' Title Get a snapshot of previous database contents
+#'
+#' @param x Flat version control column made from simple_version_control
+#' @param date date of snapshot
+#'
+#' @return
+#'
+#' @examples
+#' # date <- "20220529"
+#' # col <- "column_VC"
+#' # df$Historic20220529 <- simple_vc_snapshot(x = df$data_VC, date = "20220529")
+#' @import data.table
+#' @export
+simple_vc_snapshot <- function(x = test$genotyping_variant_VC, date){
+  vc <- attributes(x)$versions
+  if(!any(date %in% vc)) stop(paste0("no version control for ",date,". Use attributes(x) for available dates"))
+  fut <- vc[simpledates(vc) > simpledates(date)]
+  y <- strsplit(as.character(x), ',')
+  out <- sapply(y, FUN = function(x) {
+    if(length(x)==0){
+      x <- NA
+    } else if(all(length(x)==1 & is.na(x))) {
+      x <- NA
+    } else{
+      d <- grep(date,x,fixed = T)
+      if(length(d)>0) {
+        x <- x[d]
+      } else {
+        # remove fut
+        f <- grep(paste0(fut,collapse = "|"),x,fixed = T)
+        if(length(f)>0) {
+          x <- x[-f]
+          if(length(x)==0) x <- NA
+        }
+        # get last
+        x <-x[length(x)]
+      }
+      if(!is.na(x)) x <- sapply(strsplit(x, split = ";"), tail, 1)
+    }
+  }, simplify = FALSE)
+  out[sapply(out,function(x)is.null(x))] <- NA
+  out <- unlist(out)
+  out[grep("NA",out)]<-NA
+  return(out)
+}
 
 #' Title Create and maintain a record of the number of rows in an input with each combination of values from columns of interest
 #'
@@ -185,3 +230,5 @@ file_stat_diff <- function(logs = file_stat_log, columns, logpath = NULL, lognam
   }
   return(logs)
 }
+
+

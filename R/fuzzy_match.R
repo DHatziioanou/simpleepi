@@ -33,15 +33,15 @@
 #'
 #' @examples
 #' # Prepare database to include the required columns and anythign else to be appended to the custom line list
-#' db <- db[,c("patient_surname", "patient_forename", "patient_date_of_birth", "Postcode", "specimen_date", "Result")]
-#' LL <- LL[,c("patient_surname", "patient_forename", "patient_date_of_birth", "Postcode", "specimen_date, "ETHNICITY")]
+#' # db <- db[,c("patient_surname", "patient_forename", "patient_date_of_birth", "Postcode", "specimen_date", "Result")]
+#' # LL <- LL[,c("patient_surname", "patient_forename", "patient_date_of_birth", "Postcode", "specimen_date, "ETHNICITY")]
 #'
 #' # Create lists of the objects and columns to fuzzy match
-#' lla <- list(ob = custom_LL, sn = "SURNAME", fn = "FORENAMES", dob = "BIRTHDATE", pc = "Postcode")
-#' dba <- list(ob = db, sn = "patient_surname", fn = "patient_forename", dob = "patient_date_of_birth", pc = "Postcode")
+#' # lla <- list(ob = custom_LL, sn = "SURNAME", fn = "FORENAMES", dob = "BIRTHDATE", pc = "Postcode")
+#' # dba <- list(ob = db, sn = "patient_surname", fn = "patient_forename", dob = "patient_date_of_birth", pc = "Postcode")
 #'
 #' # Create a new line list with the database information appended
-#' Positives <- fuzzy_match(lla, dba, stringency = F, pc_format = "lnl", case_column = "ID")
+#' # Positives <- fuzzy_match(lla, dba, stringency = F, pc_format = "lnl", case_column = "ID")
 #'
 #' @export
 fuzzy_match <- function(lla, dba, stringency, pc_format, case_column, parallel){

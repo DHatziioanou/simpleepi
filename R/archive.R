@@ -75,3 +75,25 @@ archive <- function(from, to = "Archive", date = Sys.Date(), dir = FALSE, string
          file.rename(from = files$paths, to = file.path(from, to, files$files))))
     }
 }
+
+#' Title  Determine need to backup files based on simplefilecheck, copy any which fail test
+#'
+#' @param silent
+#'
+#' @return
+#'
+#' @param from  folder path with most up to date data
+#' @param to    folder path where backups stored
+#' @param silent Optional; disaply messages
+#'
+#' @examples
+#' backup(from ="path1", to = "path2")
+#'
+#' @export
+backup <- function(from, to, silent = FALSE){
+  f <- list.files(from, full.names = T, recursive = T)
+  f_ok <- lapply(f, function(c) simplefilecheck(x = c, y =file.path(from, basename(c))))
+  td <-sum(unlist(f_ok))
+  if(!silent) message(paste0(td, " files being copied"))
+  if(any(f_ok == FALSE)) { lapply(f[f_ok==FALSE], function(r) file.copy(from = r, to = x, overwrite = TRUE, recursive = TRUE, copy.mode = TRUE, copy.date = TRUE))}
+}

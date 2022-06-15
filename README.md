@@ -31,7 +31,16 @@ Run custom sql queries from .sql files with custom connections to SQL server dat
 
     sqlfile_query(server = "ser.path", database ="W001", sqlfile  = "query.sql", name = "df")
     
+#### Additional options for extracting elements from queries;       
+Remove single and multi-line comments from sql query files or strings.  
+
+    sql_nocomments(sqlfile,q)
     
+    
+Extract names of tables from sql query file or string. 
+ 
+    sqlfile_tables(sqlfile, q, nameonly) 
+
 
 ## Manage data
 

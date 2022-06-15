@@ -54,7 +54,72 @@ sqlfile_query <- function(server, database, sqlfile, name = "df"){
   message(paste("Run time",round(Sys.time()-start, 3), units(Sys.time()-start), sep = " "))
 }
 
+#' Title Extract names of tables from sql query
+#'
+#' @param sqlfile sql query file
+#' @param q  query from sql file
+#' @param nameonly Optional; list only table/view name. Default is FALSE
+#'
+#' @return table names from query
+#'
+#' @examples
+#' # sqlfile_tables(q = query1)
+#' # sqlfile_tables(sqlfile = "query.sql")
+#'
+#' @export
+sqlfile_tables <- function(sqlfile=NULL, q=NULL, nameonly = FALSE){
+  if(is.null(q)) {
+    q <- sqlfile_read(sqlfile)
+  }
+  q <- sql_nocomments(q = as.character(q))
+  x <- unlist(strsplit(q, split = "\r\n", fixed = T))
+  # remove in line comments
+  x <- gsub("\\--.*","",x)
+  # remove multiline comments
+  com <- strsplit(q, split = "/*", fixed = T)
+  com <- unlist(lapply(com, function(x) strsplit(x, split = "*/", fixed = T)))
+  com <- com[!(substr(com, 1,1) == "*" & substr(com, nchar(com),nchar(com)) == "*")]
+  # find tables
+  n <- lapply(x, function(x) grep("FROM",x,ignore.case = T))
+  #n <- unlist(n)+1
+  y <- x[which(n>0)]
+  y2 <- strsplit(y, split = " ", fixed = T)
+  n2 <- lapply(y2, function(x) grep("FROM",x,ignore.case = T))
+  for(i in 1:length(y2)){
+    y2[i] <- y2[[i]][n2[[i]]+1]
+  }
+  y2 <- unlist(y2)
+  if(any(grepl("[", y2,fixed = T))){
+    y2[grepl("[", y2,fixed = T)] <- tail(unlist( strsplit(x = gsub(".", " ",y2[grepl("[", y2,fixed = T)], fixed = T), split = " ")),1)
+    y2[grepl("[", y2,fixed = T)] <- gsub("]", "",gsub("[", "",y2[grepl("[", y2,fixed = T)],fixed = T),fixed = T)
+  }
+  return(y2)
+}
 
 
-
-
+#' Title Remove comments from SQL files
+#'
+#' @param sqlfile  sql query file
+#' @param q   query from sql file
+#'
+#' @return query with comments removed
+#'
+#' @examples
+#' # sqlfile_tables(sqlfile = "sqlfile.sql")
+#' # sqlfile_tables(q = q1)
+#'
+#' @export
+sql_nocomments <- function(sqlfile=NULL, q=NULL) {
+  if(is.null(q)) {
+    q <- sqlfile_read(sqlfile)
+  }
+  x <- unlist(strsplit(q, split = "\r\n", fixed = T))
+  # remove in line comments
+  x <- gsub("\\--.*","",x)
+  # remove multiline comments
+  com <- strsplit(q, split = "/*", fixed = T)
+  com <- unlist(lapply(com, function(x) strsplit(x, split = "*/", fixed = T)))
+  com <- com[!(substr(com, 1,1) == "*" & substr(com, nchar(com),nchar(com)) == "*")]
+  com <- glue::glue(paste(com, collapse = "\r\n"))
+  return(com)
+}

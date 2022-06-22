@@ -39,5 +39,6 @@ simplewords <- function(x, case){
     stop("font case not recognised")
   }
   x <- trimws(x)
+  x <- gsub("  ","", x)
   return(x)
 }

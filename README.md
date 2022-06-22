@@ -144,7 +144,15 @@ Open all files and folders listed in `paths` object
 ## Format and process data
 
 simpledates()  
-simplewords()  
+
+
+Where consistency for messy strings is needed such as with names or other identifiers used for linkage `simplewords` can be used to remove special characters and numbers. The letters from the input are returned with case formatted using the `case` argument to one of "upper", "lower" or "title".
+
+    name <- "  Macy  CHen 986"
+    name <- simplewords(name) 
+    "Macy Chen"
+
+ 
 simplenumber()  
 
 ### Add isoweeks

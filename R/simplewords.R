@@ -38,6 +38,6 @@ simplewords <- function(x, case){
   } else {
     stop("font case not recognised")
   }
-
+  x <- trimws(x)
   return(x)
 }

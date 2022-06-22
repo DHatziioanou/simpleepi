@@ -4,7 +4,9 @@
 #'
 #' @param x string or character vector
 #'
-#' @param case Case of words to return; one of upper, lower or title for the first letter uppercase and the rest lower case
+#' @param case Optional; case of words to return; upper, lower or title (first letter upper case and the rest lower case).
+#'   Default is title
+#' @param encode Optional; Logical; attempt to encode as UTF-8. Default is TRUE.
 #'
 #' @return Returns the input in UTF-8 format with special characters replaced with spaces and numbers removed.
 #'
@@ -14,18 +16,20 @@
 #' @keywords encoding, special characters
 #'
 #' @examples
-#' strings <- tidywords(strings)
+#' strings <- simplewords(strings)
 #'
-#' clean_name <- tidywords("Latin-multi^name with strange/characters")
+#' clean_name <- simplewords("Latin-multi^name with strange/characters")
 #'
-#' df$Name <- tidywords(df$Name, case = "lower")
+#' df$Name <- simplewords(df$Name, case = "lower")
 #'
 #'
 #' @export
-simplewords <- function(x, case){
+simplewords <- function(x, case, encode = TRUE){
+  if(encode){
   x <- stringi::stri_encode(x, "", "UTF-8")
   x <- stringi::stri_trans_general(x, "name-any")
   x <- iconv(x, to = "UTF-8")
+  }
   x <- gsub("[[:digit:]]+", "", x)
   x <- gsub("[[:punct:]]", " ", x)
   if (missing(case)) case <- "title"

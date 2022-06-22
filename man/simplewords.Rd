@@ -4,12 +4,15 @@
 \alias{simplewords}
 \title{Remove special characters and numbers and format to UTF-8 encoding with standardised capitalisation}
 \usage{
-simplewords(x, case)
+simplewords(x, case, encode = TRUE)
 }
 \arguments{
 \item{x}{string or character vector}
 
-\item{case}{Case of words to return; one of upper, lower or title for the first letter uppercase and the rest lower case}
+\item{case}{Optional; case of words to return; upper, lower or title (first letter upper case and the rest lower case).
+Default is title}
+
+\item{encode}{Optional; Logical; attempt to encode as UTF-8. Default is TRUE.}
 }
 \value{
 Returns the input in UTF-8 format with special characters replaced with spaces and numbers removed.
@@ -18,11 +21,11 @@ Returns the input in UTF-8 format with special characters replaced with spaces a
 Takes a vector with character elements, removes special characters and numbers and formats them to UTF-8 encoding to make these consistent and compatible with most R analysis procedures. Returns strings with the first letter capitalised and the rest in lower case
 }
 \examples{
-strings <- tidywords(strings)
+strings <- simplewords(strings)
 
-clean_name <- tidywords("Latin-multi^name with strange/characters")
+clean_name <- simplewords("Latin-multi^name with strange/characters")
 
-df$Name <- tidywords(df$Name, case = "lower")
+df$Name <- simplewords(df$Name, case = "lower")
 
 
 }

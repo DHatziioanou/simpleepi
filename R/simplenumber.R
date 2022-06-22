@@ -7,8 +7,8 @@
 #' @return number or vector of numbers
 #'
 #' @examples
-#' x <- c("dfju", "LASK3", "dfpisdu092", "9376", 3098)
-#' x <- number_clean(x, fillempty = T, fillvalue = -1)
+#' # x <- c("dfju", "LASK3", "dfpisdu092", "9376", 3098)
+#' # x <- simplenumber(x, fillempty = T, fillvalue = -1)
 #'
 #' @export
 simplenumber <- function(x, fillempty, fillvalue){

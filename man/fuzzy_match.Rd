@@ -37,6 +37,19 @@ Returns the original input object as a data.frame with added columns of the inpu
 \description{
 Matches custom line list persons by full name and DOB to a database, assigns scores and creates warnings based on the match quality and returns the original line list with all the columns of the database and database information where there is a match to the custom line list
 }
+\examples{
+# Prepare database to include the required columns and anythign else to be appended to the custom line list
+# db <- db[,c("patient_surname", "patient_forename", "patient_date_of_birth", "Postcode", "specimen_date", "Result")]
+# LL <- LL[,c("patient_surname", "patient_forename", "patient_date_of_birth", "Postcode", "specimen_date, "ETHNICITY")]
+
+# Create lists of the objects and columns to fuzzy match
+# lla <- list(ob = custom_LL, sn = "SURNAME", fn = "FORENAMES", dob = "BIRTHDATE", pc = "Postcode")
+# dba <- list(ob = db, sn = "patient_surname", fn = "patient_forename", dob = "patient_date_of_birth", pc = "Postcode")
+
+# Create a new line list with the database information appended
+# Positives <- fuzzy_match(lla, dba, stringency = F, pc_format = "lnl", case_column = "ID")
+
+}
 \author{
 Diane Hatziioanou
 }

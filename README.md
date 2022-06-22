@@ -31,7 +31,16 @@ Run custom sql queries from .sql files with custom connections to SQL server dat
 
     sqlfile_query(server = "ser.path", database ="W001", sqlfile  = "query.sql", name = "df")
     
+#### Additional options for extracting elements from queries;       
+Remove single and multi-line comments from sql query files or strings.  
+
+    sql_nocomments(sqlfile,q)
     
+    
+Extract names of tables from sql query file or string. 
+ 
+    sqlfile_tables(sqlfile, q, nameonly) 
+
 
 ## Manage data
 
@@ -134,14 +143,30 @@ Open all files and folders listed in `paths` object
 
 ## Format and process data
 
-simpledates()  
-simplewords()  
-simplenumber()  
+### Format dates
+Format messy dates quickly from a variety of formats such as regular formats captured by lubridate, dates converted to numbers by excel or combinations of different character and numeric formats. Nutritional `char` argument determines date value to return for character strings;  historic dates can be used here to manage categories such as "not applicable". Optional `silent` argument suppresses warnings of occurrences which failed to parse.
+
+    simpledates(x)  
+
+
+### Format character values (eg names)
+Where consistency for messy strings is needed such as with names or other identifiers used for linkage `simplewords` can be used to remove special characters and numbers and convert encoding to UTF-8. The letters from the input are returned with case formatted using the `case` argument to one of "upper", "lower" or "title".Encoding can be set to UTF-8 using `encode = TRUE`.  
+
+    name <- "  Macy  CHen 986"
+    name <- simplewords(name) 
+    name
+    "Macy Chen"
+
+
+### Format numbers
+Remove letters and special characters from a string to return a numeric value.  
+ 
+    simplenumber(x)  
 
 ### Add isoweeks
 simpleIsoweek()  
 
-### Add age groups
+### Process ages into groups
 Group age data into any custom discrete age groups and mark where age not known using the `unknowns` argument. Can chose to return either a character vector or a factor using the `factor` argument.  
 
     df$group <- age_groups(df$Age, 

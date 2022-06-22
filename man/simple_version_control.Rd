@@ -27,7 +27,7 @@ simple_version_control(
 
 \item{type}{one of "list" or "flat"}
 
-\item{out}{one of "table" or "vector" or NULL. NULL returns table and writes to as rds}
+\item{out}{one of "table" or "vector" or NULL. NULL returns table and writes to rds file}
 
 \item{vccol}{Optional; name of existing version control column or name to assign to new one. If missing default uses common part of oldcol and newcol strings followed by _VC or uses oldcol if no common string.}
 
@@ -42,23 +42,34 @@ returns vccol newdate with new changes; records 1st record per ID which is not N
 Title Compare two versions of data with the same length and mark new data in a version control column
 }
 \examples{
-# dt <- data.table::data.table(c(1:6), c("A", "B", "C", NA, "D", ""), c("", "Test", NA, NA, "C", NA))
+# dt <- data.table(c(1:6),
+#             c("A", "B", "C", NA, "D", ""),
+#             c("", "Test", NA, NA, "C", NA))
 # dt$VC <- simple_version_control(dt,
 #   oldcol = "V2", newcol = "V3", id = "V1",
 #   olddate = "old", newdate = "new",
 #   type = "flat",
 #   out = "vector")
-
+#
 # dt$VC <- simple_version_control(dt,
 #    oldcol = "V2", newcol = "V3", id = "V1",
 #    olddate = "old", newdate = "new",
 #    type = "list",
 #    out = "vector")
-
+#
 # Process by chunk
 # ds <- split(dt, (as.numeric(rownames(dt))-1) \%/\% 10000000)
 # for (s in 1:length(ds)){
-# ds[[s]][, variable_VC := simple_version_control(dt = ds[[s]], id = "key", oldcol = "valueprev", newcol = "value", olddate = "20220503", newdate = "20220510", type = "flat", out = "vector", vccol = "variable_VC")]
+# ds[[s]][, variable_VC :=
+#         simple_version_control(dt = ds[[s]],
+#                id = "key",
+#                oldcol = "valueprev",
+#                newcol = "value",
+#                olddate = "20220503",
+#                newdate = "20220510",
+#                type = "flat",
+#                out = "vector",
+#                vccol = "variable_VC")]
 # }
 # ds <- rbindlist(ds, use.names = T, fill = T)
 

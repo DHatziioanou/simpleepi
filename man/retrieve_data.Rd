@@ -23,6 +23,6 @@ Title
 }
 \examples{
 
- par_list <- retrieve_data(i, case_column, llaob, dbaob)
+ # par_list <- retrieve_data(i, case_column, llaob, dbaob)
 
 }

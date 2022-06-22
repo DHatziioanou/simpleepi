@@ -19,5 +19,5 @@ Title
 }
 \examples{
   # Retrieve db name matches
-  matches  <- fuz_search(dbaob, sn_fun)
+  # matches  <- fuz_search(dbaob, sn_fun)
 }

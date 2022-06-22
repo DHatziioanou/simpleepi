@@ -256,7 +256,7 @@ cat(" Search completed")
 #'
 #' @examples
 #'   # Retrieve db name matches
-#'   matches  <- fuz_search(dbaob, sn_fun)
+#'   # matches  <- fuz_search(dbaob, sn_fun)
 #' @export
 fuz_search <- function(dbaob, sn_fun){
   x <- as.character("")
@@ -309,7 +309,7 @@ fuz_search <- function(dbaob, sn_fun){
 #'
 #' @examples
 #'
-#'  par_list <- retrieve_data(i, case_column, llaob, dbaob)
+#'  # par_list <- retrieve_data(i, case_column, llaob, dbaob)
 #'
 #' @export
 retrieve_data <- function(i, case_column, llaob, dbaob){

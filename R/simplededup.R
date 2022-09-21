@@ -52,9 +52,11 @@ simplededup <- function(x, namecols = c("first_name","surname"), dobcol = "date_
 #'  dt <- data.table(first_name = c("Jane", "Pete"), surname = c("Brown", "McKenzie"))
 #'  dt$namelist <- name_combos(x = dt, namecols =  c("first_name","surname"))
 #'
+#' @import data.table
 #' @export
 name_combos <- function(x, namecols){
   # Name combinations for each person
+  data.table::setDT(x)
   temp_names <- data.table::copy(x[,..namecols])
   temp_names[ , (namecols) := lapply(.SD, simplewords), .SDcols = namecols]
   names.list <- unlist(apply(temp_names, 1, list), recursive = FALSE)

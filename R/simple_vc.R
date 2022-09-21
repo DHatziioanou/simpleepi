@@ -47,70 +47,105 @@
 #' @import data.table
 #'
 #' @export
-simple_version_control <- function(dt, id, oldcol, newcol, type = "list", out = NULL, vccol = NULL, olddate = "original", newdate = Sys.Date()){
-start <- Sys.time()
+simple_version_control <- function(dt, id, oldcol = NULL, newcol, type = "list", out = NULL, vccol, olddate = NULL, newdate = Sys.Date()){
+  start <- Sys.time()
 
-# Input checks
-if(!any(class(dt) %in% "data.table")) stop("dt not a data.table")
-if(!oldcol %in% names(dt)) stop(paste0("oldcol not found"))
-if(!newcol %in% names(dt)) stop(paste0("newcol not found"))
-if(!any(type %in% c("list","flat"))) stop("invalid type")
-if(!(out %in% c("table", "vector", "file"))) warning("invalid out, will write to disk")
-if(sum(duplicated(dt[[(id)]]))>0) stop("id is not unique")
-size <- as.numeric(gsub("[[:alpha:]]", "", format(object.size(dt), units = "Mb")))
-if(as.numeric(gsub("[[:alpha:]]", "", size)) >= 300) warning(paste0("Large input of ", size, " MB, split to chunks if process fails"))
+  # Input checks
+  if(!any(class(dt) %in% "data.table")) stop("dt not a data.table")
+  if(!is.null(olddate)) if(!oldcol %in% names(dt)) stop(paste0("oldcol not found in dt"))
+  if(!newcol %in% names(dt)) stop(paste0("newcol not found"))
+  if(!(missing(vccol))) if(!(vccol %in% names(dt))) stop(paste0("vccol not found in dt"))
+  if(!any(type %in% c("list","flat"))) stop("invalid argument type use list or flat")
+  if(!(out %in% c("table", "vector", "file"))) warning("invalid argument out, will write to disk")
+  if(sum(duplicated(dt[[(id)]]))>0) stop("id is not unique")
+  size <- as.numeric(gsub("[[:alpha:]]", "", format(object.size(dt), units = "Mb")))
+  if(as.numeric(gsub("[[:alpha:]]", "", size)) >= 300) warning(paste0("Large input of ", size, " MB, split to chunks if process fails"))
 
-# Prep data
-  # Make VC column
-if(missing(vccol)|is.null(vccol) | !(vccol %in% names(dt))) {
-  if(!exists("vccol")) {
-    pat <- paste(qualV::LCS(strsplit(as.character(oldcol), '')[[1]], strsplit(as.character(newcol), '')[[1]])$LCS,collapse = "")
-    vccol <- paste0(ifelse(pat=="", oldcol, pat),"_VC")
-  }
-  cols = c(id, oldcol, newcol)
-  a <- dt[, ..cols ]
-  a[ get(oldcol) == "", (oldcol):= NA][ get(newcol) == "", (newcol):= NA]
-  if(type == "list"){
-    a = a[, .(VC = list(data.table::data.table(date = olddate, versions = get(oldcol), notes = vector(mode = "character", length = 1)))), by = list(get(id),get(oldcol),get(newcol))][ ]
-    data.table::setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
-   message(paste("made version control list column", vccol))
-  } else if (type == "flat") {
-   a[, VC := paste(olddate, get(oldcol), sep = ";")]
-   a[is.na(get(oldcol)), VC := ""]
-   message(paste("made version control column", vccol))
-}} else {
-  # Use existing VC column
-  a <- dt[, .SD, .SDcols = c(id, oldcol, newcol, vccol)]
-  a[ get(oldcol) == "", (oldcol):= NA][ get(newcol) == "", (newcol):= NA]
-  data.table::setnames(a, c(vccol), c("VC"))
-}
+
+  # 1st run 1db
+  if(is.null(oldcol) & is.null(olddate)) {
+
+
+    # Record version 1
+
+    # Make VC column
+    if(missing(vccol)) {
+      vccol <- paste0(newcol, "_VC")
+    }
+    # Process
+    cols = c(id, newcol)
+    a <- dt[, ..cols ]
+    a[ get(newcol) == "", (newcol):= NA]
+    if(type == "list"){
+      a = a[, .(VC = list(data.table::data.table(date = newdate, versions = get(newcol), notes = vector(mode = "character", length = 1)))), by = list(get(id),get(newcol))][ ]
+      data.table::setnames(a, c("get", "get.1", "VC"), c(id, newcol, "VC"))
+      message(paste("made version control list column", vccol))
+    } else if (type == "flat") {
+      a[, VC := paste(newdate, get(newcol), sep = ";")]
+      a[is.na(get(newcol)), VC := ""]
+      message(paste("made version control column", vccol))
+    }
+
+  } else {
+
+    # Compare 2 versions
+
+    # Make VC column if missing
+    if(missing(vccol)) {
+      if(!exists("vccol")) {
+        pat <- paste(qualV::LCS(strsplit(as.character(oldcol), '')[[1]], strsplit(as.character(newcol), '')[[1]])$LCS,collapse = "")
+        vccol <- paste0(ifelse(pat=="", oldcol, pat),"_VC")
+      }
+      cols = c(id, oldcol, newcol)
+      a <- dt[, ..cols ]
+      a[ get(oldcol) == "", (oldcol):= NA][ get(newcol) == "", (newcol):= NA]
+      if(type == "list"){
+        a = a[, .(VC = list(data.table::data.table(date = olddate, versions = get(oldcol), notes = vector(mode = "character", length = 1)))), by = list(get(id),get(oldcol),get(newcol))][ ]
+        data.table::setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
+        message(paste("made version control list column", vccol))
+      } else if (type == "flat") {
+        a[, VC := paste(olddate, get(oldcol), sep = ";")]
+        a[is.na(get(oldcol)), VC := ""]
+        message(paste("made version control column", vccol))
+      }} else {
+        # Use existing VC column
+        a <- dt[, .SD, .SDcols = c(id, oldcol, newcol, vccol)]
+        a[ get(oldcol) == "", (oldcol):= NA][ get(newcol) == "", (newcol):= NA]
+        data.table::setnames(a, c(vccol), c("VC"))
+      }
 
 # Version control
 if(type == "list"){
- # Add new rows to list column
+  # Add new rows to list column
   a = a[ , .(VC = data.table::fifelse( !(is.na(get(oldcol)) & is.na(get(newcol))),
-           data.table::fifelse( ( !is.na(get(oldcol))&is.na(get(newcol)) )  | ( is.na(get(oldcol))&!is.na(get(newcol)) ) | ( get(oldcol)!=get(newcol) ) ,
-    lapply(VC, function(x) rbindlist(list(x, data.table::data.table(date = as.character(newdate), versions = get(newcol), notes = vector(mode = "character", length = 1))), use.names = F)), VC), VC)), by = list(get(id), get(oldcol), get(newcol))]
-setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
+                                       data.table::fifelse( ( !is.na(get(oldcol))&is.na(get(newcol)) )  | ( is.na(get(oldcol))&!is.na(get(newcol)) ) | ( get(oldcol)!=get(newcol) ) ,
+                                                            lapply(VC, function(x) rbindlist(list(x, data.table::data.table(date = as.character(newdate), versions = get(newcol), notes = vector(mode = "character", length = 1))), use.names = F)), VC), VC)), by = list(get(id), get(oldcol), get(newcol))]
+  setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
 
 } else if(type == "flat"){
   # Add new to end of column
-    a =a[, VC := data.table::fifelse(is.na(get(oldcol)) & is.na(get(newcol)), VC,
-                          data.table::fifelse(is.na(get(oldcol)) & !is.na(get(newcol)),
-                                  data.table::fifelse(VC ==""|is.na(VC),paste(newdate, get(newcol), sep = ";"),
-                                          paste(VC, paste(newdate, get(newcol), sep = ";"), sep = ",")),
-                                  data.table::fifelse(!is.na(get(oldcol)) & is.na(get(newcol)), paste(VC, paste(newdate, get(newcol), sep = ";"), sep = ","),
-                                          data.table::fifelse(get(oldcol) != get(newcol), paste(VC, paste(newdate, get(newcol), sep = ";"), sep = ","),
-                                                  VC)))), by = get(id)]
+  a =a[, VC := data.table::fifelse(is.na(get(oldcol)) & is.na(get(newcol)), VC,
+                                   data.table::fifelse(is.na(get(oldcol)) & !is.na(get(newcol)),
+                                                       data.table::fifelse(VC ==""|is.na(VC),paste(newdate, get(newcol), sep = ";"),
+                                                                           paste(VC, paste(newdate, get(newcol), sep = ";"), sep = ",")),
+                                                       data.table::fifelse(!is.na(get(oldcol)) & is.na(get(newcol)), paste(VC, paste(newdate, get(newcol), sep = ";"), sep = ","),
+                                                                           data.table::fifelse(get(oldcol) != get(newcol), paste(VC, paste(newdate, get(newcol), sep = ";"), sep = ","),
+                                                                                               VC)))), by = get(id)]
 }
 
+  }
+
+  # Create attributes
 
   data.table::setattr(a$VC, "Processed", append(x = attributes(a$VC)$Processed, values = Sys.time(), after = F))
   data.table::setattr(a$VC, "versions", append(x = attributes(a$VC)$versions, values = newdate, after = F))
   data.table::setnames(a, "VC", vccol)
   end <- Sys.time(); runtime = end -start
   cat(paste(vccol, "version control took", round(runtime, 2), attr(runtime, "units")))
-  # Output
+
+
+  # Return Output
+
   if(out == "table") {
     return(a)
   } else if(out == "vector") {
@@ -121,6 +156,8 @@ setnames(a, c("get", "get.1", "get.2", "VC"), c(id, oldcol, newcol, "VC"))
     return(a)
   }
 }
+
+
 
 #' Title Get a snapshot of previous database contents
 #'

@@ -10,7 +10,7 @@
 #'
 #' @export
 simplenumber <- function(x, fillempty, fillvalue){
-  x <- gsub("[^0-9.-]", "", x)
+  x <- gsub("[^0-9]", "", x)
   x <- as.numeric(x)
   if(missing("fillempty")) fillempty <- FALSE
 

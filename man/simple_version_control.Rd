@@ -7,12 +7,12 @@
 simple_version_control(
   dt,
   id,
-  oldcol,
+  oldcol = NULL,
   newcol,
   type = "list",
   out = NULL,
-  vccol = NULL,
-  olddate = "original",
+  vccol,
+  olddate = NULL,
   newdate = Sys.Date()
 )
 }

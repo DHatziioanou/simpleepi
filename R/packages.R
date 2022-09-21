@@ -2,9 +2,7 @@
 #'
 #'
 #' @param package1 vector of required package names
-#'
 #' @param repo repository path (optional)
-#'
 #' @param lib library path (optional)
 #'
 #' @param quiet True or False
@@ -13,9 +11,8 @@
 #'
 #' @examples
 #'
-#' install_load("data.table")
-#'
-#' install_load("data.table", "dplyr", "tidyr", "ggplot2")
+#' # install_load("data.table")
+#' # install_load("data.table", "dplyr", "tidyr", "ggplot2")
 #'
 #' @export
 install_load <- function(packages, ..., repo, lib, quiet)  {
@@ -92,4 +89,36 @@ install_load <- function(packages, ..., repo, lib, quiet)  {
     message("Not loaded:")
     print(loaded_packages[!(packages %in% loaded_packages)])
   }
+}
+
+
+
+
+
+#' Title Package replacement with specified version
+#'
+#' @param package  name of package
+#' @param version  version to install
+#' @param repo  Optional repository. Default is CRAN.
+#' @param force Optional force replacement if package version already installed. Default is FALSE
+#' @param ... Optional parameters from package remotes
+#'
+#' @return installs the desired package version
+#'
+#' @examples
+#' package_replace(package = "roxygen2", "7.1.2", force = TRUE)
+#'
+#' @export
+package_replace <- function(package, version, repo ="https://cloud.r-project.org", force = FALSE, ...){
+  p <- installed.packages()
+  package_found <- p[which(p[, "Package"] == package),]
+  if(!is.na(package_found["Package"])) {
+    if(package_found["Built"] == version & force == FALSE) {
+      stop("version already installed")
+    } else {
+      utils::remove.packages(package)
+    }
+  }
+  remotes::install_version(package = package, version = version, repos = repo, force = TRUE, upgrade = upgrade, ...)
+
 }

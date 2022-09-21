@@ -25,8 +25,8 @@ Returns the original dt object as a data.frame with added columns of ONS data
 Retrieves Office for National Statistics (ONS) data by postcode and appends it as added columns to an input file. For information on ONS databases see https://geoportal.statistics.gov.uk/datasets/national-statistics-postcode-lookup-february-2020
 }
 \examples{
-Index <- fread(file.path("C:/.../NSPL_FEB_2019_UK/Data/Index.csv"))
-data_with_ONS <- match_postcode(data, "Postcode", Index, "all")
+# Index <- fread(file.path("C:/.../NSPL_FEB_2019_UK/Data/Index.csv"))
+# data_with_ONS <- match_postcode(data, "Postcode", Index, "all")
 
 }
 \author{

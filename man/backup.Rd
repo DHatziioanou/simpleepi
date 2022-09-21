@@ -2,7 +2,7 @@
 % Please edit documentation in R/archive.R
 \name{backup}
 \alias{backup}
-\title{Title  Determine need to backup files based on simplefilecheck, copy any which fail test}
+\title{Title  Backup folder contents where change identified with \code{\link[simpleepi]{simplefilecheck}}}
 \usage{
 backup(from, to, silent = FALSE)
 }
@@ -17,9 +17,9 @@ backup(from, to, silent = FALSE)
 
 }
 \description{
-Title  Determine need to backup files based on simplefilecheck, copy any which fail test
+Title  Backup folder contents where change identified with \code{\link[simpleepi]{simplefilecheck}}
 }
 \examples{
-backup(from ="path1", to = "path2")
+# backup(from ="path1", to = "path2")
 
 }

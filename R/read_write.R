@@ -19,15 +19,15 @@
 #'
 #' @examples
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
-#' df <- simpleimport("test.csv")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
+#' # df <- simpleimport("test.csv")
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
-#' df <- simpleimport("test.xlsx")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
+#' # df <- simpleimport("test.xlsx")
 #'
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
-#' df <- simpleimport("test.rds")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
+#' # df <- simpleimport("test.rds")
 #'
 #' @export
 simpleimport <- function(file, sheet, skip, ...){
@@ -90,15 +90,15 @@ simpleimport <- function(file, sheet, skip, ...){
 #'
 #' @examples
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
-#' df <- simpleimportforce("test.csv")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
+#' # df <- simpleimportforce("test.csv")
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
-#' df <- simpleimportforce("test.xlsx")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
+#' # df <- simpleimportforce("test.xlsx")
 #'
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
-#' df <- simpleimportforce("test.rds")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
+#' # df <- simpleimportforce("test.rds")
 #'
 #'
 #' @export
@@ -159,11 +159,11 @@ simpleimportforce <- function(file, sheet, skip, ...){
 #'
 #' @examples
 #'
-#' simplewrite(data, "C:..../file.csv")
+#' # simplewrite(data, "C:..../file.csv")
 #'
-#' simplewrite(data, "C:..../file.xlsx", sheet = "Data")
+#' # simplewrite(data, "C:..../file.xlsx", sheet = "Data")
 #'
-#' simplewrite(data, "C:..../file.xls", sheet = 4)
+#' # simplewrite(data, "C:..../file.xls", sheet = 4)
 #'
 #' @export
 simplewrite <- function(data, file, type, sheet){

@@ -16,7 +16,7 @@ Returns x in format YYYYWW where WW is the isoweek and YYYY is the isoyear.
 Title Format a date to isoyear-isoweek
 }
 \examples{
-yw <- simpleyearweek(date)
-x$yw <- simpleyearweek(x$date)
+# yw <- simpleyearweek(date)
+# x$yw <- simpleyearweek(x$date)
 
 }

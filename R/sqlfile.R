@@ -5,7 +5,7 @@
 #' @return sql file formatted for use in R
 #'
 #' @examples
-#' query <- sqlfile_read("C:/Users/path/query1.sql")
+#' # query <- sqlfile_read("C:/Users/path/query1.sql")
 #'
 #' @export
 sqlfile_read <- function(sqlfile){

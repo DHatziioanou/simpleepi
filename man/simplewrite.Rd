@@ -23,11 +23,11 @@ Write data into csv, xlsx, xls, rds, rdata or dta files
 }
 \examples{
 
-simplewrite(data, "C:..../file.csv")
+# simplewrite(data, "C:..../file.csv")
 
-simplewrite(data, "C:..../file.xlsx", sheet = "Data")
+# simplewrite(data, "C:..../file.xlsx", sheet = "Data")
 
-simplewrite(data, "C:..../file.xls", sheet = 4)
+# simplewrite(data, "C:..../file.xls", sheet = 4)
 
 }
 \author{

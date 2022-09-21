@@ -23,11 +23,11 @@
 #'
 #' @examples
 #' # Import latest file
-#' todays_file <- getlatestfile(file.path("...","subfolder","subfolder"),return_type = "all", file_string = "epi", exclusions = "unwanted")
-#' df <- simpleimport(todays_file$path)
+#' # todays_file <- getlatestfile(file.path("...","subfolder","subfolder"),return_type = "all", file_string = "epi", exclusions = "unwanted")
+#' # df <- simpleimport(todays_file$path)
 #'
-#' #Record the modification details
-#' Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"),
+#' # Record the modification details
+#'  # Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"),
 #'  #  file_string = "csv",exclusions = "unwanted",
 #'  #  return_type = "all", maxTries = 5)$ctime
 #'

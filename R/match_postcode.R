@@ -21,8 +21,8 @@
 #' @keywords postcode, ONS, NSPL, Office for National Statistics
 #'
 #' @examples
-#' Index <- fread(file.path("C:/.../NSPL_FEB_2019_UK/Data/Index.csv"))
-#' data_with_ONS <- match_postcode(data, "Postcode", Index, "all")
+#' # Index <- fread(file.path("C:/.../NSPL_FEB_2019_UK/Data/Index.csv"))
+#' # data_with_ONS <- match_postcode(data, "Postcode", Index, "all")
 #'
 #' @export
 match_postcode <- function(data, query_column, Index, desired_columns){

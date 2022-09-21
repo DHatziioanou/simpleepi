@@ -5,8 +5,8 @@
 #' @return Returns x in format YYYYWW where WW is the isoweek and YYYY is the isoyear.
 #'
 #' @examples
-#' yw <- simpleyearweek(date)
-#' x$yw <- simpleyearweek(x$date)
+#' # yw <- simpleyearweek(date)
+#' # x$yw <- simpleyearweek(x$date)
 #'
 #' @export
 yearweek  <- function(x){

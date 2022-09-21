@@ -20,7 +20,7 @@ archive(
 
 \item{to}{Folder name to archive files to. Default is Archive}
 
-\item{date}{File modification date from which files are to retained. Files prior to this date are archived. Default is Sys.Date().}
+\item{date}{File modification date from which files are to be retained. Files prior to this date are archived. Default is Sys.Date().}
 
 \item{dir}{Optional logical argument; also archive folders or not. Default is FALSE.}
 

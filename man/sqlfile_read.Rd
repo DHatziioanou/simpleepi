@@ -16,6 +16,6 @@ sql file formatted for use in R
 Title Read sql query file
 }
 \examples{
-query <- sqlfile_read("C:/Users/path/query1.sql")
+# query <- sqlfile_read("C:/Users/path/query1.sql")
 
 }

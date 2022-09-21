@@ -23,15 +23,15 @@ Quick import of file types Rdata, RDS, rda, csv, txt, xlsx, xls or dta into your
 }
 \examples{
 
-simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
-df <- simpleimportforce("test.csv")
+# simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
+# df <- simpleimportforce("test.csv")
 
-simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
-df <- simpleimportforce("test.xlsx")
+# simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
+# df <- simpleimportforce("test.xlsx")
 
 
-simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
-df <- simpleimportforce("test.rds")
+# simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
+# df <- simpleimportforce("test.rds")
 
 
 }

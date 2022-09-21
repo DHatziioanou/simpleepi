@@ -11,7 +11,7 @@
 #' @param return_type Use "all" to retrieve a data.frame with the file name, file path and modiciation date, "name" to retrieve the file name or "path" to retrieve the full file path. Default is "path". (optional)
 #'
 #' @param maxTries Maximum number of times to attempt file information retrieval. Default is 1. (optional)
-#' @param include.dirs list.files argument; Include directories
+#' @param include.dirs list.files argument; Logical; return folders TRUE for yes, FALSE for no. Default is no.
 #' @param recursive list.files argument; Look in subdirectories
 #'
 #' @return Returns the last ctime file path, file name or a data.frame with the file name, path and modification details as defined by return_type where size is the file size in bytes, mtime is the last modification time, ctime is last status change time, atime is last access time.
@@ -22,13 +22,9 @@
 #' @keywords file name, file path
 #'
 #' @examples
-#' # Return a path
-#' file_path <- getlatestfile(file.path("...","subfolder","subfolder"))
-#'
-#' #Import the latest csv file
-#' df <- fread(getlatestfile(folder_path = file.path("...","subfolder","subfolder"),
-#'  #  file_string = "csv",exclusions = "unwanted",
-#'  # return_type = "path", maxTries = 5))
+#' # Import latest file
+#' todays_file <- getlatestfile(file.path("...","subfolder","subfolder"),return_type = "all", file_string = "epi", exclusions = "unwanted")
+#' df <- simpleimport(todays_file$path)
 #'
 #' #Record the modification details
 #' Data_as_of <- getlatestfile(folder_path = file.path("...","subfolder","subfolder"),

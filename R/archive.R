@@ -3,7 +3,7 @@
 #'
 #' @param from Path to folder containing files to archive.
 #' @param to Folder name to archive files to. Default is Archive
-#' @param date File modification date from which files are to retained. Files prior to this date are archived. Default is Sys.Date().
+#' @param date File modification date from which files are to be retained. Files prior to this date are archived. Default is Sys.Date().
 #' @param dir Optional logical argument; also archive folders or not. Default is FALSE.
 #' @param string Optional string pattern in files to archive.
 #' @param exclude Optional string pattern of files to exclude from archiving
@@ -76,7 +76,7 @@ archive <- function(from, to = "Archive", date = Sys.Date(), dir = FALSE, string
     }
 }
 
-#' Title  Determine need to backup files based on simplefilecheck, copy any which fail test
+#' Title  Backup folder contents where change identified with \code{\link[simpleepi]{simplefilecheck}}
 #'
 #' @param silent
 #'
@@ -87,7 +87,7 @@ archive <- function(from, to = "Archive", date = Sys.Date(), dir = FALSE, string
 #' @param silent Optional; disaply messages
 #'
 #' @examples
-#' backup(from ="path1", to = "path2")
+#' # backup(from ="path1", to = "path2")
 #'
 #' @export
 backup <- function(from, to, silent = FALSE){

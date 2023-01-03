@@ -13,10 +13,9 @@
 simpleencode <- function(x, case = "none"){
   x <- stringi::stri_encode(x, "", "UTF-8")
   x <- stringi::stri_trans_general(x, "name-any")
-  max_encoding <- as.data.frame(table(Encoding(x$patient_forename)))
-  max_encoding <- max_encoding[max_encoding$Var1 !="unknown",]
-  max_encoding <- max_encoding$Var1[max_encoding$Freq == max(max_encoding$Freq)]
-  x <- iconv(x, from = as.character(max_encoding), to = "UTF-8")
+  max_encoding <- as.data.frame(table(Encoding(x)))
+  max_encoding <- max_encoding$Var1[max_encoding$Freq == max(max_encoding$Freq) & max_encoding$Var1 !="unknown"]
+  if(length(max_encoding)!=0) x <- iconv(x, from = as.character(max_encoding), to = "UTF-8")
   if (case == "upper"){
     x <- toupper(x)
   } else if(case == "lower"){

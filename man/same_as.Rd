@@ -2,16 +2,26 @@
 % Please edit documentation in R/compare.R
 \name{same_as}
 \alias{same_as}
-\title{Title}
+\title{Compare values or vectors}
 \usage{
 same_as(x, y, simple = TRUE)
 }
 \arguments{
-\item{simple}{}
+\item{x}{vector to compare (left)}
+
+\item{y}{vector to comapre (right)}
+
+\item{simple}{TRUE returns logical TRUE (identical) or FALSE (any difference). FALSE returns descriptive string of comparison outcome.}
 }
 \value{
-
+returns comparison in logical or text form depending on simple argument
 }
 \description{
-Title
+Compare values or vectors
+}
+\examples{
+# df$colsame <- same_as(df$col1, df$col2, simple = F)
+# df$colsame <- same_as(df$col1, df$col2, simple = T)
+
+
 }

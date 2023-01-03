@@ -10,13 +10,15 @@
 #' @import data.table
 #'
 #' @examples
+#'# x <- data.frame(DOB = c("01/01/2001", "02/01/2001", "01/01/2001", "03/01/2001"),
+#'#    name = c("A", "B", "C", "D"), surname = c("A", "B", "A", "D"),
+#'#    ZIP = c("A", "B", "A", "D"), NHS_Number = c(2001, NA, 2001, NA))
+#'# Number = "NHS_Number"
+#'# name <- "GroupID"
+#'# col = c("DOB", "name", "surname", "ZIP")
+#'# x <- simpleID(x = x, col =  col, name = name)
+#'# x <- simpleID(x = x, col =  col, Number = Number, name = name)
 #'
-#' x <- data.frame(DOB = c("01/01/2001", "02/01/2001", "01/01/2001", "03/01/2001"), name = c("A", "B", "C", "D"), surname = c("A", "B", "A", "D"), ZIP = c("A", "B", "A", "D"), NHS_Number = c(2001, NA, 2001, NA))
-#' Number = "NHS_Number"
-#' name <- "GroupID"
-#' col = c("DOB", "name", "surname", "ZIP")
-#' x <- simpleID(x = x, col =  col, name = name)
-#' x <- simpleID(x = x, col =  col, Number = Number, name = name)
 #' @export
 simpleID <- function (x, col= names(x)[grepl("Birth|DOB|Postcode|ZIP|Name", names(x), ignore.case = T)], Number = FALSE, name ="GroupID") {
   y <- data.table::copy(data.table::as.data.table(x))

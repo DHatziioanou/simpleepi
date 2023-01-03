@@ -19,15 +19,15 @@
 #'
 #' @examples
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
-#' df <- simpleimport("test.csv")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
+#' # df <- simpleimport("test.csv")
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
-#' df <- simpleimport("test.xlsx")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
+#' # df <- simpleimport("test.xlsx")
 #'
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
-#' df <- simpleimport("test.rds")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
+#' # df <- simpleimport("test.rds")
 #'
 #' @export
 simpleimport <- function(file, sheet, skip, ...){
@@ -65,6 +65,18 @@ simpleimport <- function(file, sheet, skip, ...){
     invisible(readline(prompt="Unsupported file type, Press [enter] to continue or [Esc] to stop and retry"))
     }
   message(paste0("Imported ", ifelse(grepl("csv|xls|dta|rds", tools::file_ext(file), ignore.case = T), file, paste0(file, " containing ", paste0(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))], collapse = ", ")))))
+
+  # Check
+  if(grepl("csv|xls|dta|rds", tools::file_ext(file), ignore.case = T)){
+    df<- as.data.frame(df)
+    empty <- lapply(df[names(df)], function (x) all(is.na(x)))
+  if(sum(unlist(empty))>0) {
+    warning(paste0("Empty columns detected; ", paste0(names(empty)[lapply(empty, sum) == 0], collapse = ", ")))
+    empty_classes <- lapply(df[,names(empty)[lapply(empty, sum) == 0]], function(x) class(x))
+    print(as.data.frame(empty_classes)[1,])
+  }
+  }
+
   return(df)
 }
 
@@ -90,15 +102,15 @@ simpleimport <- function(file, sheet, skip, ...){
 #'
 #' @examples
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
-#' df <- simpleimportforce("test.csv")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test")
+#' # df <- simpleimportforce("test.csv")
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
-#' df <- simpleimportforce("test.xlsx")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.xlsx")
+#' # df <- simpleimportforce("test.xlsx")
 #'
 #'
-#' simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
-#' df <- simpleimportforce("test.rds")
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "test.rds")
+#' # df <- simpleimportforce("test.rds")
 #'
 #'
 #' @export
@@ -137,3 +149,60 @@ simpleimportforce <- function(file, sheet, skip, ...){
   message(paste0("Imported ", ifelse(grepl("csv|xls|dta|rds", tools::file_ext(file), ignore.case = T), file, paste0(file, " containing ", paste0(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))], collapse = ", ")))))
   return(df)
 }
+
+#' Write data to file in spreadsheet format
+#'
+#' Write data into csv, xlsx, xls, rds, rdata or dta files
+#'
+#' @param data object with data to write. For rdata can be a single object or a list of objects.
+#'
+#' @param file file name and path to write to. If missing the object name will be used. No extension is needed, this will be added.
+#'
+#' @param type file type to save data as as a string. If not defined the file name extension will be used or "csv" if no extension given. Options are csv, xlsx, xls, rdata, rdsd, dta.
+#'
+#' @param sheet Optional; for xlsx and xls the sheet name to write data to.
+#'
+#' @return writes data to file
+#'
+#'
+#' @author Diane Hatziioanou
+#'
+#' @keywords write, save
+#'
+#' @examples
+#'
+#' # simplewrite(data, "C:..../file.csv")
+#'
+#' # simplewrite(data, "C:..../file.xlsx", sheet = "Data")
+#'
+#' # simplewrite(data, "C:..../file.xls", sheet = 4)
+#'
+#' @export
+simplewrite <- function(data, file, type, sheet){
+  if (missing(data)) stop("No data to write")
+  # File name
+  if (missing(file)) {file <- paste0(deparse(substitute(data)), format(Sys.Date(), "%Y%m%d"))}
+  filename <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(file))
+  if (missing(type)) {ifelse(tools::file_ext(file) !="",  type <- tolower(tools::file_ext(file)), type <- "csv")}
+  ifelse(dirname(file)==".", file <- filename, file <- file.path(dirname(file),filename))
+  if (type == "csv") {
+    data.table::fwrite(data, paste0(file, ".csv"), row.names = F, col.names = T, append = F)
+  } else if (type == "xlsx") {
+    if (missing(sheet)) sheet <- paste0(format(Sys.Date(), "%Y%m%d"), " data")
+    style <- openxlsx::createStyle(fontSize = 11, halign = "center", border = "TopBottomLeftRight", borderStyle = "thick", fontColour = "black", wrapText = T, textDecoration = "bold")
+    wb <- openxlsx::createWorkbook()
+    openxlsx::addWorksheet(wb, sheet)
+    openxlsx::writeData(wb, sheet, data, startCol = 1, startRow = 1, borders = "surrounding", borderStyle = "thick", headerStyle = style)
+    openxlsx::setColWidths(wb, sheet, cols = 1:ncol(data), widths = "auto")
+    openxlsx::addFilter(wb, sheet, row = 1, cols = 1:ncol(data))
+    # SAVE WORKBOOK
+    openxlsx::saveWorkbook(wb, paste0(file, ".xlsx"), overwrite = T)
+  } else if (type == "dta") {
+    haven::write_dta(data,  paste0(file, ".dta"), version = 14)
+  } else if (grepl("rda|rdata", type, ignore.case = T)) {
+    save(data, file = paste0(file, ".rdata"))
+  } else if (grepl("rds", type, ignore.case = T)) {
+    saveRDS(object = data, file = paste0(file, ".rds"), ascii = FALSE, compress	= "gzip", version = "3")
+  }
+}
+

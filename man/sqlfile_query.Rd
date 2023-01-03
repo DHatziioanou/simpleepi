@@ -7,7 +7,7 @@
 sqlfile_query(server, database, sqlfile, name = "df")
 }
 \arguments{
-\item{server}{Server holidng data}
+\item{server}{Server holding data}
 
 \item{database}{Database to query}
 

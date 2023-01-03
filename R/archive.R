@@ -76,11 +76,11 @@ archive <- function(from, to = "Archive", date = Sys.Date(), dir = FALSE, string
     }
 }
 
-#' Title  Backup folder contents where change identified with \code{\link[simpleepi]{simplefilecheck}}
+#'  Backup folder contents where change identified with \code{\link[simpleepi]{simplefilecheck}}
 #'
 #' @param silent
 #'
-#' @return
+#' @return creates a backup of files
 #'
 #' @param from  folder path with most up to date data
 #' @param to    folder path where backups stored
@@ -91,9 +91,37 @@ archive <- function(from, to = "Archive", date = Sys.Date(), dir = FALSE, string
 #'
 #' @export
 backup <- function(from, to, silent = FALSE){
+  # Destination
+  if(!dir.exists(to)) {
+    t <- try(dir.create(to))
+    if(!t) stop("cannot find or make destination folder")
+  }
+  # Source
   f <- list.files(from, full.names = T, recursive = T)
-  f_ok <- lapply(f, function(c) simplefilecheck(x = c, y =file.path(from, basename(c))))
-  td <-sum(unlist(f_ok))
+  if(length(f)==0) stop("No files found to backup")
+  f_info <- data.table::data.table(infile =f,
+                       dirs = gsub("^/", "",gsub(from, "",dirname(f))))
+  f_info$dirlevs <-  strsplit(f_info$dirs, "/")
+
+
+  f_info$dirn <- lapply(f_info$dirlevs, function(x) length(x))
+
+  # Create folder structure
+    for (l in 1:max(unlist(f_info$dirn))){
+     # f_info$to_f <- file.path(stats::na.omit(f_info$to_f,sapply(f_info$dirlevs,"[",l)))
+      dirs <- stats::na.omit(unique(f_info$to_f))
+      suppressWarnings(lapply(dirs, function(x) dir.create(file.path(to, x))))
+    }
+  # Make 1 level folders
+  for(d in unique(f_info[!(dirs %in% c("",NA))]$dirs)){
+    if(!dir.exists(file.path(to,d))) dir.create(file.path(to,d))
+  }
+
+  # List modified files
+  f_ok <- lapply(f, function(c) simplefilecheck(x = c, y =file.path(to, basename(c))))
+  dirs <- gsub("^/", "",gsub(from, "",dirname(f)))
+
+  td <-sum(unlist(f_ok)!=TRUE)
   if(!silent) message(paste0(td, " files being copied"))
-  if(any(f_ok == FALSE)) { lapply(f[f_ok==FALSE], function(r) file.copy(from = r, to = x, overwrite = TRUE, recursive = TRUE, copy.mode = TRUE, copy.date = TRUE))}
+  if(any(f_ok == FALSE)) { lapply(f[f_ok==FALSE], function(r) file.copy(from = r, to = paste0(to,gsub(from, "",dirname(r))), overwrite = TRUE, recursive = TRUE, copy.mode = TRUE, copy.date = TRUE))}
 }

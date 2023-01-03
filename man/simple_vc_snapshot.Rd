@@ -12,7 +12,7 @@ simple_vc_snapshot(x = test$genotyping_variant_VC, date)
 \item{date}{date of snapshot}
 }
 \value{
-
+Returns snapshot of what database looked like for a given date
 }
 \description{
 Title Get a snapshot of previous database contents

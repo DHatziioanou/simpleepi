@@ -1,4 +1,4 @@
-#' Title Compare values or vectors
+#' Compare values or vectors
 #'
 #' @param x vector to compare (left)
 #' @param y vector to comapre (right)
@@ -7,8 +7,8 @@
 #' @return returns comparison in logical or text form depending on simple argument
 #'
 #' @examples
-#' df$colsame <- same_as(df$col1, df$col2, simple = F)
-#' df$colsame <- same_as(df$col1, df$col2, simple = T)
+#' # df$colsame <- same_as(df$col1, df$col2, simple = F)
+#' # df$colsame <- same_as(df$col1, df$col2, simple = T)
 #'
 #'
 #' @export

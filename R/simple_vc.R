@@ -164,7 +164,7 @@ if(type == "list"){
 #' @param x Flat version control column made from simple_version_control
 #' @param date date of snapshot
 #'
-#' @return
+#' @return Returns snapshot of what database looked like for a given date
 #'
 #' @examples
 #' # date <- "20220529"
@@ -214,9 +214,11 @@ simple_vc_snapshot <- function(x = test$genotyping_variant_VC, date){
 #' @param inputname Identifier of new data such as file name or update date
 #' @param Date Optional; date of updated data. Default is system date.
 #'
-#' @return
+#' @return returns log of records by column variables
 #'
 #' @examples
+#' # file_stat_log(logname = "file_stat_log", input = "df",
+#' #     inputname = "description", columns =c("col1", "col2"))
 #'
 #' @import data.table
 #' @export
@@ -249,7 +251,8 @@ file_stat_log <- function(logpath = NULL, logname = NULL, input, inputname, colu
   }
   return(newlog)
 }
-#' Title
+
+#' Add difference from previous timestamp to file_stat_log output
 #'
 #' @param logs log created using file_stat_log
 #' @param columns  columns within log with quantified value combinations
@@ -259,9 +262,10 @@ file_stat_log <- function(logpath = NULL, logname = NULL, input, inputname, colu
 #' @param maxdown Optional; Maximum permissible decrease from previous log. Warning recorded if exceeded. Default is 0.
 #' @param Date  Optional; date to give processed log. Default is system date.
 #'
-#' @return
+#' @return file_stat_log returned with differences by time interval
 #'
 #' @examples
+#' # file_stat_diff(logs = "file_stat_log", columns =c("col1", "col2"))
 #'
 #' @import data.table
 #' @export

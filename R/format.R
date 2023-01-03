@@ -1,22 +1,20 @@
-#' Title
-#' Remove letters and special characters from a string to return a numeric value
+#' Title Remove letters and special characters from a string to return a numeric value
+#'
 #' @param x string or vector with numeric values for cleaning
+#' @param fill Value to fill empty values with. Default NULL will not fill empty values
 #'
 #' @return number or vector of numbers
 #'
 #' @examples
 #' # x <- c("dfju", "LASK3", "dfpisdu092", "9376", 3098)
-#' # x <- simplenumber(x, fillempty = T, fillvalue = -1)
+#' # x <- simplenumber(x, fill = -1)
 #'
 #' @export
-simplenumber <- function(x, fillempty, fillvalue){
+simplenumber <- function(x, fill = NULL){
   x <- gsub("[^0-9]", "", x)
   x <- as.numeric(x)
-  if(missing("fillempty")) fillempty <- FALSE
-
-  if(isTRUE(fillempty)){
-    if(missing("fillvalue")) fillvalue <- 0
-    x[is.na(x)] <- fillvalue
+  if(!is.null(fill)){
+    x[is.na(x)] <- fill
   }
   return(x)
 }
@@ -40,11 +38,9 @@ simplenumber <- function(x, fillempty, fillvalue){
 #' @keywords encoding, special characters
 #'
 #' @examples
-#' strings <- simplewords(strings)
-#'
-#' clean_name <- simplewords("Latin-multi^name with strange/characters")
-#'
-#' df$Name <- simplewords(df$Name, case = "lower")
+#' # strings <- simplewords(strings)
+#' # clean_name <- simplewords("Latin-multi^name with strange/characters")
+#' # df$Name <- simplewords(df$Name, case = "lower")
 #'
 #'
 #' @export
@@ -96,8 +92,8 @@ simplewords <- function(x, case, encode = TRUE){
 #' # Format a data.frame column into a consistent date format
 #' # df$column <- simpledates(df$column)
 #'
-#' # Format all column from within a data.table
-#' where the columns contain the string date into date format
+#' # Format all column from within a data.table where the columns
+#' # contain the string date into date format
 #' # for (col in (names(dt)[grepl("date", names(dt))])){
 #' #   dt[,(col) := simpledates(dt[,get(col)])]
 #' #  }
@@ -123,5 +119,62 @@ simpledates <- function(x, char = NA, silent = TRUE){
 }
 
 
+#' Format a date to isoyear-isoweek
+#'
+#' @param x Date(s) to be converted to isoyear-isoweek
+#'
+#' @return Returns x in format YYYYWW where WW is the isoweek and YYYY is the isoyear.
+#'
+#' @examples
+#' # yw <- simpleyearweek(date)
+#' # x$yw <- simpleyearweek(x$date)
+#'
+#' @export
+yearweek  <- function(x){
+  if(any(!(class(x) %in% c("Date", "IDate")))) x <- simpledates(x)
+  week <- lubridate::isoweek(x)
+  year <- lubridate::isoyear(x)
+  yearweek <- suppressWarnings(as.integer(paste0(year,stringr::str_pad(string = week, width = 2, side = "left", pad = 0))))
+  return(yearweek)
+}
 
+
+#' Title Create a year-week sequence
+#'
+#' @param from Start date in yearweek (YYYYWW) or date format
+#' @param to End data in yearweek (YYYYWW) or date format
+#' @param by Increments for sequence in weeks
+#' @param rangef Format of time-range (from and to); one of yearweek or date.Default is yearweek.
+#'
+#' @return Returns a sequence of yearweek values for the range
+#'
+#' @examples
+#' # seq.yearweek(from = 202102, to = 202105, by = 1, rangef = "yearweek")
+#' # seq.yearweek(from = "20210205", to = "20210510", by = 2, rangef = "date")
+#'
+#'
+#' @export
+seq.yearweek <- function(from, to, by, rangef = "yearweek"){
+  if(!(rangef %in% c("date", "yearweek"))) stop("rangef not recognised. Must be 'yearweek' or 'date'")
+  # Dates
+  if(rangef == "date"){
+    from_out <- simpledates(from)
+    to_out <- simpledates(to)
+  }
+  if(rangef == "yearweek"){
+    from_out <- try(as.Date(paste0(substr(from,1,4), ":",as.integer(substr(from,5,6)), ":1"), format = "%Y:%W:%u")-7)
+    if(class(from_out) =="try-error"){
+      from_out <- try(as.Date(paste0(substr(to,1,4), ":",as.integer(substr(to,5,6)), ":7"), format = "%Y:%W:%u"), silent = TRUE)
+    }
+    to_out <- try(as.Date(paste0(substr(to,1,4), ":",as.integer(substr(to,5,6)), ":7"), format = "%Y:%W:%u"), silent = TRUE)
+    if(class(to_out) =="try-error"){
+      to_out <- try(as.Date(paste0(substr(to,1,4), ":",as.integer(substr(to,5,6)), ":1"), format = "%Y:%W:%u"), silent = TRUE)
+    }
+  }
+  # Convert days to weeks
+  by <- by *7
+  dates <- seq.Date(from = from_out, to = to_out, by = by)
+  yearweek <- yearweek(dates)
+  return(yearweek)
+}
 

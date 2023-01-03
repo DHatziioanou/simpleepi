@@ -2,7 +2,7 @@
 % Please edit documentation in R/simple_vc.R
 \name{file_stat_diff}
 \alias{file_stat_diff}
-\title{Title}
+\title{Add difference from previous timestamp to file_stat_log output}
 \usage{
 file_stat_diff(
   logs = file_stat_log,
@@ -30,11 +30,12 @@ file_stat_diff(
 \item{Date}{Optional; date to give processed log. Default is system date.}
 }
 \value{
-
+file_stat_log returned with differences by time interval
 }
 \description{
-Title
+Add difference from previous timestamp to file_stat_log output
 }
 \examples{
+# file_stat_diff(logs = "file_stat_log", columns =c("col1", "col2"))
 
 }

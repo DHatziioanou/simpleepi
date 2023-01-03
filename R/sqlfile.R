@@ -16,7 +16,7 @@ sqlfile_read <- function(sqlfile){
 
 #' Title Use sql query file to query database via odbc
 #'
-#' @param server Server holidng data
+#' @param server Server holding data
 #' @param database  Database to query
 #' @param sqlfile sql query file
 #' @param name object to give retrieved data
@@ -122,4 +122,77 @@ sql_nocomments <- function(sqlfile=NULL, q=NULL) {
   com <- com[!(substr(com, 1,1) == "*" & substr(com, nchar(com),nchar(com)) == "*")]
   com <- glue::glue(paste(com, collapse = "\r\n"))
   return(com)
+}
+
+
+
+
+
+#' Title Import full dataset from SQL server into R
+#'
+#' @param name name to call retrieved data in environment
+#' @param server Server holding data
+#' @param database Database to query
+#' @param schema_name dataset schema eg "dbo"
+#' @param dataset table or view dataset name
+#'
+#' @return Full defined databset from SQL server
+#' @import DBI
+#' @import data.table
+#'
+#' @examples
+#' # sqldb_retrieve(name ="dt", server="x", database="W001", dataset ="x_linelist_v1")
+#'
+#' @export
+sqldb_retrieve <- function(name ="dt", server, database, schema_name = NULL, dataset){
+
+  start <- Sys.time()
+  # connect
+  if(!("SQL Server" %in% odbc::odbcListDrivers()$name)) stop("SQL Server driver missing. Install SQLSRV32.DLL then try again")
+  con <- DBI::dbConnect(odbc::odbc(),
+                        driver = "SQL Server",
+                        server = server,
+                        database = database,
+                        trusted_connection = "true",
+                        Encrypt="true")
+
+  if(class(con) =="try-error") {
+    stop("Login failed. Check you have permission to access this database.")
+  } else if(con@info$dbname == database) message("Connected")
+
+  # dataset retrieve full path
+  if(is.null(schema_name)){
+    tables <- DBI::dbGetQuery(con, glue::glue("SELECT OBJECT_SCHEMA_NAME(v.object_id) schema_name, v.name FROM sys.tables as v WHERE name LIKE '{dataset}';"))
+    tables <- tables[tables$name == dataset,][1, ]
+    if(nrow(tables) == 0) stop("dataset not found")
+    schema_name <- tables$schema_name
+  }
+  # dataset retrieve columns
+  cols <- try(odbc::dbGetQuery(con, glue::glue("SELECT ORDINAL_POSITION, COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH
+                                        FROM INFORMATION_SCHEMA.COLUMNS
+                                        WHERE TABLE_NAME='{dataset}'")))
+  # dataset manage columns
+  data.table::setDT(cols)[, group_order := seq_len(.N), by = list(DATA_TYPE,CHARACTER_MAXIMUM_LENGTH)]
+  cols[,order:= data.table::fifelse(is.na(CHARACTER_MAXIMUM_LENGTH) & DATA_TYPE == "bigint", 1000,
+                                    data.table::fifelse(is.na(CHARACTER_MAXIMUM_LENGTH) & DATA_TYPE == "date", 2000,
+                                                        data.table::fifelse(CHARACTER_MAXIMUM_LENGTH == -1 & DATA_TYPE == "varchar", 9000, 5000)))]
+  cols <- cols[order(order, group_order, decreasing = F),]
+  # Overcome special characters in column names
+  query_cols <- paste( paste0("[",cols$COLUMN_NAME, "]") , collapse = ", ")
+
+  # Query full table
+  dt <- try(assign(name, DBI::dbGetQuery(con, glue("SELECT {query_cols} FROM {database}.{schema_name}.{dataset}")), envir=.GlobalEnv))
+  QC_nrows <- try(DBI::dbGetQuery(con, glue("SELECT COUNT(*) from {database}.{schema_name}.{dataset}")))
+  DBI::dbDisconnect(con)
+  data.table::setcolorder(dt, neworder = cols[order(ORDINAL_POSITION),]$COLUMN_NAME)
+
+  # QC
+  if(is.null(nrow(get(name,envir=.GlobalEnv))) | nrow(get(name,envir=.GlobalEnv))!=QC_nrows){
+    rm(list = name, pos = ".GlobalEnv")
+    invisible(readline(prompt="Error retrieving data, Press [enter] to continue or [Esc] to stop and retry"))
+    stop("Error retrieving data. Try again.")
+  }
+  message(paste0("Retrieved ", nrow(get(name, envir = .GlobalEnv)), " rows of data from "), dataset)
+  message(paste("Run time",round(Sys.time()-start, 3), units(Sys.time()-start), sep = " "))
+
 }

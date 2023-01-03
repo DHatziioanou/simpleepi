@@ -7,13 +7,15 @@
 install_load(packages, ..., repo, lib, quiet)
 }
 \arguments{
+\item{packages}{vector of required package names}
+
+\item{...}{Other packages}
+
 \item{repo}{repository path (optional)}
 
 \item{lib}{library path (optional)}
 
 \item{quiet}{True or False}
-
-\item{package1}{vector of required package names}
 }
 \value{
 Named packages installed and loaded

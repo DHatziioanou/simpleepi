@@ -1,3 +1,55 @@
+#' Check if two files are present and of the same size and same creation and modification time
+#'
+#' @param x file 1 to check
+#' @param y file 2 to check
+#'
+#' @return  TRUE if both files exist, FALSE if the files are not identical
+#'
+#' @examples
+#'
+#' # simplewrite(list("test"), "file1.csv")
+#' # simplewrite(list("test"), "file2.csv")
+#' # simplefilecheck("file1.csv", "file2.csv")
+#'
+#' @export
+simplefilecheck <- function(x,y){
+  # 1st file exists
+  if(!isTRUE(file.exists(x))){
+    message(paste0(x," not found"))
+    return(FALSE)
+    stop()
+  }
+  # 2nd file exists
+  if(!isTRUE(file.exists(y))){
+    message(paste0(y," not found"))
+    return(FALSE)
+    stop()
+  }
+  yi <- base::file.info(y)
+  data.table::setDT(yi, keep.rownames = TRUE)[]
+  xi <- base::file.info(x, extra_cols=T)
+  data.table::setDT(xi, keep.rownames = TRUE)[]
+  # size
+  if(yi$size != xi$size){
+    message(paste0("files are different sizes"))
+    return(FALSE)
+    stop()
+  }
+  # creation
+  if(yi$ctime != xi$ctime){
+    message(paste0("files created at different times"))
+    return(FALSE)
+    stop()
+  }
+  # modification
+  if(yi$mtime != xi$mtime){
+    message(paste0("files modified at different times"))
+    return(FALSE)
+    stop()
+  }
+  return(TRUE)
+}
+
 #' Retrieve most recent file from a file path
 #'
 #' Retrieves the latest file name and modification details  for a specified path with the option to only look include files with a defined name string and exclude files with other defined name strings. The function can be set to attempt file retrieval a defined number of times to overcome server connectivity problems.
@@ -23,7 +75,8 @@
 #'
 #' @examples
 #' # Import latest file
-#' # todays_file <- getlatestfile(file.path("...","subfolder","subfolder"),return_type = "all", file_string = "epi", exclusions = "unwanted")
+#' # todays_file <- getlatestfile(file.path("...","subfolder","subfolder"),
+#' #    return_type = "all", file_string = "epi", exclusions = "unwanted")
 #' # df <- simpleimport(todays_file$path)
 #'
 #' # Record the modification details
@@ -137,3 +190,58 @@ getlatestfile <- function(folder_path, file_string, exclusions, return_type, max
   }
 
 }
+
+
+#' Open path using File Explorer or open named file
+#'
+#' @param path Path to folder or file to open
+#'
+#' @return Opens a File Explorer window at the given path or file
+#'
+#' @examples
+#' # dir.create("test")
+#' # simpleopen("test")
+#'
+#' @export
+simpleopen <- function(path){
+  if(!file.exists(path)) stop(paste0("path not found; ", path))
+  suppressWarnings(shell(paste0("explorer ", gsub("/", "\\\\", path)), intern = TRUE))
+}
+
+
+#' Title Search a list of files for values in a consistent column
+#'
+#' @param IDs Id values to look for.
+#' @param IDcol Column containing IDs in files.
+#' @param files Files to look in
+#' @param complete Optional; retain files without matches in list or not. Default is FALSE
+#'
+#' @return Returns a list with file names and rows of data with listed IDs in the IDCol column
+#' @import data.table
+#'
+#' @examples
+#'
+#' # simplewrite(data.frame(a = c(1,2,3), b = c("red", "amber", "green")), "testa.rds")
+#' # simplewrite(data.frame(a = c(1,2,3, 4), b = c("red", "amber", "green", "blue")), "testb.rds")
+#' # files <- list.files(pattern = ".rds")
+#' # dt3 <- IDinfilesearch(IDs = c(3,4), IDcol = "a", files = files)
+#' # dt4 <- IDinfilesearch(IDs = 4, IDcol = "a", files = files, complete = TRUE)
+#'
+#' @export
+IDinfilesearch <- function(IDs, IDcol, files, complete = FALSE){
+  IDs <- as.character(IDs)
+  t <- list()
+  for (f in files){
+    d <- data.table::data.table(simpleimportforce(f))
+    col <- names(d)[grepl(IDcol, names(d), ignore.case = T)]
+    d[, look:= as.character(d[,get(col)])]
+    x <- d[look%in%IDs,][,look := NULL]
+    t[[f]] <- x
+    message(paste(f, ";",nrow(x), "matching rows"))
+    remove(d, f)
+  }
+  if(complete == FALSE) t <- Filter(f = function(x)nrow(x)>0, x = t)
+
+  return(t)
+}
+

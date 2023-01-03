@@ -2,23 +2,23 @@
 % Please edit documentation in R/format.R
 \name{simplenumber}
 \alias{simplenumber}
-\title{Title
-Remove letters and special characters from a string to return a numeric value}
+\title{Title Remove letters and special characters from a string to return a numeric value}
 \usage{
-simplenumber(x, fillempty, fillvalue)
+simplenumber(x, fill = NULL)
 }
 \arguments{
 \item{x}{string or vector with numeric values for cleaning}
+
+\item{fill}{Value to fill empty values with. Default NULL will not fill empty values}
 }
 \value{
 number or vector of numbers
 }
 \description{
-Title
-Remove letters and special characters from a string to return a numeric value
+Title Remove letters and special characters from a string to return a numeric value
 }
 \examples{
 # x <- c("dfju", "LASK3", "dfpisdu092", "9376", 3098)
-# x <- simplenumber(x, fillempty = T, fillvalue = -1)
+# x <- simplenumber(x, fill = -1)
 
 }

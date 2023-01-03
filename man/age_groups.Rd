@@ -6,8 +6,7 @@
 \usage{
 age_groups(
   age,
-  groups = c("0-4", "5-10", "11-16", "17-24", "25-30", "31-39", "40-59", "60-79",
-    "80+"),
+  groups = c("0-4", "5-10", "11-16", "17-24", "25-30", "31-39", "40-59", "60-79", "80+"),
   unknowns = c("-1", NA),
   factor = FALSE
 )
@@ -19,7 +18,7 @@ age_groups(
 
 \item{unknowns}{vector of Age values to be considered unknowns eg -1, NA, "not stated"}
 
-\item{factor}{}
+\item{factor}{Logical; should returned age groups be formatted as factor? Default is FALSE.}
 }
 \value{
 Returns age groups

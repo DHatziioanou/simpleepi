@@ -32,8 +32,8 @@ with dates in more than one format will attempt to convert them all.
 # Format a data.frame column into a consistent date format
 # df$column <- simpledates(df$column)
 
-# Format all column from within a data.table
-where the columns contain the string date into date format
+# Format all column from within a data.table where the columns
+# contain the string date into date format
 # for (col in (names(dt)[grepl("date", names(dt))])){
 #   dt[,(col) := simpledates(dt[,get(col)])]
 #  }

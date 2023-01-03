@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_write.R
 \name{simplewrite}
 \alias{simplewrite}
-\title{Write data to file in various formats with one command}
+\title{Write data to file in spreadsheet format}
 \usage{
 simplewrite(data, file, type, sheet)
 }
@@ -11,7 +11,7 @@ simplewrite(data, file, type, sheet)
 
 \item{file}{file name and path to write to. If missing the object name will be used. No extension is needed, this will be added.}
 
-\item{type}{file type to save data as as a string. If not defined the file name extension will be used or "csv" if no extention given. Options are csv, xlsx, xls, rdata, rdsd, dta.}
+\item{type}{file type to save data as as a string. If not defined the file name extension will be used or "csv" if no extension given. Options are csv, xlsx, xls, rdata, rdsd, dta.}
 
 \item{sheet}{Optional; for xlsx and xls the sheet name to write data to.}
 }

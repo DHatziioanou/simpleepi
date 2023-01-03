@@ -21,11 +21,9 @@ Returns the input in UTF-8 format with special characters replaced with spaces a
 Takes a vector with character elements, removes special characters and numbers and formats them to UTF-8 encoding to make these consistent and compatible with most R analysis procedures. Returns strings with the first letter capitalised and the rest in lower case
 }
 \examples{
-strings <- simplewords(strings)
-
-clean_name <- simplewords("Latin-multi^name with strange/characters")
-
-df$Name <- simplewords(df$Name, case = "lower")
+# strings <- simplewords(strings)
+# clean_name <- simplewords("Latin-multi^name with strange/characters")
+# df$Name <- simplewords(df$Name, case = "lower")
 
 
 }

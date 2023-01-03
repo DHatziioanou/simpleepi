@@ -65,6 +65,18 @@ simpleimport <- function(file, sheet, skip, ...){
     invisible(readline(prompt="Unsupported file type, Press [enter] to continue or [Esc] to stop and retry"))
     }
   message(paste0("Imported ", ifelse(grepl("csv|xls|dta|rds", tools::file_ext(file), ignore.case = T), file, paste0(file, " containing ", paste0(ls()[!(ls() %in% c("sheet", "file", "skip", "df"))], collapse = ", ")))))
+
+  # Check
+  if(grepl("csv|xls|dta|rds", tools::file_ext(file), ignore.case = T)){
+    df<- as.data.frame(df)
+    empty <- lapply(df[names(df)], function (x) all(is.na(x)))
+  if(sum(unlist(empty))>0) {
+    warning(paste0("Empty columns detected; ", paste0(names(empty)[lapply(empty, sum) == 0], collapse = ", ")))
+    empty_classes <- lapply(df[,names(empty)[lapply(empty, sum) == 0]], function(x) class(x))
+    print(as.data.frame(empty_classes)[1,])
+  }
+  }
+
   return(df)
 }
 
@@ -138,7 +150,7 @@ simpleimportforce <- function(file, sheet, skip, ...){
   return(df)
 }
 
-#' Write data to file in various formats with one command
+#' Write data to file in spreadsheet format
 #'
 #' Write data into csv, xlsx, xls, rds, rdata or dta files
 #'
@@ -146,7 +158,7 @@ simpleimportforce <- function(file, sheet, skip, ...){
 #'
 #' @param file file name and path to write to. If missing the object name will be used. No extension is needed, this will be added.
 #'
-#' @param type file type to save data as as a string. If not defined the file name extension will be used or "csv" if no extention given. Options are csv, xlsx, xls, rdata, rdsd, dta.
+#' @param type file type to save data as as a string. If not defined the file name extension will be used or "csv" if no extension given. Options are csv, xlsx, xls, rdata, rdsd, dta.
 #'
 #' @param sheet Optional; for xlsx and xls the sheet name to write data to.
 #'
@@ -185,9 +197,6 @@ simplewrite <- function(data, file, type, sheet){
     openxlsx::addFilter(wb, sheet, row = 1, cols = 1:ncol(data))
     # SAVE WORKBOOK
     openxlsx::saveWorkbook(wb, paste0(file, ".xlsx"), overwrite = T)
-  } else if (type == "xlsx2"| type == "xls") {
-    if (missing(sheet)) sheet <- paste0(format(Sys.Date(), "%Y%m%d"), " data")
-    readxl::write.xlsx(data, paste0(file, ".xls"), sheetName = sheet, col.names = T, row.names = F, append = F)
   } else if (type == "dta") {
     haven::write_dta(data,  paste0(file, ".dta"), version = 14)
   } else if (grepl("rda|rdata", type, ignore.case = T)) {

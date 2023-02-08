@@ -128,23 +128,27 @@ sql_nocomments <- function(sqlfile=NULL, q=NULL) {
 
 
 
-#' Title Import full dataset from SQL server into R
+#' Title Import dataset from SQL server into R
 #'
 #' @param name name to call retrieved data in environment
 #' @param server Server holding data
 #' @param database Database to query
 #' @param schema_name dataset schema eg "dbo"
 #' @param dataset table or view dataset name
+#' @param columns column names
+#' @param top Optional number of top rows to retrieve
 #'
-#' @return Full defined databset from SQL server
+#' @return Dataset contents as defined by arguments from SQL server
 #' @import DBI
 #' @import data.table
 #'
 #' @examples
 #' # sqldb_retrieve(name ="dt", server="x", database="W001", dataset ="x_linelist_v1")
+#' # sqldb_retrieve(name ="dt", server="x", database="W001", dataset ="x_linelist_v1",
+#'                     # columns=c("id", "value"), top =100)
 #'
 #' @export
-sqldb_retrieve <- function(name ="dt", server, database, schema_name = NULL, dataset){
+sqldb_retrieve <- function(name ="dt", server, database, schema_name = NULL, dataset, columns=FALSE, top = FALSE){
 
   start <- Sys.time()
   # connect
@@ -174,17 +178,33 @@ sqldb_retrieve <- function(name ="dt", server, database, schema_name = NULL, dat
   # dataset manage columns
   data.table::setDT(cols)[, group_order := seq_len(.N), by = list(DATA_TYPE,CHARACTER_MAXIMUM_LENGTH)]
   cols[,order:= data.table::fifelse(is.na(CHARACTER_MAXIMUM_LENGTH) & DATA_TYPE == "bigint", 1000,
-                                    data.table::fifelse(is.na(CHARACTER_MAXIMUM_LENGTH) & DATA_TYPE == "date", 2000,
-                                                        data.table::fifelse(CHARACTER_MAXIMUM_LENGTH == -1 & DATA_TYPE == "varchar", 9000, 5000)))]
-  cols <- cols[order(order, group_order, decreasing = F),]
-  # Overcome special characters in column names
-  query_cols <- paste( paste0("[",cols$COLUMN_NAME, "]") , collapse = ", ")
+                                    data.table::fifelse(is.na(CHARACTER_MAXIMUM_LENGTH) & DATA_TYPE == "int", 2000,
+                                                        data.table::fifelse(is.na(CHARACTER_MAXIMUM_LENGTH) & DATA_TYPE == "date", 3000,
+                                                                            data.table::fifelse(CHARACTER_MAXIMUM_LENGTH == -1 & DATA_TYPE == "varchar", 8000,
+                                                                                                data.table::fifelse(CHARACTER_MAXIMUM_LENGTH == -1 & DATA_TYPE == "nvarchar", 9000, 5000)))))]
+  cols <- cols[order(order, CHARACTER_MAXIMUM_LENGTH, group_order, decreasing = F),]
+  cols[,COLUMN_NAME := paste0("[",COLUMN_NAME, "]")]
+  # columns to retrieve
+  if(columns[1] == FALSE){columns <- cols$COLUMN_NAME}
+  columns <- unlist(lapply(columns, function(x) {
+    if(substr(x, 1,1) != "[" & substr(x, nchar(x),nchar(x)) != "]" ){x <- paste0("[",x, "]")}else{x}
+  }))
+
+  if(any(!(columns %in% cols$COLUMN_NAME))) stop(paste("Columns not in", dataset,";", paste0(columns[!(columns %in% cols$COLUMN_NAME)], collapse = ",")))
+  cols <- cols[COLUMN_NAME %in% columns,]
+  query_cols <- paste(cols$COLUMN_NAME, collapse = ", ")
 
   # Query full table
-  dt <- try(assign(name, DBI::dbGetQuery(con, glue("SELECT {query_cols} FROM {database}.{schema_name}.{dataset}")), envir=.GlobalEnv))
+  if(top == FALSE){q <- glue::glue("SELECT {query_cols} FROM {database}.{schema_name}.{dataset}")
+  } else {q <- glue::glue("SELECT TOP ({top}) {query_cols} FROM {database}.{schema_name}.{dataset}")}
+
+  dt <- try(assign(name, DBI::dbGetQuery(con, q), envir=.GlobalEnv))
   QC_nrows <- try(DBI::dbGetQuery(con, glue("SELECT COUNT(*) from {database}.{schema_name}.{dataset}")))
+  if(top != FALSE){
+    if(QC_nrows>top) QC_nrows<-top
+  }
   DBI::dbDisconnect(con)
-  data.table::setcolorder(dt, neworder = cols[order(ORDINAL_POSITION),]$COLUMN_NAME)
+  data.table::setcolorder(dt, neworder = gsub("]", "", gsub("[", "", columns, fixed = T)))
 
   # QC
   if(is.null(nrow(get(name,envir=.GlobalEnv))) | nrow(get(name,envir=.GlobalEnv))!=QC_nrows){
@@ -195,4 +215,10 @@ sqldb_retrieve <- function(name ="dt", server, database, schema_name = NULL, dat
   message(paste0("Retrieved ", nrow(get(name, envir = .GlobalEnv)), " rows of data from "), dataset)
   message(paste("Run time",round(Sys.time()-start, 3), units(Sys.time()-start), sep = " "))
 
+}
+
+
+vectorise_comma_separated <- function(s) {
+  out <- unlist(lapply(strsplit(s, ","), function(x) gsub("\n","",x)))
+  return(out)
 }

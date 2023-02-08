@@ -29,14 +29,13 @@ Title Create a unique identified based on unique values in columns and a further
 Assign unique IDs to data based either on PII columns or a combination of PII columns and a further unique identifier where available
 }
 \examples{
-
-x <- data.frame(DOB = c("01/01/2001", "02/01/2001", "01/01/2001", "03/01/2001"),
-   name = c("A", "B", "C", "D"), surname = c("A", "B", "A", "D"),
-   ZIP = c("A", "B", "A", "D"), NHS_Number = c(2001, NA, 2001, NA))
-Number = "NHS_Number"
-name <- "GroupID"
-col = c("DOB", "name", "surname", "ZIP")
-x <- simpleID(x = x, col =  col, name = name)
-x <- simpleID(x = x, col =  col, Number = Number, name = name)
+# x <- data.frame(DOB = c("01/01/2001", "02/01/2001", "01/01/2001", "03/01/2001"),
+#    name = c("A", "B", "C", "D"), surname = c("A", "B", "A", "D"),
+#    ZIP = c("A", "B", "A", "D"), NHS_Number = c(2001, NA, 2001, NA))
+# Number = "NHS_Number"
+# name <- "GroupID"
+# col = c("DOB", "name", "surname", "ZIP")
+# x <- simpleID(x = x, col =  col, name = name)
+# x <- simpleID(x = x, col =  col, Number = Number, name = name)
 
 }

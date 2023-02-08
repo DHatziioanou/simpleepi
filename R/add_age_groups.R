@@ -39,7 +39,10 @@ age_groups <- function(age, groups= c('0-4', "5-10", "11-16", "17-24", "25-30", 
 #' @examples
 #'
 #'  # Create age grouping
-#'  # groups <- data.frame(under18 = c(0,17), workingage = c(18,65), over65 = c(66,"90+"), stringsAsFactors = FALSE)
+#'  # groups <- data.frame(under18 = c(0,17),
+#'            # workingage = c(18,65),
+#'            # over65 = c(66,"90+"),
+#'            # stringsAsFactors = FALSE)
 #'  # ONS_populations_3categories <- ONS_age_groups(ONS, groups)
 #'
 #' @export

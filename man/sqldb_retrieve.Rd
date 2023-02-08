@@ -2,9 +2,17 @@
 % Please edit documentation in R/sqlfile.R
 \name{sqldb_retrieve}
 \alias{sqldb_retrieve}
-\title{Title Import full dataset from SQL server into R}
+\title{Title Import dataset from SQL server into R}
 \usage{
-sqldb_retrieve(name = "dt", server, database, schema_name = NULL, dataset)
+sqldb_retrieve(
+  name = "dt",
+  server,
+  database,
+  schema_name = NULL,
+  dataset,
+  columns = FALSE,
+  top = FALSE
+)
 }
 \arguments{
 \item{name}{name to call retrieved data in environment}
@@ -16,14 +24,20 @@ sqldb_retrieve(name = "dt", server, database, schema_name = NULL, dataset)
 \item{schema_name}{dataset schema eg "dbo"}
 
 \item{dataset}{table or view dataset name}
+
+\item{columns}{column names}
+
+\item{top}{Optional number of top rows to retrieve}
 }
 \value{
-Full defined databset from SQL server
+Dataset contents as defined by arguments from SQL server
 }
 \description{
-Title Import full dataset from SQL server into R
+Title Import dataset from SQL server into R
 }
 \examples{
 # sqldb_retrieve(name ="dt", server="x", database="W001", dataset ="x_linelist_v1")
+# sqldb_retrieve(name ="dt", server="x", database="W001", dataset ="x_linelist_v1",
+                    # columns=c("id", "value"), top =100)
 
 }

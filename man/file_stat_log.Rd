@@ -33,6 +33,7 @@ returns log of records by column variables
 Title Create and maintain a record of the number of rows in an input with each combination of values from columns of interest
 }
 \examples{
-# file_stat_log(logname = "file_stat_log", input = "df", inputname = "description", columns =c("col1", "col2"))
+# file_stat_log(logname = "file_stat_log", input = "df",
+#     inputname = "description", columns =c("col1", "col2"))
 
 }

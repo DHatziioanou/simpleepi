@@ -16,10 +16,10 @@ Returns x formatted to English PHEC names from ONS.
 Tidy English PHEC names for consistency of formatting
 }
 \examples{
- data = data.frame(regions =c("UNKNOWN", "YORKSHIRE AND THE HuMBER", "East Of England"),
- id = c(1,2,3))
- region_names = data.frame(regions = unique(data$regions))
- region_names$regions_clean =  simpleregions(region_names$regions)
- data <- merge(data, region_names, by = "regions", all = T)
+ # data = data.frame(regions =c("UNKNOWN", "YORKSHIRE AND THE HuMBER", "East Of England"),
+ # id = c(1,2,3))
+ # region_names = data.frame(regions = unique(data$regions))
+ # region_names$regions_clean =  simpleregions(region_names$regions)
+ # data <- merge(data, region_names, by = "regions", all = T)
 
 }

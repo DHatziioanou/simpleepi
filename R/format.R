@@ -50,6 +50,8 @@ simplewords <- function(x, case, encode = TRUE){
     x <- stringi::stri_trans_general(x, "name-any")
     x <- iconv(x, to = "UTF-8")
   }
+  x <- gsub("/r","", x, fixed = T)
+  x <- gsub("/n","", x, fixed = T)
   x <- gsub("[[:digit:]]+", "", x)
   x <- gsub("[[:punct:]]", " ", x)
   if (missing(case)) case <- "title"
@@ -64,6 +66,7 @@ simplewords <- function(x, case, encode = TRUE){
   }
   x <- trimws(x)
   x <- gsub("  "," ", x)
+
   return(x)
 }
 

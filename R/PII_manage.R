@@ -8,6 +8,8 @@
 #' @examples
 #'  # dt <- data.table(first_name = c("Jane", "Pete"), surname = c("Brown", "McKenzie"))
 #'  # dt$namelist <- name_combos(x = dt, namecols =  c("first_name","surname"))
+#'  # Tidy survname column and return a vector of all names per row
+#'  # dt$names <- lapply(vectorise_unique(dt, "names"), function(x) paste0(unlist(x), collapse = " "))
 #'
 #' @import data.table
 #' @export
@@ -15,7 +17,11 @@ vectorise_unique <- function(x, namecols){
   # Name combinations for each person
   data.table::setDT(x)
   temp_names <- data.table::copy(x[,..namecols])
-  temp_names[ , (namecols) := lapply(.SD, simplewords), .SDcols = namecols]
+  if(unique(lapply(x[,..namecols], class))=="character") {
+    temp_names[ , (namecols) := lapply(.SD, simplewords), .SDcols = namecols]
+  } else {
+    temp_names[ , (namecols) := lapply(.SD, as.character), .SDcols = namecols]
+  }
   names.list <- unlist(apply(temp_names, 1, list), recursive = FALSE)
   names.list <- lapply(names.list, function(y) data.table::tstrsplit(x = y, split = " ",fill =NA))
   names.list <- lapply(names.list, function(y) y <- unique(unlist(y)[!is.na(unlist(y)) & unlist(y) != ""]))

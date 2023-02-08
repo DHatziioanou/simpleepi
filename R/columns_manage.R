@@ -87,7 +87,7 @@ combine_vectors <- function(l, r, case = NULL){
   comb <- which(!(is.na(l)) & (!is.na(r)) )
   identical <- which(l == r)
   if(length(identical)!=0){
-    comb <- comb[! comb %in% dups]
+    comb <- comb[! comb %in% identical]
   }
   combined <- paste(l[comb],r[comb], sep = ", ")
   if(length(comb)!=0) out[comb] <- combined

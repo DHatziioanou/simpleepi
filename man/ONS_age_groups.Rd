@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_age_groups.R
 \name{ONS_age_groups}
 \alias{ONS_age_groups}
-\title{Title Calculate ONS populations by age group for any age grouping using the ONS populations file}
+\title{Title Calculate ONS populations by age group for any age grouping using ONS populations file from https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/tablea21principalprojectionukpopulationinagegroups}
 \usage{
 ONS_age_groups(populations, age_groups)
 }
@@ -15,7 +15,7 @@ ONS_age_groups(populations, age_groups)
 exports a data.frame with aggregated population numbers by age group
 }
 \description{
-Title Calculate ONS populations by age group for any age grouping using the ONS populations file
+Title Calculate ONS populations by age group for any age grouping using ONS populations file from https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/tablea21principalprojectionukpopulationinagegroups
 }
 \examples{
 

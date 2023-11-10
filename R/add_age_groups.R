@@ -28,7 +28,7 @@ age_groups <- function(age, groups= c('0-4', "5-10", "11-16", "17-24", "25-30", 
 }
 
 
-#' Title Calculate ONS populations by age group for any age grouping using the ONS populations file
+#' Title Calculate ONS populations by age group for any age grouping using ONS populations file from https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationprojections/datasets/tablea21principalprojectionukpopulationinagegroups
 #'
 #' @param populations object containing ONS populations
 #' @param age_groups  data.frame containing age group categories to calculate populations for

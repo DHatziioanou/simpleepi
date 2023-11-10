@@ -7,7 +7,9 @@
 #'
 #' @return Opens connection to history and output files
 #'
-#' @examples simplelog_start()
+#' @examples
+#' simplelog_start()
+#'
 #' @export
 simplelog_start <- function(path, history_file, output_file){
 
@@ -29,13 +31,15 @@ timestamp()
 
 #' Title Write data and end connection to history and log files
 #'
-#' @param path
-#' @param history_file
-#' @param output_file
+#' @param path Path to history and output files
+#' @param history_file file name for history
+#' @param output_file  file name for output
 #'
-#' @return
+#' @return  Closes connection to history and output files
 #'
 #' @examples
+#' # simplelog_end()
+#'
 #' @export
 simplelog_end <- function(path, history_file, output_file){
 
@@ -46,7 +50,10 @@ simplelog_end <- function(path, history_file, output_file){
   if(missing(output_file))  { output_file <- file.path(path, paste0(date, "Rlog.txt")) }
 
   timestamp()
-  unlink(output_file)
+  for(i in seq_len(sink.number())){
+    sink(NULL)
+  }
   savehistory(file = history_file)
 
 }
+

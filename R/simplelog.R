@@ -15,7 +15,7 @@ simplelog_start <- function(path, history_file, output_file){
 
 # Filenames
 date <- format(Sys.Date(), "%Y%m%d")
-if(missing(history_file)) {path = getwd()}
+if(missing(path)) {path = getwd()}
 if(missing(history_file)) { history_file <- file.path(path, paste0(date,"Rhistory.txt")) }
 if(missing(output_file))  { output_file <- file.path(path, paste0(date, "Rlog.txt")) }
 

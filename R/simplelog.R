@@ -8,7 +8,7 @@
 #' @return Opens connection to history and output files
 #'
 #' @examples
-#' simplelog_start()
+#' # simplelog_start()
 #'
 #' # path = "getwd()"
 #' # history_file <- file.path(path, paste0(Sys.Date(),"Rhistory.txt"))

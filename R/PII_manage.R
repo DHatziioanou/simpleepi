@@ -1,15 +1,15 @@
 #' Title Format full names from a data.table and return unique names per row.
 #'
-#' @param x data.table or data.frame containing with columns containing messy names
+#' @param x data.table or data.frame with columns containing messy names
 #' @param namecols column names containing names (forename(s), middlename(s), surname(s)) to process
 #'
 #' @return list of unique names
 #'
 #' @examples
-#'  # dt <- data.table(first_name = c("Jane", "Pete"), surname = c("Brown", "McKenzie"))
-#'  # dt$namelist <- name_combos(x = dt, namecols =  c("first_name","surname"))
-#'  # Tidy survname column and return a vector of all names per row
-#'  # dt$names <- lapply(vectorise_unique(dt, "names"), function(x) paste0(unlist(x), collapse = " "))
+#'  # dt <- data.table(first_name = c("Jane", "Pete", "John Patrick"), surname = c("Brown", "McKenzie", "Patrick McKenzie"))
+#'  # dt$namelist <- vectorise_unique(x = dt, namecols =  c("first_name","surname"))
+#'  # Tidy surname column and return a vector of all names per row
+#'  # dt$names <- lapply(dt$namelist, function(x) paste0(unlist(x), collapse = " "))
 #'
 #' @import data.table
 #' @export
@@ -31,9 +31,9 @@ vectorise_unique <- function(x, namecols){
     for(i in 1:length(n)) {
       if(length(n) > 1){
         if(i == 1){
-          y <- paste(n[i],n[-i], collapse=" ")
+          y <- paste(n[i],paste(n[-i], collapse = " "), collapse=" ")
         } else {
-          y <- c(y,paste(n[i],n[-i], collapse=" "))
+          y <- c(y,paste(n[i],paste(n[-i], collapse = " "), collapse=" "))
         }
       } else {
         y <- n

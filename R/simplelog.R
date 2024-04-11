@@ -9,7 +9,6 @@
 #'
 #' @examples
 #' # simplelog_start()
-#'
 #' # path = "getwd()"
 #' # history_file <- file.path(path, paste0(Sys.Date(),"Rhistory.txt"))
 #' # output_file <- file.path(path, paste0(Sys.Date(),"Rlog.txt"))

@@ -20,8 +20,7 @@ Opens connection to history and output files
 Title Start connection to history and log files
 }
 \examples{
-simplelog_start()
-
+# simplelog_start()
 # path = "getwd()"
 # history_file <- file.path(path, paste0(Sys.Date(),"Rhistory.txt"))
 # output_file <- file.path(path, paste0(Sys.Date(),"Rlog.txt"))

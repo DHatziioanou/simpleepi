@@ -105,7 +105,7 @@ combine_vectors <- function(l, r, case = NULL){
 #' @param data vector to perform check on
 #' @param cat categorical values to look for
 #'
-#' @return returns list containign summary of comparison, whether data fully conforms to categories and whether data has missing of additional categories
+#' @return returns list containing summary of comparison, whether data fully conforms to categories and whether data has missing of additional categories
 #'
 #' @examples
 #'
@@ -146,4 +146,66 @@ QC_categories <- function(data, cat){
   return(out)
 }
 
+#' Title Create table of data.table column characteristics
+#'
+#' @param dt data.table. If a dataframe is provided it will be converted to a datatable.
+#'
+#' @return returns a data.table with column length metrics min, max, mean, median, na metrics, class, skewness and kurtosis per column.
+#'
+#' @examples
+#' # formats_dt <- simple_format_calatogue(dt)
+#'
+#'
+#' @export
+simple_format_calatogue <- function(dt){
 
+  if(!"data.table" %in% class(dt)) dt <- data.table::as.data.table(dt)
+  cat(paste("Of", ncol(dt), "columns processing:"))
+  dt[dt==""] <- NA
+  for(c in 1:ncol(dt)){
+
+    cat(c) ; cat(".")
+    c_name = names(dt)[c]
+    cat(c_name); cat("..")
+    nullcol =  all(is.na(dt[,get(c_name)]))
+    na_any = ifelse(nullcol, TRUE, any(is.na(dt[,get(c_name)])))
+    clengthswidth = nchar(dt[,get(c_name)], allowNA = T, keepNA = T, type = "width")
+
+    if(c == 1){
+      format_table <- data.table::data.table(col_name = c_name,
+                                 Rclass = class(dt[,get(c_name)]),
+                                 na_all = nullcol,
+                                 na_any = na_any,
+                                 na_percent = ifelse(nullcol, 100, fifelse(na_any, sum(is.na(dt[,get(c_name)]))/length(clengthswidth),0)),
+                                 length_min = ifelse(nullcol, as.numeric(NA), round(min(clengthswidth, na.rm = T), 2)),
+                                 length_max = ifelse(nullcol, as.numeric(NA), round(max(clengthswidth, na.rm = T), 2)),
+                                 length_mean = ifelse(nullcol, as.numeric(NA), round(mean(clengthswidth, na.rm = T), 2)),
+                                 length_median = ifelse(nullcol, as.numeric(NA), round(median(clengthswidth, na.rm = T), 2)),
+                                 skewness_SAS_SPSS = ifelse(nullcol, as.numeric(NA),
+                                                            ifelse(length(clengthswidth[!is.na(clengthswidth)])>3, e1071::skewness(clengthswidth, na.rm = T, type = 2), as.numeric(NA))),
+                                 kurtosis_SAS_SPSS = ifelse(nullcol, as.numeric(NA),
+                                                            ifelse(length(clengthswidth[!is.na(clengthswidth)])>3, e1071::kurtosis(clengthswidth,na.rm = T, type = 2), as.numeric(NA))))
+
+    } else {
+      format_table = data.table::rbindlist(list(format_table,
+                                    data.table::data.table(col_name = c_name,
+                                               Rclass = class(dt[,get(c_name)]),
+                                               na_all = nullcol,
+                                               na_any = na_any,
+                                               na_percent = ifelse(nullcol, 100, fifelse(na_any, sum(is.na(dt[,get(c_name)]))/length(clengthswidth),0)),
+                                               length_min = ifelse(nullcol, as.numeric(NA), round(min(clengthswidth, na.rm = T), 2)),
+                                               length_max = ifelse(nullcol, as.numeric(NA), round(max(clengthswidth, na.rm = T), 2)),
+                                               length_mean = ifelse(nullcol, as.numeric(NA), round(mean(clengthswidth, na.rm = T), 2)),
+                                               length_median = ifelse(nullcol, as.numeric(NA), round(median(clengthswidth, na.rm = T), 2)),
+                                               skewness_SAS_SPSS = ifelse(nullcol, as.numeric(NA),
+                                                                          ifelse(length(clengthswidth[!is.na(clengthswidth)])>3, e1071::skewness(clengthswidth, na.rm = T, type = 2), as.numeric(NA))),
+                                               kurtosis_SAS_SPSS = ifelse(nullcol, as.numeric(NA),
+                                                                          ifelse(length(clengthswidth[!is.na(clengthswidth)])>3, e1071::kurtosis(clengthswidth,na.rm = T, type = 2), as.numeric(NA))))
+      ), use.names = T, fill = T)
+
+    }
+
+  }
+  cat("done")
+  return(format_table)
+}

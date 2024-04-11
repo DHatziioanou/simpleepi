@@ -12,7 +12,7 @@ QC_categories(data, cat)
 \item{cat}{categorical values to look for}
 }
 \value{
-returns list containign summary of comparison, whether data fully conforms to categories and whether data has missing of additional categories
+returns list containing summary of comparison, whether data fully conforms to categories and whether data has missing of additional categories
 }
 \description{
 Title Compare vector contents to a expected categories

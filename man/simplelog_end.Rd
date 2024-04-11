@@ -7,11 +7,11 @@
 simplelog_end(path, history_file, output_file)
 }
 \arguments{
-\item{path}{Path to history and output files}
+\item{path}{Optional path to history and output files. Default is working directory.}
 
-\item{history_file}{file name for history}
+\item{history_file}{Optional file name for history. Default is file.path(path, paste0(date,"_Rhistory.txt"))}
 
-\item{output_file}{file name for output}
+\item{output_file}{Optional file name for output. Default is file.path(path, paste0(date,"_Rlog.txt"))}
 }
 \value{
 Closes connection to history and output files
@@ -20,6 +20,6 @@ Closes connection to history and output files
 Title Write data and end connection to history and log files
 }
 \examples{
-# simplelog_end()
+# simplelog_end(path, history_file, output_file)
 
 }

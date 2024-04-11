@@ -7,11 +7,11 @@
 simplelog_start(path, history_file, output_file)
 }
 \arguments{
-\item{path}{Path to history and output files}
+\item{path}{Optional path to history and output files. Default is working directory.}
 
-\item{history_file}{file name for history}
+\item{history_file}{Optional file name for history. Default is file.path(path, paste0(date,"_Rhistory.txt"))}
 
-\item{output_file}{file name for output}
+\item{output_file}{Optional file name for output. Default is file.path(path, paste0(date, "_Rlog.txt"))}
 }
 \value{
 Opens connection to history and output files
@@ -21,5 +21,10 @@ Title Start connection to history and log files
 }
 \examples{
 simplelog_start()
+
+# path = "getwd()"
+# history_file <- file.path(path, paste0(Sys.Date(),"Rhistory.txt"))
+# output_file <- file.path(path, paste0(Sys.Date(),"Rlog.txt"))
+# simplelog_start(path, history_file, output_file)
 
 }

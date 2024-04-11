@@ -7,7 +7,7 @@
 vectorise_unique(x, namecols)
 }
 \arguments{
-\item{x}{data.table or data.frame containing with columns containing messy names}
+\item{x}{data.table or data.frame with columns containing messy names}
 
 \item{namecols}{column names containing names (forename(s), middlename(s), surname(s)) to process}
 }
@@ -18,9 +18,9 @@ list of unique names
 Title Format full names from a data.table and return unique names per row.
 }
 \examples{
- # dt <- data.table(first_name = c("Jane", "Pete"), surname = c("Brown", "McKenzie"))
- # dt$namelist <- name_combos(x = dt, namecols =  c("first_name","surname"))
- # Tidy survname column and return a vector of all names per row
- # dt$names <- lapply(vectorise_unique(dt, "names"), function(x) paste0(unlist(x), collapse = " "))
+ # dt <- data.table(first_name = c("Jane", "Pete", "John Patrick"), surname = c("Brown", "McKenzie", "Patrick McKenzie"))
+ # dt$namelist <- vectorise_unique(x = dt, namecols =  c("first_name","surname"))
+ # Tidy surname column and return a vector of all names per row
+ # dt$names <- lapply(dt$namelist, function(x) paste0(unlist(x), collapse = " "))
 
 }

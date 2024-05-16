@@ -4,7 +4,7 @@
 \alias{simpleimport}
 \title{Import various formats of files into R with one command. If file is not found a brower will open to select the file}
 \usage{
-simpleimport(file, sheet, skip, ...)
+simpleimport(file, sheet, skip, password = NULL, ...)
 }
 \arguments{
 \item{file}{Optional; file to import. If not in your working directory the path needs to be included. If not specified a browser will open to select a file.}
@@ -12,6 +12,8 @@ simpleimport(file, sheet, skip, ...)
 \item{sheet}{Optional; sheet name or number within workbooks to import. By default the first tab is imported.}
 
 \item{skip}{Optional; Number of rows from top of the spreadsheet to skip in the import.}
+
+\item{password}{Password for password-protected workbook.}
 
 \item{...}{Optional; other import arguments from the fread for csv, readxl for xls or xlsx or haven for dta files.}
 }

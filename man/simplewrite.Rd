@@ -4,7 +4,14 @@
 \alias{simplewrite}
 \title{Write data to file in spreadsheet format}
 \usage{
-simplewrite(data, file, type, sheet)
+simplewrite(
+  data,
+  file,
+  type,
+  sheet,
+  password = NULL,
+  write.res.password = NULL
+)
 }
 \arguments{
 \item{data}{object with data to write. For rdata can be a single object or a list of objects.}
@@ -14,6 +21,10 @@ simplewrite(data, file, type, sheet)
 \item{type}{file type to save data as as a string. If not defined the file name extension will be used or "csv" if no extension given. Options are csv, xlsx, xls, rdata, rdsd, dta.}
 
 \item{sheet}{Optional; for xlsx and xls the sheet name to write data to.}
+
+\item{password}{Password for password-protected workbook.}
+
+\item{write.res.password}{Second password for editing workbook.}
 }
 \value{
 writes data to file

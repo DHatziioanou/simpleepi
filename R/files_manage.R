@@ -245,3 +245,21 @@ IDinfilesearch <- function(IDs, IDcol, files, complete = FALSE){
   return(t)
 }
 
+#' Title Unzip a file using 7z
+#'
+#' @param zfile  zip file to unzip
+#' @param z7path path to zip file
+#'
+#' @return unzipped zip file contents
+#'
+#' @examples
+#' #simpleunzip(zfile, z7path)
+#'
+#' @export
+simpleunzip <- function(zfile, z7path){
+  if(!file.exists(path)) stop(paste0("path not found; ", path))
+  if(!file.exists(z7path)) stop(paste0("path not found; ", z7path))
+  cmd = paste0(z7path, ' e ', zfile, ' -y -o', gsub(pattern = ".7z", replacement = "", x = zfile), '/')
+  shell(cmd)
+}
+

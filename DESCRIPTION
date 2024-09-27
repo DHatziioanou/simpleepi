@@ -1,7 +1,7 @@
 Package: simpleepi
 Type: Package
 Title: Simplifying functions to improve the ease and speed of basic epidemiological analysis
-Version: 0.2.10
+Version: 0.2.11
 Author: Diane Hatziioanou
 Maintainer: Diane Hatziioanou <DHatziioanou@tutanota.com>
 Description: Collection of processes to speed up and simplify the routine import, processing and saving of data for epidemiological analysis.
